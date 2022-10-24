@@ -139,10 +139,46 @@ footer: Oniro, a production oriented, reference operating system for devices big
   * Layered architecture
 
 ---
-# Devices, big and small
+
+<!-- Slide 12 -->
+![bg fit left:40%](images/oniro-layers.png)
+# Oniro's layers
+  * build system
+  * oniro recipes
+  * open embedded core recipes (including linux kernel)
+  * hardware support
+  * documentation
+  * ip policy
+  * zephyr and freertos
+  * system OTA
+  * openharmony
 
 ---
 
+<!-- Slide 13 -->
+![bg fit left:20%](https://images.pexels.com/photos/4966172/pexels-photo-4966172.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+# Devices, big and small (a.k.a. "flavours")
+
+  * Linux 5.10 for higher end devices (Cortex A, Intel, RISC-V)
+  * Zephyr 2.7 (default, LF project, used by Linaro's Lite) for lower end devices (Cortex M)
+  * FreeRTOS (experimental)
+  * Lite OS (comes with meta-openharmony, used in Huawei's devices)
+  
+---
+
+<!-- Slide 14 -->
+![bg fit left:20%](https://images.pexels.com/photos/1432675/pexels-photo-1432675.jpeg?cs=srgb&dl=pexels-pok-rie-1432675.jpg&fm=jpg)
+# Hardware support 
+
+  * Seco's NXP i.MX8 (Cortex A + M), Intel and Rockchip (supported)
+  * QEMU 32 and 64, Intel, Arm, RISC-V
+  
+  * ST Micro, Xilinx (experimental)
+  * 2 weeks from inclusion to build / testing for YP and Zephyr supported targets
+  
+---
+
+<!-- Slide 15 -->
 ![bg fit left:20%](https://images.pexels.com/photos/7286017/pexels-photo-7286017.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 
 # Makers, a special type of end users 
@@ -153,3 +189,64 @@ footer: Oniro, a production oriented, reference operating system for devices big
 
 ---
 
+<!-- Slide 16 -->
+![bg fit left:40%](https://images.pexels.com/photos/3482442/pexels-photo-3482442.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+# Interoperability 
+
+  * Project Matter
+  * OpenThread
+  * OpenHarmony
+  * Podman (containers)
+  * ModBUS
+  * LVGL / Flutter
+  * RAUC (SysOTA)
+  
+---
+
+<!-- Slide 17 -->
+![bg fit left:40%](https://images.pexels.com/photos/3839649/pexels-photo-3839649.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+# Compliance envelope, verification and validation
+
+  * OpenChain and OpenSSF
+  * Continuous license compliance with dashboard and SWBOM for supported configurations
+  * LAVA (Linaro Automation and Validation) with central server and peripherical hw labs nodes
+
+---
+
+<!-- Slide 18 -->
+![bg fit left:40%](https://images.pexels.com/photos/3839649/pexels-photo-3839649.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+# Life cycle
+
+  * One release / year (update kernels, toolchains, include new hw support)
+  * Three years maintenance with decremental severity based fixes
+  * Extended maintenace, tailored SWBOMs, product testing for working group members (intent)
+
+---
+
+<!-- Slide 19 -->
+![bg fit left:40%](https://images.pexels.com/photos/6699273/pexels-photo-6699273.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+# So far so good 
+
+  * A market centric approach has given us speed and focus
+  * The industry has done a whole lot of work around individual components 
+  * We have spent most of the time integrating, testing, documenting, releasing
+  * We have tried to address a technical gap (breadth of devices) and business gap (production oriented open source)
+
+---
+
+<!-- Slide 20 -->
+![bg fit left:40%](https://images.pexels.com/photos/5258257/pexels-photo-5258257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+# The hard part is ahead ... 
+
+  * Semantic web and device cooperation
+  * Device management and updates 
+  * Production ready performance
+  * More blueprints, contributions, supporters, products, users
+
+---
+
+<!-- Slide 21 -->
+![bg fit left:40%](https://images.pexels.com/photos/4346014/pexels-photo-4346014.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+# Thank you 
+
+---
