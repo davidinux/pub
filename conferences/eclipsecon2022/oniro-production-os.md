@@ -6,11 +6,11 @@ license: Common Creative Share-Alike
 backgroundColor: black
 color: white
 header: Eclipse Con**2022**
-footer: Oniro, a production oriented, reference operating system for devices big and small
+footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/cc-logo.jpg) Oniro, a production oriented, reference operating system for devices big and small
 ---
 <!-- Title Slide  -->
-![bg fit left:20%](https://www.eclipsecon.org/sites/all/themes/solstice/_themes/solstice_eclipsecon_2022/logo.svg)
-
+![bg vertical fit left:20%](https://www.eclipsecon.org/sites/all/themes/solstice/_themes/solstice_eclipsecon_2022/logo.svg)
+![bg fit](https://oniroproject.org/images/logo.svg)
 # Oniro, a production oriented, reference operating system for devices big and small
 
 ---
@@ -160,7 +160,7 @@ footer: Oniro, a production oriented, reference operating system for devices big
 # Devices, big and small (a.k.a. "flavours")
 
   * Linux 5.10 for higher end devices (Cortex A, Intel, RISC-V)
-  * Zephyr 2.7 (default, LF project, used by Linaro's Lite) for lower end devices (Cortex M)
+  * Zephyr 3.1 (default, LF project, used by Linaro's Lite) for lower end devices (Cortex M)
   * FreeRTOS (experimental)
   * Lite OS (comes with meta-openharmony, used in Huawei's devices)
   
@@ -169,16 +169,25 @@ footer: Oniro, a production oriented, reference operating system for devices big
 <!-- Slide 14 -->
 ![bg fit left:20%](https://images.pexels.com/photos/1432675/pexels-photo-1432675.jpeg?cs=srgb&dl=pexels-pok-rie-1432675.jpg&fm=jpg)
 # Hardware support 
-
+## Supported
   * Seco's NXP i.MX8 (Cortex A + M), Intel and Rockchip (supported)
   * QEMU 32 and 64, Intel, Arm, RISC-V
-  
+## Experimental  
   * ST Micro, Xilinx (experimental)
   * 2 weeks from inclusion to build / testing for YP and Zephyr supported targets
   
 ---
 
 <!-- Slide 15 -->
+![bg fit left:20%](https://images.pexels.com/photos/3379322/pexels-photo-3379322.jpeg)
+
+# Dining philosophers?
+
+## Devices | End users | Applications 
+
+---
+
+<!-- Slide 16 -->
 ![bg fit left:20%](https://images.pexels.com/photos/7286017/pexels-photo-7286017.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 
 # Makers, a special type of end users 
@@ -189,21 +198,33 @@ footer: Oniro, a production oriented, reference operating system for devices big
 
 ---
 
-<!-- Slide 16 -->
+<!-- Slide 17 -->
+![bg fit left:20%](https://images.pexels.com/photos/1432675/pexels-photo-1432675.jpeg?cs=srgb&dl=pexels-pok-rie-1432675.jpg&fm=jpg)
+# Hardware support 
+
+## Supported 
+  * Seco's NXP i.MX8 (Cortex A + M Linux + Zephyr), Intel and Rockchip (Linux)
+  * QEMU 32 and 64, Intel, Arm, RISC-V
+  * **Raspberry Pi (Linux)**
+  * **Arduino Nano BLE (Zephyr)**
+  
+---
+
+<!-- Slide 18 -->
 ![bg fit left:40%](https://images.pexels.com/photos/3482442/pexels-photo-3482442.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Interoperability 
 
-  * Project Matter
-  * OpenThread
-  * OpenHarmony
+  * Project Matter (protocol)
+  * OpenThread (transparent gateway)
+  * OpenHarmony (devices interoperability)
   * Podman (containers)
-  * ModBUS
-  * LVGL / Flutter
+  * ModBUS (industrial IoT)
+  * LVGL / Flutter (UI portability)
   * RAUC (SysOTA)
   
 ---
 
-<!-- Slide 17 -->
+<!-- Slide 19 -->
 ![bg fit left:40%](https://images.pexels.com/photos/3839649/pexels-photo-3839649.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Compliance envelope, verification and validation
 
@@ -213,17 +234,17 @@ footer: Oniro, a production oriented, reference operating system for devices big
 
 ---
 
-<!-- Slide 18 -->
-![bg fit left:40%](https://images.pexels.com/photos/3839649/pexels-photo-3839649.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+<!-- Slide 20 -->
+![bg fit left:40%](https://images.pexels.com/photos/1459495/pexels-photo-1459495.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Life cycle
 
-  * One release / year (update kernels, toolchains, include new hw support)
-  * Three years maintenance with decremental severity based fixes
-  * Extended maintenace, tailored SWBOMs, product testing for working group members (intent)
+  * One release / year (update kernels, toolchains, runtime, new hw support)
+  * Three years maintenance with decreasing level of service (based on severity)
+  * Extended maintenace, tailored SWBOMs, product testing for working group members
 
 ---
 
-<!-- Slide 19 -->
+<!-- Slide 21 -->
 ![bg fit left:40%](https://images.pexels.com/photos/6699273/pexels-photo-6699273.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # So far so good 
 
@@ -234,19 +255,24 @@ footer: Oniro, a production oriented, reference operating system for devices big
 
 ---
 
-<!-- Slide 20 -->
+<!-- Slide 22 -->
 ![bg fit left:40%](https://images.pexels.com/photos/5258257/pexels-photo-5258257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # The hard part is ahead ... 
 
   * Semantic web and device cooperation
-  * Device management and updates 
+  * Device management and updates
+  * Blockchain decentralized device onboarding and authentication
   * Production ready performance
   * More blueprints, contributions, supporters, products, users
 
 ---
 
-<!-- Slide 21 -->
+<!-- Slide 23 -->
 ![bg fit left:40%](https://images.pexels.com/photos/4346014/pexels-photo-4346014.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
-# Thank you 
+![bg fit](https://oniroproject.org/images/logo.svg)
 
----
+# Thank you
+[https://oniroproject.org/resource-center/](https://oniroproject.org/resource-center/)
+[https://www.linkedin.com/in/dricci/](https://www.linkedin.com/in/dricci/)
+
+
