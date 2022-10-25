@@ -8,6 +8,8 @@ color: white
 header: Eclipse Con**2022**
 footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/cc-logo.jpg) Oniro, a production oriented, reference operating system for devices big and small
 ---
+<!-- All images are in the open source domain, courtesy of pexels.com  -->
+
 <!-- Title Slide  -->
 ![bg vertical fit left:20%](https://www.eclipsecon.org/sites/all/themes/solstice/_themes/solstice_eclipsecon_2022/logo.svg)
 ![bg fit](https://oniroproject.org/images/logo.svg)
