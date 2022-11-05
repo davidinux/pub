@@ -258,7 +258,8 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 ---
 
 <!-- Slide 22 -->
-![bg fit left:40%](https://images.pexels.com/photos/5258257/pexels-photo-5258257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+![bg vertical fit left:40%](https://images.pexels.com/photos/5258257/pexels-photo-5258257.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+![bg fit](https://images.pexels.com/photos/4346014/pexels-photo-4346014.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # The hard part is ahead ... 
 
   * Semantic web and device cooperation
@@ -270,8 +271,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 ---
 
 <!-- Slide 23 -->
-![bg fit left:40%](https://images.pexels.com/photos/4346014/pexels-photo-4346014.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
-![bg fit](https://oniroproject.org/images/logo.svg)
+![bg fit left:40%](https://oniroproject.org/images/logo.svg)
 
 # Thank you
 [https://oniroproject.org/resource-center/](https://oniroproject.org/resource-center/)
