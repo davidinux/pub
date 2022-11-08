@@ -167,13 +167,11 @@ footer: Oniro 2.0 - What's new in the land of Oniro
 
 # V&V integrated into Oniro's relase process
 
-  * ~4M source files audited in 9 months
-  * 98% coverage
-  * ~100 issues uncovered and filed with relevant upstream(s)
-  * Yocto multilayer fetcher and override
-  * Scancode and Fossology import improvements into pipeline
-  * Complete restructuring of pipeline and deeper integration with gitlab
-  * Automatic generation of SWBOM per release image
+  * Test plan with 100% coverage of release epicsi
+  * 80% release epics tested with 85% pass rate
+  * LAVA nodes included in automation testing
+  * Bug triage process between dev and test and maintenance
+  * Checkbox devices integration 
 
 ---
 
