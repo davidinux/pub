@@ -120,19 +120,25 @@ footer: Oniro 2.0 - What's new in the land of Oniro
 ---
 
 <!-- Slide 9 -->
+![bg fit vertical left:20%](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/OpenHarmonyLogo.jpg/250px-OpenHarmonyLogo.jpg)
+# Devices interoperability with OpenHarmony
+  * OpenHarmony features packaged into meta-openharmony layer
+  * IP analysis and audit ongoing, ETA for release end of 2022
+  * When included, meta-openharmony turns Oniro into OpenHarmony Compatible 
+  * Screens and cameras cooperation 
+  * New graphical framework for smoother UX and animations
+  * LiteOS Cortex M55 support and AI coprocessors
+  * Distributed data object capabilities
+
+---
+
+<!-- Slide 10 -->
 ![bg fit left:20%](https://images.pexels.com/photos/8439089/pexels-photo-8439089.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Distributed devices agency (anyone knows Eddie?)
   * Working implementation on Linux and Zephyr
   * Communication and virtualization layers
   * CoAP based resource directory
   * Integrated into doorlock and smart panel blueprints
-
----
-
-<!-- Slide 10 -->
-![bg fit vertical left:20%](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/OpenHarmonyLogo.jpg/250px-OpenHarmonyLogo.jpg)
-# Devices interoperability with OpenHarmony
-
 
 ---
 
