@@ -14,7 +14,7 @@ footer: Huawei Techarena 2022 Finals
 ![bg vertical fit left:20%](https://www.bitmat.it/wp-content/uploads/2022/09/Huawei_Tech_Arena_Italy-1068x543.jpg)
 ![bg fit](https://oniroproject.org/images/logo.svg)
 
-# Huawei Techarena 2022 Finals Teaser
+# Huawei Techarena 2022 Finals
 
 ---
 <!-- paginate: true -->
