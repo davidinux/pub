@@ -1,29 +1,27 @@
 ---
-title: L'impresa motore di innovazione open source
-description: Open Source Week 2022
+title: L'impresa motore dell'innovazione open source
+description: Universita' Politecnica delle Marche
 author: Davide Ricci
 license: Common Creative Share-Alike
 backgroundColor: black
 color: white
-header: Open Source Week **2022**
+header: Impresa motore dell'innovazione open source
 footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/cc-logo.jpg) L'impresa motore dell'innovazione open source
 ---
 <!-- All images are under open source license, courtesy of pexels.com  -->
 
 <!-- Title Slide  -->
-![bg vertical fit left:20%](https://opensourceweek.it/wp-content/uploads/2022/08/Logo-OSW2022-480x210.png)
+![bg vertical fit left:20%](https://www.universita.it/wp-content/uploads/2011/11/logo_politecnica_marche.jpg)
 # L'impresa motore dell'innovazione open source
 
 ---
 <!-- paginate: true -->
 
 <!-- Slide 1 -->
-![bg fit vertical left:20%](https://opensourceweek.it/wp-content/uploads/2022/10/Stefano-Pampaloni-480x480.png)
-![bg fit](https://opensourceweek.it/wp-content/uploads/2022/10/davide-ricci-480x480.png)
+![bg fit vertical left:20%](https://opensourceweek.it/wp-content/uploads/2022/10/davide-ricci-480x480.png)
 
-# Chiacchieramo con
+# Chiacchieriamo con
 
-  * **Stefano Pampaloni**, Moderatore
   * **Davide Ricci**, Director Open Source Technology Center, Huawei
     * 15+ anni in open source come sviluppatore, product manager, general manager 
     * Intel, Wind River, Huawei, board member di progetti Linux Foundation, Eclipse Foundation
@@ -36,11 +34,11 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 # Il contesto
 
-  * La grande impresa finanzia direttamente e non (sviluppatori) le piattaforme dell'innovazione open 
-  * In cambio ottiene incremento ordinativi, ricavi e/o riduzione costi e rischi.
-
-  * Il valore di mercato del software open source ha toccato i 17 miliardi di dollari nel 2019 
-  * Le stime prevendono che arrivi a 30 miliardi di dollari nel 2022 (*advance market analytics*)
+  * La grande impresa finanzia direttamente (memberships, eventi, conferenze, ...) e non (sviluppatori) le piattaforme dell'innovazione open
+  * **(\*\* new \*\*)** Finanziamento VS partecipazione
+  * In cambio ottiene incremento ordinativi, ricavi e/o riduzione costi e rischi
+  * Il valore di mercato del software open source ha toccato i 17 miliardi di euro nel 2019 
+  * Le stime prevendono che arrivi a 30 miliardi di euro nel 2022 (*advance market analytics*)
  
 ---
 
@@ -48,23 +46,24 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 ![bg fit left:20%](https://images.pexels.com/photos/34514/spot-runs-start-la.jpg?auto=compress&cs=tinysrgb&w=1600)
 # Fattori decisionali
 
-  * Aprire un ecosistema altrimenti chiuso (posizione non dominante di mercato)
+  * Aprire un **ecosistema** altrimenti chiuso (posizione non dominante di mercato)
     * Followers oppure locked-in leader
-    * Open Source software VS Ecosystem VS alternativa open
   * Implementazione di riferimento in un mercato frammentato o nascente
     * Early bird advantage, standard + reference implementation
   * Ridurre e condividere i costi delle attivita' e della tecnologia non monetizzabile
     * Platform, commodity zone, non-competitive technology 
+  * **(\*\* new \*\*)** Accesso a large data set
 
 ---
 
 <!-- Slide 4 -->
-![bg fit left:20%](https://images.pexels.com/photos/5310566/pexels-photo-5310566.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
+![bg fit left:15%](https://images.pexels.com/photos/5310566/pexels-photo-5310566.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Esempi 
   * L'industria dei semiconduttori
     * Facilitare: prototipazione, produzione, esportazione e compliance
   * Software Companies
     * Riduzione "cost of doing business" e monetizzazione servizi a valore aggiunto (lifecycle, as-a-service, consulting,...)
+    * **(\*\* new \*\*)** Assistenti virtuali (i.e. github Copilot), codebase "biasing"
   * Produttori di dispositivi
     * Grandi consumatori ed influencers, creazione di standards, rimozione vendor lock-in, riduzione costi di produzione 
 
@@ -87,12 +86,12 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 ![bg fit](https://apache.org/img/asf-estd-1999-logo.jpg)
 ![bg fit](https://www.openatom.org/static/img/logo1.8f19f0a8.png)
 # Il ruolo delle foundations
-  * Platforms
-  * 3rd party neutral entities
-  * Governance and budget management
-  * Vendor Neutrality
-  * Legal, IT, IP, Marketing... services framework
-  * Brand management and protection
+  * Piattaforme
+  * Terze parti neutrali
+  * Governance and amministrazione budget di progetto
+  * Equidistanti tra i partecipanti
+  * Assistenza legale, IT, IP, Marketing,...
+  * Gestione e protezione delle proprieta'intellettuale e del brand
 
 ---
 
@@ -121,7 +120,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 <!-- Slide 9 -->
 ![bg fit left:20%](https://images.pexels.com/photos/46235/emperor-penguins-antarctic-life-animal-46235.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Upstream first
-  * Realizzazione che il software e' veicolo, non fine ultimo
+  * Il software e' veicolo, non fine ultimo
   * Ricerca di valore altrove (soluzioni, as-a-service,...)
   * Riduzione **Technical Debt**
   * Motore dell'evoluzione da open innovation a open **sustainable** innovation 
@@ -129,7 +128,6 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 ---
 
 <!-- Slide 10 -->
-![bg vertical fit left:20%](https://opensourceweek.it/wp-content/uploads/2022/08/Logo-OSW2022-480x210.png)
-![bg fit](https://opensourceweek.it/wp-content/uploads/2022/10/Stefano-Pampaloni-480x480.png)
+![bg vertical fit left:20%](https://www.universita.it/wp-content/uploads/2011/11/logo_politecnica_marche.jpg)
 ![bg fit](https://opensourceweek.it/wp-content/uploads/2022/10/davide-ricci-480x480.png)
-# Thank you
+# Grazie
