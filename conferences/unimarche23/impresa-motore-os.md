@@ -70,6 +70,17 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 ---
 
 <!-- Slide 5 -->
+![bg vertical fit left:20%](https://images.pexels.com/photos/2574997/pexels-photo-2574997.jpeg)
+# Total cost of ownership
+  * Costo di acquisizione + costi operativi + costi manutenzione
+  * Costi visibili (~15%) | Costi non noti a priori (~85%)
+    * Costi legati a mancanza di expertise, dimensioni del codice
+    * Costi legati a esportazione, IP e legal compliance
+    * Costi di manutenzione ed aggiornamento
+
+---
+
+<!-- Slide 5 -->
 ![bg vertical fit left:20%](https://images.pexels.com/photos/6802049/pexels-photo-6802049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Mitigazione del rischio
   * Conflitti (roadmap, posizionamento, value proposition,...)
