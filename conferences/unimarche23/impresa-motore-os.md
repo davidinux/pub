@@ -73,6 +73,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 ![bg vertical fit left:20%](https://images.pexels.com/photos/2574997/pexels-photo-2574997.jpeg)
 # Total cost of ownership
   * Costo di acquisizione + costi operativi + costi manutenzione
+  * Analisi costi di acquisizione simile a quella condotta per M&A
   * Costi visibili (~15%) | Costi non noti a priori (~85%)
     * Costi legati a mancanza di expertise, dimensioni del codice
     * Costi legati a esportazione, IP e legal compliance
@@ -80,7 +81,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 5 -->
+<!-- Slide 6 -->
 ![bg vertical fit left:20%](https://images.pexels.com/photos/6802049/pexels-photo-6802049.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Mitigazione del rischio
   * Conflitti (roadmap, posizionamento, value proposition,...)
@@ -91,11 +92,11 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 6 -->
+<!-- Slide 7 -->
 ![bg fit vertical left:20%](https://www.linuxfoundation.org/hubfs/LF%20Logo%20White.svg)
 ![bg fit](https://www.eclipse.org/images/logos/eclipse-foundation-white-orange.svg)
 ![bg fit](https://apache.org/img/asf-estd-1999-logo.jpg)
-![bg fit](https://www.openatom.org/static/img/logo1.8f19f0a8.png)
+![bg fit](https://www.linaro.org/assets/images/Linaro-Logo.svg)
 # Il ruolo delle foundations
   * Piattaforme
   * Terze parti neutrali
@@ -106,9 +107,21 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 7 -->
+<!-- Slide 8 -->
+![bg fit vertical left:20%](https://www.eclipse.org/images/logos/eclipse-foundation-white-orange.svg)
+# Tipica struttura organizzativa
+  * Foundation: orizzontale, fornisce servizi utili a tutti i progetti
+    * IT, legal, marketing, brand, IP, ...
+    * Diversi livelli di memberships (che garantiscono crescente influenza)
+  * Progetti: repository di sviluppo, guidati da un technical committee
+  * Working Group: governance specifica di progetto(i) tra piu' partner industriali
+    * Ulteriore livello di membership, budget gestito direttamente dai partner
+
+---
+
+<!-- Slide 9 -->
 ![bg fit left:20%](https://images.pexels.com/photos/5425648/pexels-photo-5425648.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
-# Il ruolo degli standards
+# Il ruolo degli standard
   * Risolvono problemi business, consentono piu' implementazioni
   * Difendono la promessa ed il valore di un brand
   * Documento di standard, reference implementation e test di verifica di compatibilita'
@@ -117,7 +130,20 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 8 -->
+<!-- Slide 10 -->
+![bg fit left:20%](https://www.yoctoproject.org/wp-content/uploads/2018/03/Yocto-Badge-Update-Participant-2018.png)
+![bg fit](https://www.yoctoproject.org/wp-content/uploads/2017/11/participant-badge.png)
+# Esempio: Yocto Project Compatibility badges
+  * Obiettivo e' evitare la proliferazione di implementazioni non compatibili
+  * Per ottenere la compatibilita' occorre superare alcuni requisiti e fornirne prova
+  * Il technical committee verifica la bonta' della implementazione e fornisce parere positivo
+  * La board (i.e. working group) ufficializza tramite voto la compatibilita' 
+  * La documentazione ufficiale viene aggiornata
+  * Le implementazioni compatibili sono autorizzate ad utilizzare il badge 
+
+---
+
+<!-- Slide 10 -->
 ![bg fit left:20%](https://images.pexels.com/photos/1205651/pexels-photo-1205651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Una crescente maturita' d'utilizzo
   * Crescente coinvolgimento delle foundations
@@ -128,7 +154,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 9 -->
+<!-- Slide 11 -->
 ![bg fit left:20%](https://images.pexels.com/photos/46235/emperor-penguins-antarctic-life-animal-46235.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Upstream first
   * Il software e' veicolo, non fine ultimo
@@ -138,7 +164,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 10 -->
+<!-- Slide 12 -->
 ![bg vertical fit left:20%](https://www.universita.it/wp-content/uploads/2011/11/logo_politecnica_marche.jpg)
 ![bg fit](https://opensourceweek.it/wp-content/uploads/2022/10/davide-ricci-480x480.png)
 # Grazie
