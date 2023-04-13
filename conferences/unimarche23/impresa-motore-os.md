@@ -11,7 +11,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 <!-- All images are under open source license, courtesy of pexels.com  -->
 
 <!-- Title Slide  -->
-![bg vertical fit left:20%](https://www.universita.it/wp-content/uploads/2011/11/logo_politecnica_marche.jpg)
+![bg vertical fit left:20%](https://www.univpm.it/Entra/Immagini/Banner/Logo-thick1.png)
 # L'impresa motore dell'innovazione open source
 
 ---
@@ -165,6 +165,6 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 ---
 
 <!-- Slide 13 -->
-![bg vertical fit left:20%](https://www.universita.it/wp-content/uploads/2011/11/logo_politecnica_marche.jpg)
+![bg vertical fit left:20%](https://www.univpm.it/Entra/Immagini/Banner/Logo-thick1.png)
 ![bg fit](https://opensourceweek.it/wp-content/uploads/2022/10/davide-ricci-480x480.png)
 # Grazie
