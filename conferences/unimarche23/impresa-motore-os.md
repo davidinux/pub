@@ -143,7 +143,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 10 -->
+<!-- Slide 11 -->
 ![bg fit left:20%](https://images.pexels.com/photos/1205651/pexels-photo-1205651.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Una crescente maturita' d'utilizzo
   * Crescente coinvolgimento delle foundations
@@ -154,7 +154,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 11 -->
+<!-- Slide 12 -->
 ![bg fit left:20%](https://images.pexels.com/photos/46235/emperor-penguins-antarctic-life-animal-46235.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1)
 # Upstream first
   * Il software e' veicolo, non fine ultimo
@@ -164,7 +164,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 
 ---
 
-<!-- Slide 12 -->
+<!-- Slide 13 -->
 ![bg vertical fit left:20%](https://www.universita.it/wp-content/uploads/2011/11/logo_politecnica_marche.jpg)
 ![bg fit](https://opensourceweek.it/wp-content/uploads/2022/10/davide-ricci-480x480.png)
 # Grazie
