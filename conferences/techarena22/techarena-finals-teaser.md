@@ -49,3 +49,11 @@ footer: Huawei Techarena 2022 Finals
 * The challenge will last about 4 hours, from 9:30 AM to 1:30PM
 * The top 3 will be immediately known and will get their prize!
 * Thank you all again for all the hard work and effort, whether you will make it to the finals or not
+
+---
+
+<!-- Slide 3 -->
+![bg vertical fit left:20%](https://www.bitmat.it/wp-content/uploads/2022/09/Huawei_Tech_Arena_Italy-1068x543.jpg)
+![bg fit](https://oniroproject.org/images/logo.svg)
+
+# Thank you and see you in Milan
