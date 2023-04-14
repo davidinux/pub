@@ -11,7 +11,7 @@ footer: ![image width:15px height:15px](https://creativecommons.org/images/deed/
 <!-- All images are under open source license, courtesy of pexels.com  -->
 
 <!-- Title Slide  -->
-![bg vertical fit left:20%](https://www.univpm.it/Entra/Immagini/Banner/Logo-thick1.png)
+![bg vertical fit left:40%](https://www.univpm.it/Entra/Immagini/Eventi/2023/OpenSource_22_03.jpg)
 # L'impresa motore dell'innovazione open source
 
 ---
