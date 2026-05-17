@@ -1,0 +1,40 @@
+flowchart TB
+    subgraph Flutter["Flutter Ecosystem"]
+        FE[Flutter Web Engine<br/>compiled to Cangjie]
+    end
+    
+    subgraph OHOS["OpenHarmony Platform"]
+        EMB[OpenHarmony Flutter Embedder]
+        BRIDGE[Native API Bridge<br/>OHOS Capabilities]
+        RENDER[Cangjie Renderer]
+        INPUT[OHOS Input Handler]
+    end
+    
+    subgraph Mismatch["Architecture Mismatch"]
+        ANDROID[Android Architecture]
+        OHOS_ARCH[OpenHarmony Architecture]
+    end
+    
+    FE --> EMB
+    EMB --> BRIDGE
+    EMB --> RENDER
+    EMB --> INPUT
+    
+    BRIDGE --> CAP[OHOS Native Capabilities]
+    INPUT --> TOUCH[Touch/Gesture Input]
+    RENDER --> DISPLAY[Display Output]
+    
+    ANDROID -->|Incompatible| MISMATCH[Mismatch Point]
+    OHOS_ARCH -->|Incompatible| MISMATCH
+    
+    style FE fill:#6715E8,color:#fff
+    style EMB fill:#6715E8,color:#fff
+    style BRIDGE fill:#FFCF00,color:#000
+    style CAP fill:#FFCF00,color:#000
+    style RENDER fill:#00B2FF,color:#fff
+    style INPUT fill:#00B2FF,color:#fff
+    style TOUCH fill:#FF0099,color:#fff
+    style DISPLAY fill:#FF0099,color:#fff
+    style ANDROID fill:#FF0099,color:#fff
+    style OHOS_ARCH fill:#00B2FF,color:#fff
+    style MISMATCH fill:#FF0000,color:#fff

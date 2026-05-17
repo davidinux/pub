@@ -1,0 +1,25 @@
+flowchart LR
+    subgraph Apps["Application Types"]
+        NEW[New Apps]
+        EXISTING[Existing Apps]
+    end
+    
+    subgraph Process["Migration Process"]
+        MIGRATE[Migration Process]
+        BENCHMARK[Benchmark Existing Apps]
+    end
+    
+    subgraph Target["Target Architecture"]
+        ARCH[New Architecture]
+    end
+    
+    NEW -->|Direct Development| ARCH
+    EXISTING -->|Migration| MIGRATE
+    MIGRATE --> BENCHMARK
+    BENCHMARK --> ARCH
+    
+    style NEW fill:#6715E8,color:#fff
+    style EXISTING fill:#6715E8,color:#fff
+    style MIGRATE fill:#00B2FF,color:#fff
+    style BENCHMARK fill:#FFCF00,color:#000
+    style ARCH fill:#FF0099,color:#fff

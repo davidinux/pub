@@ -1,0 +1,22 @@
+# Slidev build output
+dist
+*.zip
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+
+# Node dependencies
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+*~
+*.backup
+*.orig
