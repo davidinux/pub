@@ -27,42 +27,53 @@ layout: two-cols
 ::title::
 # The Challenge
 
-## Architecture Mismatch
+::left::
+## Architecture Problem
 
-Flutter's architecture mismatch with OpenHarmony
+OHOS adaptations scattered across all Flutter layers instead of being isolated in the Embedder.
 
-Key incompatibilities:
-- **✓** Impeller/Vulkan graphics pipeline ≠ Cangjie rendering
-- **✓** Android embedder ≠ ArkUI framework
-- **✓** APK packaging ≠ HAP packaging
+- **→** Platform and non-platform code intertwined
+- **→** Clean upstream contributions blocked by OHOS-specific tangling
 
-## Maintenance Burden
+::right::
+## Impact
 
-Current implementation requires adapting all patches to Flutter:
-- **→** Every new Flutter engine release requires rework
-- **→** Slows adoption of new Flutter features dramatically
-- **→** Increases maintenance burden significantly
+- **→** Every Flutter release requires significant rework
+- **→** Adoption of new Flutter features dramatically slowed
+- **→** Maintenance burden compounds over time
 
----
-
-# Architecture Mismatch
-
-Flutter vs OpenHarmony architecture mismatch
-
-<img src="./images/architecture-mismatch.png" width="80%" />
-<!-- ![Architecture Mismatch](./images/architecture-mismatch.png) -->
+Minor incompatibilities (Cangjie, ArkUI, APK) are secondary, not the root cause.
 
 ---
+layout: two-cols
+---
 
+::title::
 # But First — What Is a Flutter Embedder?
 
+<!-- Per-slide <style> constrains the image to the right column height.
+     Pure Markdown ![alt](src) has no dimension attributes,
+     so a local CSS block avoids HTML <img> tags. -->
+
+::left::
 ## Flutter's Layered Architecture
 
-**Framework** *(Dart)* — Widgets, layout, gestures, material/cupertino  
+**Framework** *(Dart)* — Widgets, layout, gestures  
 **Engine** *(C++)* — Rendering, text, I/O, Dart runtime  
 **Embedder** *(Platform-specific)* — Entry point, render surface, input, accessibility
 
-<img src="./images/flutter-architecture.png" width="75%" />
+- **→** A dedicated Embedder isolates platform code, keeping Framework and Engine clean for upstream contributions
+
+::right::
+![Flutter Architecture](./images/flutter-architecture.png)
+
+<style>
+.col:last-child img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: scale-down;
+}
+</style>
 
 ---
 
@@ -83,9 +94,9 @@ th, td {
 
 | Approach | Description | Effort | Risk |
 |----------|-------------|--------|------|
-| **A** | Full native embedder rewrite | Very High | High |
-| **B** | Fork Impeller for OHOS | High | Medium |
-| **C** | Flutter Web engine + OpenHarmony Embedder | Medium | Low |
+| **A** | Port all layers natively (Framework + Engine + Embedder) | Very High | High |
+| **B** | Fork Engine rendering (Impeller) for OHOS | High | Medium |
+| **C** | Flutter Web Engine + OHOS Embedder (recommended) | Medium | Low |
 
 ---
 
@@ -108,9 +119,9 @@ layout: two-cols
 ## Direction C Approach
 
 Flutter Web Engine + OpenHarmony Embedder approach:
-- Compile Flutter Web engine to Cangjie
-- OpenHarmony Flutter Embedder handles platform integration
-- Native API Bridge connects to OHOS capabilities
+- **→** Compile Flutter Web engine to Cangjie
+- **→** OpenHarmony Flutter Embedder handles platform integration
+- **→** Native API Bridge connects to OHOS capabilities
 
 ::right::
 ## Key Benefits
@@ -142,10 +153,10 @@ Flutter Web Engine + OpenHarmony Embedder approach:
 
 # Why Direction C Wins
 
-- **✓** Maximum code reuse (Flutter web engine, widgets, tooling)
-- **✓** Respects OpenHarmony's native architecture
+- **✓** Minimizes porting costs — only the Embedder layer needs platform adaptation
+- **✓** Maximizes adoption speed — new Flutter releases land without rework
+- **✓** Leverages existing Flutter ecosystem (widgets, tooling, packages)
 - **✓** Production-ready path with manageable scope
-- **✓** Leverages existing Flutter ecosystem
 - **✓** Google actively developing web engine — long-term viability
 
 ---
@@ -167,8 +178,8 @@ Web engine performance: ✓ Acceptable for UX
 | Phase | Timeline | Focus |
 |-------|----------|-------|
 | Phase 1 | Apr 2025 | Feasibility study (COMPLETE) |
-| Phase 2 | Q3 2026 | Development with Flutter community |
-| Phase 3 | TBD | Production-ready features |
+| Phase 2 | Q2 2026 | Development with Flutter community |
+| Phase 3 | Q3 2027 | Production-ready features |
 
 
 ![Roadmap Timeline](./images/roadmap-timeline.png)
