@@ -1,0 +1,10 @@
+{
+  "name": "mcp-ssh-system",
+  "version": "1.0.0",
+  "description": "MCP server wrapping system SSH for remote command execution, file transfer, and interactive sessions",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1"
+  }
+}
