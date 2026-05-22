@@ -1,0 +1,13 @@
+node_modules/
+*.log
+dist/
+.slidev/
+example-export/
+example-export.pdf
+example-export-new.pdf
+slides-export.pdf
+*.pdf
+*.slidev/
+tags
+tags.lock
+tags.temp

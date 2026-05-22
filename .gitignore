@@ -1,0 +1,12 @@
+tags
+tags.temp
+tags.lock
+**/node_modules/
+node_modules/
+dist/
+*.log
+*.pdf
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

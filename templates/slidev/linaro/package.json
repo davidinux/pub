@@ -1,0 +1,29 @@
+{
+  "name": "slidev-theme-linaro",
+  "version": "1.0.0",
+  "description": "Linaro official Slidev theme based on the 2025 PowerPoint template",
+  "keywords": [
+    "slidev-theme",
+    "linaro"
+  ],
+  "homepage": "https://github.com/davidinux/pub/tree/main/templates/slidev/linaro",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./package.json"
+  },
+  "files": [
+    "layouts",
+    "components",
+    "styles",
+    "public",
+    "package.json"
+  ],
+  "peerDependencies": {
+    "@slidev/types": ">=0.32.0"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.15.2",
+    "playwright-chromium": "^1.60.0"
+  }
+}

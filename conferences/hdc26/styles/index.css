@@ -1,0 +1,90 @@
+/* =========================================================
+   Linaro Slidev Theme — styles/index.css
+   Based on Linaro Brand Template 2025 v2
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Reddit+Sans:ital,wght@0,200..900;1,200..900&display=swap');
+
+:root {
+  --linaro-purple:   #6715E8;
+  --linaro-yellow:   #FFCF00;
+  --linaro-pink:     #FF0099;
+  --linaro-cyan:     #00B2FF;
+  --linaro-orange:   #FF9900;
+  --linaro-green:    #6AFF00;
+  --linaro-violet:   #C800FF;
+  --linaro-black:    #1A1A1A;
+  --linaro-white:    #FFFFFF;
+  --linaro-light-bg: #F5F5F5;
+  --slidev-theme-primary:   var(--linaro-purple);
+  --slidev-theme-secondary: var(--linaro-yellow);
+}
+
+.slidev-layout {
+  font-family: 'Reddit Sans', Arial, sans-serif;
+  font-size: 18px;
+  color: var(--linaro-black);
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  font-family: 'Reddit Sans', Arial, sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.slidev-layout .slide-number {
+  font-family: 'Reddit Sans', Arial, sans-serif;
+  font-size: 11px;
+  color: #888;
+}
+
+.linaro-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 12px;
+  z-index: 10;
+}
+
+.linaro-header img.logo {
+  height: 22px;
+  width: auto;
+}
+
+.linaro-header .tagline {
+  font-size: 9px;
+  font-weight: 400;
+  color: #555;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.linaro-header.dark .tagline {
+  color: rgba(255,255,255,0.6);
+}
+
+.linaro-page-num {
+  position: absolute;
+  bottom: 14px;
+  right: 24px;
+  font-size: 10px;
+  color: #aaa;
+  font-family: 'Reddit Sans', Arial, sans-serif;
+}
+
+.linaro-page-num.dark {
+  color: rgba(255,255,255,0.35);
+}
+
+.linaro-symbol {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
