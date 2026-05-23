@@ -5,7 +5,8 @@ This repository contains the presentation materials for the HDC 2026 conference 
 ## Repository Structure
 
 - `abstract.md` - Conference abstract (short version)
-- `presentation.md` - Full 10-slide presentation 
+- `presentation.md` - Full HDC 2026 presentation (Linaro theme)
+- `presentation-openharmony-theme.md` - Same content, OpenHarmony-branded theme
 - `slides.md` - Symlink to abstract.md (for Slidev CLI compatibility)
 - `abstract.pdf` - Exported PDF of abstract
 - `package.json` - Build scripts and dependencies
@@ -54,27 +55,31 @@ These are specified in the `package.json` devDependencies section.
 ## Building and Viewing Presentations
 
 ### Quick View (Recommended)
-To view either presentation, simply run:
+To view a presentation, run:
 ```bash
 # View abstract (default)
 npx slidev
 
-# View full presentation
+# View full presentation (Linaro theme)
 ln -sf presentation.md slides.md && npx slidev
+
+# View full presentation (OpenHarmony theme)
+ln -sf presentation-openharmony-theme.md slides.md && npx slidev
 ```
 
-The `slides.md` symlink is a workaround for Slidev CLI limitations. It points to `abstract.md` by default but can be switched to `presentation.md` when needed.
+The `slides.md` symlink is a workaround for Slidev CLI limitations. It points to `abstract.md` by default but can be switched to either `presentation.md` or `presentation-openharmony-theme.md`.
 
 ### Exporting to PDF
 ```bash
 # Export abstract to PDF
 npx slidev export abstract.md
 
-# Export presentation to PDF  
+# Export presentation (Linaro theme)
 npx slidev export presentation.md
-```
 
-Both exports will be saved as `abstract-export.pdf` and `presentation-export.pdf` respectively.
+# Export presentation (OpenHarmony theme)
+npx slidev export presentation-openharmony-theme.md
+```
 
 ## Diagram Generation
 
@@ -97,7 +102,7 @@ To recreate this presentation from scratch, follow these steps:
 5. View presentation: `npx slidev` (or `npx slidev export` to export PDF)
 
 The presentation uses:
-- Slidev framework with Linaro theme
+- Slidev framework (two theme variants: Linaro and OpenHarmony)
 - Mermaid diagrams for visualizations
 - Automatic diagram generation workflow
 - Standard Markdown presentation format
@@ -105,10 +110,11 @@ The presentation uses:
 ## Repository Contents
 
 - **Abstract**: Brief overview of the Flutter OpenHarmony integration approach
-- **Presentation**: Complete 10-slide presentation covering:
-  - Problem statement: Architecture mismatch
+- **Presentation**: Complete presentation (two theme variants) covering:
+  - Problem statement: Architecture mismatch and cross-layer coupling
+  - Embedder architecture fundamentals
   - Evaluation of three approaches
-  - Chosen solution: Flutter Web engine + Native API bridge
+  - Chosen solution: Flutter Web Engine + OHOS Embedder
   - Phase timeline and roadmap
   - Linaro's role as bridge between communities and device makers
 
