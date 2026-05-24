@@ -10,7 +10,9 @@
     "export:oh": "slidev export presentation-openharmony-theme.md",
     "export:zh": "slidev export presentation-zh.md",
     "export:oh-zh": "slidev export presentation-openharmony-theme-zh.md",
-    "build:all": "npm run export && npm run export:oh && npm run export:zh && npm run export:oh-zh",
+    "export:abstract": "slidev export abstract.md",
+    "export:abstract-zh": "slidev export abstract-zh.md",
+    "build:all": "npm run export:abstract && npm run export:abstract-zh && npm run export && npm run export:oh && npm run export:zh && npm run export:oh-zh",
     "build:diagrams": "node build-diagrams.js"
   },
   "devDependencies": {

@@ -85,8 +85,8 @@ The `slides.md` symlink is a workaround for Slidev CLI limitations. It points to
 ### Exporting to PDF
 ```bash
 # Export abstract to PDF
-npx slidev export abstract.md       # English
-npx slidev export abstract-zh.md    # Chinese
+npm run export:abstract       # English
+npm run export:abstract-zh    # Chinese
 
 # Export presentation (Linaro, English)
 npm run export
@@ -100,7 +100,7 @@ npm run export:zh
 # Export presentation (OpenHarmony, Chinese)
 npm run export:oh-zh
 
-# Export all 4 variants sequentially
+# Export all 6 PDFs sequentially (abstracts + all 4 presentations)
 npm run build:all
 ```
 
