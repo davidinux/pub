@@ -18,7 +18,7 @@ This repository contains the presentation materials for the HDC 2026 conference 
 - `presentation-openharmony-theme-zh-export.pdf` - Exported PDF (OpenHarmony, Chinese)
 - `package.json` - Build scripts and dependencies
 - `diagrams/` - Mermaid diagram source files
-- `public/images/` - Generated PNG diagram images
+- `images/` - Generated PNG diagram images
 - `build-diagrams.js` - Script to generate Mermaid diagrams
 
 ## Dependencies
@@ -112,7 +112,7 @@ Mermaid diagrams are automatically generated from `.mmd` files in the `diagrams/
 npm run build:diagrams
 ```
 
-This will generate PNG files in the `public/images/` directory with transparent backgrounds.
+This will generate PNG files in the `images/` directory with transparent backgrounds.
 
 ## Reproduction Instructions for AI/Developer
 

@@ -13,23 +13,23 @@ const { execSync } = require('child_process');
 const diagrams = [
   {
     input: 'diagrams/architecture.mmd',
-    output: 'public/images/architecture.png'
+    output: 'images/architecture.png'
   },
   {
     input: 'diagrams/migration-flow.mmd', 
-    output: 'public/images/migration-flow.png'
+    output: 'images/migration-flow.png'
   },
   {
     input: 'diagrams/migration-flow-v2.mmd',
-    output: 'public/images/migration-flow-v2.png'
+    output: 'images/migration-flow-v2.png'
   },
   {
     input: 'diagrams/architecture-mismatch.mmd',
-    output: 'public/images/architecture-mismatch.png'
+    output: 'images/architecture-mismatch.png'
   },
   {
     input: 'diagrams/roadmap-timeline.mmd',
-    output: 'public/images/roadmap-timeline.png'
+    output: 'images/roadmap-timeline.png'
   }
 ];
 
