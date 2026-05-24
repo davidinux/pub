@@ -190,7 +190,7 @@ linaro/
 
 ## How It Works
 
-Each layout `.vue` file has all styling in a `<style scoped>` block. This guarantees CSS is bundled by Vite regardless of how the theme is referenced. Backgrounds use absolute-positioned `<img>` elements pointing to `public/images/`.
+Each layout `.vue` file has all styling in a `<style scoped>` block. This guarantees CSS is bundled by Vite regardless of how the theme is referenced. Backgrounds use absolute-positioned `<img>` elements pointing to images in `public/images/`.
 
 The global `styles/index.css` sets CSS custom properties (brand colors, font family) and shared utility classes (`.linaro-header`, `.linaro-page-num`).
 
@@ -205,6 +205,12 @@ theme: ../
 ```
 
 The included `example/example.md` already uses this pattern.
+
+## Theme Asset Paths
+
+Layouts reference theme `public/` assets via the `/theme/` path prefix (e.g. `src="/theme/images/bg-title-light.png"`). This matches how Slidev serves theme assets during both dev and export — it uses `vite-plugin-static-copy` to copy theme `public/` contents to the `/theme/` subdirectory at build time and serves them at that path during dev.
+
+When using theme layouts, do not use root-relative paths like `/images/...` — use `/theme/images/...` instead. If you need to reference images in your own presentation content, place them in your local `public/images/` and use `/images/...` paths as normal (Vite serves the user's `public/` at the root).
 
 ## License
 

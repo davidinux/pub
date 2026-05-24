@@ -132,6 +132,12 @@ openharmony/
 └── README.md
 ```
 
+## Theme Asset Paths
+
+Layouts reference theme `public/` assets via the `/theme/` path prefix (e.g. `src="/theme/images/oh-logo.png"`). This matches how Slidev serves theme assets during both dev and export — it uses `vite-plugin-static-copy` to copy theme `public/` contents to the `/theme/` subdirectory at build time and serves them at that path during dev.
+
+When using theme layouts, do not use root-relative paths like `/images/...` — use `/theme/images/...` instead. If you need to reference images in your own presentation content, place them in your local `public/images/` and use `/images/...` paths as normal (Vite serves the user's `public/` at the root).
+
 ## License
 
 MIT

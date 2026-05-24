@@ -1,10 +1,10 @@
 <template>
   <div class="linaro-content-dark slidev-layout">
 
-    <img src="/images/linaro-symbol-dark.png" class="deco-symbol" aria-hidden="true" />
+    <img src="/theme/images/linaro-symbol-dark.png" class="deco-symbol" aria-hidden="true" />
 
     <div class="linaro-header dark">
-      <img src="/images/linaro-logo-white2.png" class="logo" alt="Linaro" />
+      <img src="/theme/images/linaro-logo-white2.png" class="logo" alt="Linaro" />
       <span class="tagline">Arm Solutions at Lightspeed</span>
     </div>
 

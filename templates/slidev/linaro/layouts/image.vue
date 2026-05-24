@@ -2,7 +2,7 @@
   <div class="linaro-image-light slidev-layout">
 
     <div class="linaro-header">
-      <img src="/images/linaro-logo-dark.png" class="logo" alt="Linaro" />
+      <img src="/theme/images/linaro-logo-dark.png" class="logo" alt="Linaro" />
       <span class="tagline">Arm Solutions at Lightspeed</span>
     </div>
 

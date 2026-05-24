@@ -4,7 +4,7 @@
     <div class="bg-shapes"></div>
 
     <div class="oh-header">
-      <img src="/images/oh-logo.png" class="logo" alt="OpenHarmony" />
+      <img src="/theme/images/oh-logo.png" class="logo" alt="OpenHarmony" />
     </div>
 
     <div class="section-content">

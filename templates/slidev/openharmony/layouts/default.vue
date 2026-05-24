@@ -2,7 +2,7 @@
   <div class="oh-content-light slidev-layout">
 
     <div class="oh-header">
-      <img src="/images/oh-logo.png" class="logo" alt="OpenHarmony" />
+      <img src="/theme/images/oh-logo.png" class="logo" alt="OpenHarmony" />
       <span class="tagline">Open Source, Open Future</span>
     </div>
 

@@ -1,10 +1,10 @@
 <template>
   <div class="linaro-thankyou slidev-layout">
 
-    <img src="/images/bg-thankyou.png" class="bg-wave" aria-hidden="true" />
+    <img src="/theme/images/bg-thankyou.png" class="bg-wave" aria-hidden="true" />
 
     <div class="linaro-header dark">
-      <img src="/images/linaro-logo-white2.png" class="logo" alt="Linaro" />
+      <img src="/theme/images/linaro-logo-white2.png" class="logo" alt="Linaro" />
     </div>
 
     <div class="content-block">
