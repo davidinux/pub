@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200..900&display=swap');
+
+:root {
+  --oh-blue:       #00A1DF;
+  --oh-darkblue:   #0070B8;
+  --oh-accent:     #4874CB;
+  --oh-orange:     #EE822F;
+  --oh-yellow:     #F2BA02;
+  --oh-green:      #75BD42;
+  --oh-teal:       #30C0B4;
+  --oh-red:        #E54C5E;
+  --oh-black:      #1A1A1A;
+  --oh-white:      #FFFFFF;
+  --oh-darkbg:     #0D2B45;
+  --oh-light-bg:   #F0F7FC;
+  --oh-gray:       #44546A;
+  --oh-lightgray:  #E7E6E6;
+  --slidev-theme-primary:   var(--oh-blue);
+  --slidev-theme-secondary: var(--oh-darkblue);
+}
+
+.slidev-layout {
+  font-family: 'Noto Sans SC', Arial, 'Microsoft YaHei', sans-serif;
+  font-size: 18px;
+  color: var(--oh-black);
+}
+
+.slidev-layout h1,
+.slidev-layout h2,
+.slidev-layout h3 {
+  font-family: 'Noto Sans SC', Arial, 'Microsoft YaHei', sans-serif;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.slidev-layout .slide-number {
+  font-family: 'Noto Sans SC', Arial, sans-serif;
+  font-size: 11px;
+  color: #888;
+}
+
+.oh-header {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 12px;
+  z-index: 10;
+}
+
+.oh-header img.logo {
+  height: 26px;
+  width: auto;
+}
+
+.oh-header .tagline {
+  font-size: 9px;
+  font-weight: 400;
+  color: #555;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.oh-header.dark .tagline {
+  color: rgba(255,255,255,0.6);
+}
+
+.oh-page-num {
+  position: absolute;
+  bottom: 14px;
+  right: 24px;
+  font-size: 10px;
+  color: #aaa;
+  font-family: 'Noto Sans SC', Arial, sans-serif;
+}
+
+.oh-page-num.dark {
+  color: rgba(255,255,255,0.35);
+}
+
+.oh-deco {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}

@@ -260,7 +260,7 @@ layout: two-cols
 
 # Thank You + Q&A
 
-Contact information
-Linaro website
-Link to presentation materials
+**Slides:** github.com/davidinux/pub/conferences/hdc26  
+**OH Slidev Theme:** github.com/davidinux/pub/templates/slidev/openharmony  
+
 Questions welcome

@@ -5,12 +5,17 @@ This repository contains the presentation materials for the HDC 2026 conference 
 ## Repository Structure
 
 - `abstract.md` - Conference abstract (short version)
-- `presentation.md` - Full HDC 2026 presentation (Linaro theme)
-- `presentation-openharmony-theme.md` - Same content, OpenHarmony-branded theme
+- `presentation.md` - Full HDC 2026 presentation (Linaro theme, English)
+- `presentation-openharmony-theme.md` - Same content, OpenHarmony theme (English)
+- `presentation-zh.md` - Chinese translation (Linaro theme)
+- `presentation-openharmony-theme-zh.md` - Chinese translation (OpenHarmony theme)
 - `slides.md` - Symlink to abstract.md (for Slidev CLI compatibility)
+- `abstract-zh.md` - Chinese translation of abstract
 - `abstract.pdf` - Exported PDF of abstract
-- `presentation-export.pdf` - Exported PDF (Linaro theme)
-- `presentation-openharmony-theme-export.pdf` - Exported PDF (OpenHarmony theme)
+- `presentation-export.pdf` - Exported PDF (Linaro, English)
+- `presentation-openharmony-theme-export.pdf` - Exported PDF (OpenHarmony, English)
+- `presentation-zh-export.pdf` - Exported PDF (Linaro, Chinese)
+- `presentation-openharmony-theme-zh-export.pdf` - Exported PDF (OpenHarmony, Chinese)
 - `package.json` - Build scripts and dependencies
 - `diagrams/` - Mermaid diagram source files
 - `public/images/` - Generated PNG diagram images
@@ -46,11 +51,12 @@ These are specified in the `package.json` devDependencies section.
 
 4. **View presentation**:
    ```bash
-   # View abstract (default)
-   npx slidev
-   
-   # View full presentation
-   ln -sf presentation.md slides.md && npx slidev
+    # View abstract (default)
+    npx slidev
+    
+    # View presentation (pick one)
+    ln -sf presentation.md slides.md && npx slidev        # Linaro, English
+    # ln -sf presentation-zh.md slides.md && npx slidev   # Linaro, Chinese
    ```
 
 ## Building and Viewing Presentations
@@ -61,25 +67,41 @@ To view a presentation, run:
 # View abstract (default)
 npx slidev
 
-# View full presentation (Linaro theme)
+# View full presentation (Linaro, English)
 ln -sf presentation.md slides.md && npx slidev
 
-# View full presentation (OpenHarmony theme)
+# View full presentation (OpenHarmony, English)
 ln -sf presentation-openharmony-theme.md slides.md && npx slidev
+
+# View Chinese (Linaro theme)
+ln -sf presentation-zh.md slides.md && npx slidev
+
+# View Chinese (OpenHarmony theme)
+ln -sf presentation-openharmony-theme-zh.md slides.md && npx slidev
 ```
 
-The `slides.md` symlink is a workaround for Slidev CLI limitations. It points to `abstract.md` by default but can be switched to either `presentation.md` or `presentation-openharmony-theme.md`.
+The `slides.md` symlink is a workaround for Slidev CLI limitations. It points to `abstract.md` by default but can be switched to any presentation variant.
 
 ### Exporting to PDF
 ```bash
 # Export abstract to PDF
-npx slidev export abstract.md
+npx slidev export abstract.md       # English
+npx slidev export abstract-zh.md    # Chinese
 
-# Export presentation (Linaro theme)
+# Export presentation (Linaro, English)
 npm run export
 
-# Export presentation (OpenHarmony theme)
+# Export presentation (OpenHarmony, English)
 npm run export:oh
+
+# Export presentation (Linaro, Chinese)
+npm run export:zh
+
+# Export presentation (OpenHarmony, Chinese)
+npm run export:oh-zh
+
+# Export all 4 variants sequentially
+npm run build:all
 ```
 
 ## Diagram Generation
@@ -103,15 +125,15 @@ To recreate this presentation from scratch, follow these steps:
 5. View presentation: `npx slidev` (or `npm run export` / `npm run export:oh` to export PDF)
 
 The presentation uses:
-- Slidev framework (two theme variants: Linaro and OpenHarmony)
+- Slidev framework (four theme+language variants: Linaro/OpenHarmony × English/Chinese)
 - Mermaid diagrams for visualizations
 - Automatic diagram generation workflow
 - Standard Markdown presentation format
 
 ## Repository Contents
 
-- **Abstract**: Brief overview of the Flutter OpenHarmony integration approach
-- **Presentation**: Complete presentation (two theme variants) covering:
+- **Abstract**: Brief overview of the Flutter OpenHarmony integration approach (English + Chinese)
+- **Presentation**: Complete presentation (2 themes × 2 languages = 4 variants) covering:
   - Problem statement: Architecture mismatch and cross-layer coupling
   - Embedder architecture fundamentals
   - Evaluation of three approaches

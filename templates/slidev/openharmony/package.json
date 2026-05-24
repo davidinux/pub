@@ -1,0 +1,29 @@
+{
+  "name": "slidev-theme-openharmony",
+  "version": "1.0.0",
+  "description": "OpenHarmony corporate Slidev theme based on the official PowerPoint template",
+  "keywords": [
+    "slidev-theme",
+    "openharmony"
+  ],
+  "homepage": "https://github.com/davidinux/pub/tree/main/templates/slidev/openharmony",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./package.json"
+  },
+  "files": [
+    "layouts",
+    "components",
+    "styles",
+    "public",
+    "package.json"
+  ],
+  "peerDependencies": {
+    "@slidev/types": ">=0.32.0"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.15.2",
+    "playwright-chromium": "^1.60.0"
+  }
+}
