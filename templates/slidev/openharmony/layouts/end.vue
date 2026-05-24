@@ -1,10 +1,14 @@
+<script setup>
+import logo from '../assets/images/oh-logo.png'
+</script>
+
 <template>
   <div class="oh-thankyou slidev-layout">
 
     <div class="bg-accent"></div>
 
     <div class="oh-header dark">
-      <img src="/theme/images/oh-logo.png" class="logo" alt="OpenHarmony" />
+      <img :src="logo" class="logo" alt="OpenHarmony" />
     </div>
 
     <div class="content-block">

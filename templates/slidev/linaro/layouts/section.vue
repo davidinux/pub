@@ -1,10 +1,15 @@
+<script setup>
+import bgWave from '../assets/images/bg-section.png'
+import logoDark from '../assets/images/linaro-logo-dark.png'
+</script>
+
 <template>
   <div class="linaro-section slidev-layout">
 
-    <img src="/theme/images/bg-section.png" class="bg-section-wave" aria-hidden="true" />
+    <img :src="bgWave" class="bg-section-wave" aria-hidden="true" />
 
     <div class="linaro-header">
-      <img src="/theme/images/linaro-logo-dark.png" class="logo" alt="Linaro" />
+      <img :src="logoDark" class="logo" alt="Linaro" />
     </div>
 
     <div class="section-content">

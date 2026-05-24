@@ -1,8 +1,12 @@
+<script setup>
+import logo from '../assets/images/oh-logo.png'
+</script>
+
 <template>
   <div class="oh-three-col-light slidev-layout">
 
     <div class="oh-header">
-      <img src="/theme/images/oh-logo.png" class="logo" alt="OpenHarmony" />
+      <img :src="logo" class="logo" alt="OpenHarmony" />
       <span class="tagline">Open Source, Open Future</span>
     </div>
 

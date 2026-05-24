@@ -121,22 +121,22 @@ openharmony/
 │   ├── three-cols.vue      # 3-column light
 │   ├── three-cols-dark.vue # 3-column dark
 │   └── image.vue           # Text + image (wavy clip)
-├── styles/
-│   └── index.css           # CSS vars, Google Fonts import, shared helpers
-├── public/
+├── assets/
 │   └── images/
 │       ├── oh-logo.png         # OpenHarmony logo
-│       └── oh-logo-thanks.png  # End slide logo
+│       └── oh-logo-thanks.png  # End slide logo (reserved)
+├── styles/
+│   └── index.css           # CSS vars, Google Fonts import, shared helpers
 ├── index.ts                # Style import entry point
 ├── package.json
 └── README.md
 ```
 
-## Theme Asset Paths
+## Theme Assets
 
-Layouts reference theme `public/` assets via the `/theme/` path prefix (e.g. `src="/theme/images/oh-logo.png"`). This matches how Slidev serves theme assets during both dev and export — it uses `vite-plugin-static-copy` to copy theme `public/` contents to the `/theme/` subdirectory at build time and serves them at that path during dev.
+Layouts import the logo directly from `assets/images/` using Vite's asset import system (e.g. `import logo from '../assets/images/oh-logo.png'` and `:src="logo"`). This ensures images are bundled by Vite and available during dev server, build, and export — no manual copying needed.
 
-When using theme layouts, do not use root-relative paths like `/images/...` — use `/theme/images/...` instead. If you need to reference images in your own presentation content, place them in your local `public/images/` and use `/images/...` paths as normal (Vite serves the user's `public/` at the root).
+To reference images in your own presentation content, place them in your local `public/` directory and use root-relative paths like `/images/your-file.png` (Vite serves the user's `public/` at the root).
 
 ## License
 

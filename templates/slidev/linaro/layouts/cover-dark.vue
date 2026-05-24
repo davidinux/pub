@@ -1,10 +1,15 @@
+<script setup>
+import bgBlobs from '../assets/images/bg-title-dark.png'
+import logoWhite from '../assets/images/linaro-logo-white2.png'
+</script>
+
 <template>
   <div class="linaro-cover-dark slidev-layout">
 
-    <img src="/theme/images/bg-title-dark.png" class="bg-blobs" aria-hidden="true" />
+    <img :src="bgBlobs" class="bg-blobs" aria-hidden="true" />
 
     <div class="linaro-header">
-      <img src="/theme/images/linaro-logo-white2.png" class="logo" alt="Linaro" />
+      <img :src="logoWhite" class="logo" alt="Linaro" />
     </div>
 
     <div class="content-area">

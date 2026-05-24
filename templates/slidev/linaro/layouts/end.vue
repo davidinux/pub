@@ -1,10 +1,15 @@
+<script setup>
+import bgWave from '../assets/images/bg-thankyou.png'
+import logoWhite from '../assets/images/linaro-logo-white2.png'
+</script>
+
 <template>
   <div class="linaro-thankyou slidev-layout">
 
-    <img src="/theme/images/bg-thankyou.png" class="bg-wave" aria-hidden="true" />
+    <img :src="bgWave" class="bg-wave" aria-hidden="true" />
 
     <div class="linaro-header dark">
-      <img src="/theme/images/linaro-logo-white2.png" class="logo" alt="Linaro" />
+      <img :src="logoWhite" class="logo" alt="Linaro" />
     </div>
 
     <div class="content-block">

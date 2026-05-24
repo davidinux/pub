@@ -1,10 +1,15 @@
+<script setup>
+import decoSymbol from '../assets/images/linaro-symbol-dark.png'
+import logoDark from '../assets/images/linaro-logo-dark.png'
+</script>
+
 <template>
   <div class="linaro-two-col-light slidev-layout">
 
-    <img src="/theme/images/linaro-symbol-dark.png" class="deco-symbol" aria-hidden="true" />
+    <img :src="decoSymbol" class="deco-symbol" aria-hidden="true" />
 
     <div class="linaro-header">
-      <img src="/theme/images/linaro-logo-dark.png" class="logo" alt="Linaro" />
+      <img :src="logoDark" class="logo" alt="Linaro" />
       <span class="tagline">Arm Solutions at Lightspeed</span>
     </div>
 

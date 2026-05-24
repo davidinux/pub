@@ -1,8 +1,13 @@
+<script setup>
+import logoDark from '../assets/images/linaro-logo-dark.png'
+defineProps({ image: { type: String, default: '' } })
+</script>
+
 <template>
   <div class="linaro-image-light slidev-layout">
 
     <div class="linaro-header">
-      <img src="/theme/images/linaro-logo-dark.png" class="logo" alt="Linaro" />
+      <img :src="logoDark" class="logo" alt="Linaro" />
       <span class="tagline">Arm Solutions at Lightspeed</span>
     </div>
 
@@ -21,10 +26,6 @@
     <div class="linaro-page-num"><SlideCurrentNo /></div>
   </div>
 </template>
-
-<script setup>
-defineProps({ image: { type: String, default: '' } })
-</script>
 
 <style scoped>
 .linaro-image-light {

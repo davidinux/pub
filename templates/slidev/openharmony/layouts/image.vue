@@ -2,7 +2,7 @@
   <div class="oh-image-light slidev-layout">
 
     <div class="oh-header">
-      <img src="/theme/images/oh-logo.png" class="logo" alt="OpenHarmony" />
+      <img :src="logo" class="logo" alt="OpenHarmony" />
       <span class="tagline">Open Source, Open Future</span>
     </div>
 
@@ -23,6 +23,7 @@
 </template>
 
 <script setup>
+import logo from '../assets/images/oh-logo.png'
 defineProps({ image: { type: String, default: '' } })
 </script>
 

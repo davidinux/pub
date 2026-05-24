@@ -169,20 +169,21 @@ linaro/
 │   ├── three-cols.vue      # 3-column light
 │   ├── three-cols-dark.vue # 3-column dark
 │   └── image.vue           # Text + image (wavy clip)
+├── assets/
+│   └── images/
+│       ├── bg-title-light.png     # Cover light background
+│       ├── bg-title-dark.png      # Cover dark background
+│       ├── bg-section.png         # Section divider wave
+│       ├── bg-thankyou.png        # Thank you wave
+│       ├── linaro-logo-dark.png
+│       ├── linaro-logo-purple.png
+│       ├── linaro-logo-white.png
+│       ├── linaro-logo-white2.png
+│       └── linaro-symbol-dark.png
 ├── styles/
 │   └── index.css           # CSS vars, Google Fonts import, shared helpers
 ├── public/
-│   ├── images/
-│   │   ├── bg-title-light.png
-│   │   ├── bg-title-dark.png
-│   │   ├── bg-section.png
-│   │   ├── bg-thankyou.png
-│   │   ├── linaro-logo-dark.png
-│   │   ├── linaro-logo-purple.png
-│   │   ├── linaro-logo-white.png
-│   │   ├── linaro-logo-white2.png
-│   │   └── linaro-symbol-dark.png
-│   └── linaro-logo.svg
+│   └── linaro-logo.svg     # Legacy — not used by layouts
 ├── index.ts                # Style import entry point
 ├── package.json
 └── README.md
@@ -190,7 +191,7 @@ linaro/
 
 ## How It Works
 
-Each layout `.vue` file has all styling in a `<style scoped>` block. This guarantees CSS is bundled by Vite regardless of how the theme is referenced. Backgrounds use absolute-positioned `<img>` elements pointing to images in `public/images/`.
+Each layout `.vue` file has all styling in a `<style scoped>` block. This guarantees CSS is bundled by Vite regardless of how the theme is referenced. Backgrounds use absolute-positioned `<img>` elements importing images from `assets/images/` via Vite's asset import system.
 
 The global `styles/index.css` sets CSS custom properties (brand colors, font family) and shared utility classes (`.linaro-header`, `.linaro-page-num`).
 
@@ -206,11 +207,11 @@ theme: ../
 
 The included `example/example.md` already uses this pattern.
 
-## Theme Asset Paths
+## Theme Assets
 
-Layouts reference theme `public/` assets via the `/theme/` path prefix (e.g. `src="/theme/images/bg-title-light.png"`). This matches how Slidev serves theme assets during both dev and export — it uses `vite-plugin-static-copy` to copy theme `public/` contents to the `/theme/` subdirectory at build time and serves them at that path during dev.
+Layouts import images directly from `assets/images/` using Vite's asset import system (e.g. `import bgBlobs from '../assets/images/bg-title-light.png'` and `:src="bgBlobs"`). This ensures images are bundled by Vite and available during dev server, build, and export — no manual copying needed.
 
-When using theme layouts, do not use root-relative paths like `/images/...` — use `/theme/images/...` instead. If you need to reference images in your own presentation content, place them in your local `public/images/` and use `/images/...` paths as normal (Vite serves the user's `public/` at the root).
+To reference images in your own presentation content, place them in your local `public/` directory and use root-relative paths like `/images/your-file.png` (Vite serves the user's `public/` at the root).
 
 ## License
 

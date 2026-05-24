@@ -1,10 +1,15 @@
+<script setup>
+import bgBlobs from '../assets/images/bg-title-light.png'
+import logoPurple from '../assets/images/linaro-logo-purple.png'
+</script>
+
 <template>
   <div class="linaro-cover-light slidev-layout">
 
-    <img src="/theme/images/bg-title-light.png" class="bg-blobs" aria-hidden="true" />
+    <img :src="bgBlobs" class="bg-blobs" aria-hidden="true" />
 
     <div class="linaro-header">
-      <img src="/theme/images/linaro-logo-purple.png" class="logo" alt="Linaro" />
+      <img :src="logoPurple" class="logo" alt="Linaro" />
     </div>
 
     <div class="content-area">
