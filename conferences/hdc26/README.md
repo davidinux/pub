@@ -12,7 +12,6 @@ This repository contains the presentation materials for the HDC 2026 conference 
 - `presentation-export.pdf` - Exported PDF (Linaro theme)
 - `presentation-openharmony-theme-export.pdf` - Exported PDF (OpenHarmony theme)
 - `package.json` - Build scripts and dependencies
-- `layouts/`, `styles/`, `public/` - Slidev theme components
 - `diagrams/` - Mermaid diagram source files
 - `public/images/` - Generated PNG diagram images
 - `build-diagrams.js` - Script to generate Mermaid diagrams
