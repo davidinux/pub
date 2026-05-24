@@ -9,6 +9,8 @@ This repository contains the presentation materials for the HDC 2026 conference 
 - `presentation-openharmony-theme.md` - Same content, OpenHarmony-branded theme
 - `slides.md` - Symlink to abstract.md (for Slidev CLI compatibility)
 - `abstract.pdf` - Exported PDF of abstract
+- `presentation-export.pdf` - Exported PDF (Linaro theme)
+- `presentation-openharmony-theme-export.pdf` - Exported PDF (OpenHarmony theme)
 - `package.json` - Build scripts and dependencies
 - `layouts/`, `styles/`, `public/` - Slidev theme components
 - `diagrams/` - Mermaid diagram source files
@@ -75,10 +77,10 @@ The `slides.md` symlink is a workaround for Slidev CLI limitations. It points to
 npx slidev export abstract.md
 
 # Export presentation (Linaro theme)
-npx slidev export presentation.md
+npm run export
 
 # Export presentation (OpenHarmony theme)
-npx slidev export presentation-openharmony-theme.md
+npm run export:oh
 ```
 
 ## Diagram Generation
@@ -99,7 +101,7 @@ To recreate this presentation from scratch, follow these steps:
 2. Install Node.js and npm
 3. Install dependencies: `npm install`
 4. Generate diagrams: `npm run build:diagrams`
-5. View presentation: `npx slidev` (or `npx slidev export` to export PDF)
+5. View presentation: `npx slidev` (or `npm run export` / `npm run export:oh` to export PDF)
 
 The presentation uses:
 - Slidev framework (two theme variants: Linaro and OpenHarmony)
