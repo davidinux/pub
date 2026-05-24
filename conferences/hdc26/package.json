@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "slidev",
     "build": "slidev build",
-    "export": "slidev export",
+    "export": "slidev export presentation.md",
+    "export:oh": "slidev export presentation-openharmony-theme.md",
     "build:diagrams": "node build-diagrams.js"
   },
   "devDependencies": {
