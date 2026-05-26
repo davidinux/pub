@@ -21,7 +21,7 @@ th, td {
 }
 </style>
 
-# Flutter on OpenHarmony: 新的嵌入层方向
+# Flutter on OpenHarmony: 新的 Embedder API 方向
 
 Linaro 解决方案与服务部  
 副总裁兼总经理  
@@ -38,11 +38,11 @@ layout: two-cols
 ::left::
 ## 跨层耦合
 
-Flutter 的多平台集成历来将平台代码散布在各层中，而非隔离在 Embedder 层。
-Android、Linux、Tizen、iOS 均存在这一模式——OpenHarmony 是最新的一个。
+Flutter 各平台适配长期以来都把平台特定代码散落在多个层级中，而非隔离在 Embedder 层。
+Android、Linux、Tizen、iOS 均存在这一模式——OpenHarmony 是最新面临这一问题的平台。
 
 - **→** 平台代码与非平台代码相互纠缠
-- **→** 上游社区的干净贡献被平台特有代码阻碍
+- **→** 平台特定代码的纠缠，使代码难以干净地回馈上游社区
 
 ::right::
 ## 影响
@@ -51,7 +51,7 @@ Android、Linux、Tizen、iOS 均存在这一模式——OpenHarmony 是最新�
 - **→** 新特性的采用速度显著下降
 - **→** 维护负担随时间持续累积
 
-次要不兼容问题（仓颉、ArkUI、APK）并非根本原因。
+仓颉、ArkUI、APK 等兼容性差异只是表象，并非根因。
 
 ---
 layout: two-cols
@@ -67,11 +67,11 @@ layout: two-cols
 ::left::
 ## Flutter 分层架构
 
-**Framework** *(Dart)* — 组件、布局、手势  
+**Framework** *(Dart)* — Widget、布局、手势
 **Engine** *(C++)* — 渲染、文本、I/O、Dart 运行时  
 **Embedder** *(平台特定)* — 入口点、渲染表面、输入、无障碍
 
-- **→** 专用 Embedder 隔离平台代码，保持 Framework 和 Engine 可向上游社区贡献
+- **→** 专用 Embedder 隔离平台代码，让 Framework 和 Engine 保持上游友好，便于贡献回社区
 
 ::right::
 ![Flutter Architecture](./images/flutter-architecture.png)
@@ -128,7 +128,7 @@ layout: two-cols
 ## 方向 C 方案
 
 Flutter Web 引擎 + OpenHarmony Embedder：
-- **→** 将 Flutter Web 引擎编译为仓颉
+- **→** 将 Flutter Web 引擎编译为仓颉语言
 - **→** OpenHarmony Embedder 处理平台集成
 - **→** 原生 API 桥接连接 OHOS 能力
 
@@ -137,7 +137,7 @@ Flutter Web 引擎 + OpenHarmony Embedder：
 
 - **✓** 尊重 OpenHarmony 架构
 - **✓** 最大化 Flutter 生态代码复用
-- **✓** 可投入生产的路径
+- **✓** 具备产品化落地路径
 - **✓** Google 持续开发 Web 引擎
 
 ---
@@ -235,7 +235,7 @@ layout: two-cols
 - **→** 活跃贡献于多个开源社区
 - **→** 连接开源社区与设备制造商
 - **→** Flutter、OHOS 及更广泛生态的技术专长
-- **→** 引领方向，推动产品就绪
+- **→** 影响技术方向，推动方案达到产品化要求
 
 ::right::
 ![Linaro 贡献](./images/linaro-contribs.png)
