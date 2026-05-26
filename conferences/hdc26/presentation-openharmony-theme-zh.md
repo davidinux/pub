@@ -28,12 +28,13 @@ layout: two-cols
 # 挑战
 
 ::left::
-## 架构问题
+## 跨层耦合
 
-OHOS 适配代码散布在 Flutter 各层中，而非集中隔离在 Embedder 层。
+Flutter 的多平台集成历来将平台代码散布在各层中，而非隔离在 Embedder 层。
+Android、Linux、Tizen、iOS 均存在这一模式——OpenHarmony 是最新的一个。
 
 - **→** 平台代码与非平台代码相互纠缠
-- **→** 上游社区的干净贡献被 OHOS 特有代码阻碍
+- **→** 上游社区的干净贡献被平台特有代码阻碍
 
 ::right::
 ## 影响
@@ -221,18 +222,23 @@ layout: two-cols
 # Linaro 的角色——社区桥梁
 
 ::left::
+## 开源生态贡献
 
-## 连接社区
-
-- **✓** 连接开源社区与设备制造商  
-- **✓** Flutter 和 OHOS 双生态技术专长  
-- **✓** 将 Flutter 社区知识引入 OHOS 适配  
+- **→** 活跃贡献于多个开源社区
+- **→** 连接开源社区与设备制造商
+- **→** Flutter、OHOS 及更广泛生态的技术专长
+- **→** 引领方向，推动产品就绪
 
 ::right::
+![Linaro 贡献](./images/linaro-contribs.png)
 
-## 方向引领
-
-- **→** 引领方向，推动产品就绪
+<style>
+.col:last-child img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: scale-down;
+}
+</style>
 
 ---
 layout: two-cols

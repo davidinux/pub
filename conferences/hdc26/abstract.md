@@ -12,8 +12,9 @@ HDC 2026 - Shenzhen
 
 # Abstract
 
-Flutter's architecture wasn't designed for OpenHarmony's ecosystem (Cangjie rendering, ArkUI framework,
-HAP packaging) making it fundamentally incompatible with the existing Android embedder. Based on a joint
+Flutter's multi-platform integrations have historically scattered platform-specific code across
+all layers rather than isolating it in a dedicated Embedder — a pattern seen across Android, Linux,
+Tizen, and other platforms. OpenHarmony inherits this same challenge. Based on a joint
 Huawei-Linaro engineering review, we evaluated three directions and converged on a pragmatic path:
 leveraging the Flutter Web engine compiled to Cangjie, bridged to device capabilities via native APIs.
 This approach respects OpenHarmony's architecture while maximizing code reuse. We'll cover the

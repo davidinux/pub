@@ -28,12 +28,12 @@ layout: two-cols
 # The Challenge
 
 ::left::
-## Architecture Problem
+## Cross-Layer Coupling
 
-OHOS adaptations scattered across all Flutter layers instead of being isolated in the Embedder.
+Flutter's platform integrations have historically scattered platform code across all layers instead of isolating it in the Embedder. This pattern repeats across Android, Linux, Tizen, iOS — and OpenHarmony is the latest to face it.
 
 - **→** Platform and non-platform code intertwined
-- **→** Clean upstream contributions blocked by OHOS-specific tangling
+- **→** Clean upstream contributions blocked by platform-specific tangling
 
 ::right::
 ## Impact
@@ -221,18 +221,23 @@ layout: two-cols
 # Linaro's Role — Community Bridge
 
 ::left::
+## Across the Open Source Ecosystem
 
-## Connecting Communities
-
-- **✓** Open-source communities to device makers  
-- **✓** Technical expertise in both Flutter and OHOS ecosystems  
-- **✓** Bringing Flutter community knowledge to OHOS adaptation  
+- **→** Active contributors across multiple open source communities
+- **→** Bridging open-source communities to device makers
+- **→** Technical expertise in Flutter, OHOS, and broader ecosystems
+- **→** Influencing direction for production readiness
 
 ::right::
+![Linaro Contributions](./images/linaro-contribs.png)
 
-## Influence Direction
-
-- **→** Influencing direction for production readiness
+<style>
+.col:last-child img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: scale-down;
+}
+</style>
 
 ---
 layout: two-cols
