@@ -197,6 +197,7 @@ Supported commands: `style 12`, `move`, `board`, `who`, `games`, `match`, `accep
 | POST | `/api/games/{id}/moves` | Make a move `{"move": "e5", "player": "opencode"}` |
 | POST | `/api/games/{id}/resign` | Resign |
 | PATCH | `/api/games/{id}/difficulty` | Set difficulty `{"level": 5}` |
+| DELETE | `/api/games/{id}` | Delete a game |
 | PATCH | `/api/games/{id}/pause` | Pause/resume timer |
 | GET | `/api/games/{id}/analysis` | Stockfish analysis |
 | GET | `/api/games/{id}/export` | Export PGN |

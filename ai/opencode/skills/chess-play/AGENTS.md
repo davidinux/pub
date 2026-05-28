@@ -79,6 +79,7 @@ curl -s -X PATCH http://localhost:8080/api/games/{game_id}/pause \
 | `/api/games/{id}/difficulty` | PATCH | Set difficulty |
 | `/api/games/{id}/pause` | PATCH | Pause/resume timer |
 | `/api/games/{id}/analysis` | GET | Stockfish analysis |
+| `/api/games/{id}` | DELETE | Delete a game |
 | `/api/games/{id}/export` | GET | Export PGN |
 | `/api/games/{id}/ws` | WS | WebSocket live updates |
 | `/api/profile` | GET | Get player profile |

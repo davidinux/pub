@@ -52,6 +52,7 @@
         <button onclick="resignGame()" class="btn small" id="btn-resign">🏳 Resign</button>
         <button onclick="togglePause()" class="btn small" id="btn-pause">⏸ Pause</button>
         <button onclick="newGame()" class="btn small">+ New</button>
+        <button onclick="deleteGame()" class="btn small" style="border-color:#5a2727;color:#f44336;">✕ Delete</button>
       </div>
     </div>
 
@@ -272,6 +273,12 @@ function undoMove() {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({ move: moves[moves.length - 2], player: 'guest-human' })
   }).then(r => r.json()).then(() => refreshState());
+}
+
+function deleteGame() {
+  if (!confirm('Delete this game permanently?')) return;
+  fetch(`/api/games/${GAME_ID}`, { method: 'DELETE' })
+    .then(() => { window.location.href = '/'; });
 }
 
 function resignGame() {

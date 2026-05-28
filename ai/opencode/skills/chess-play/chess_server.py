@@ -703,6 +703,18 @@ async def api_toggle_pause(game_id: str, data: dict):
     await gm.notify_ws(game_id, state)
     return state
 
+@app.delete("/api/games/{game_id}")
+async def api_delete_game(game_id: str):
+    game = gm.get_game(game_id)
+    if not game:
+        raise HTTPException(404, "Game not found")
+    gm.games.pop(game_id, None)
+    import shutil
+    d = GAMES_DIR / game_id
+    if d.exists():
+        shutil.rmtree(d)
+    return {"deleted": game_id}
+
 @app.get("/api/games/{game_id}/export")
 async def api_export_pgn(game_id: str):
     game = gm.get_game(game_id)
