@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Game {{ game.game_id }} — opencode Chess</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
+<link rel="stylesheet" href="/static/chessboard.min.css">
 <link rel="stylesheet" href="/static/style.css">
 <style>
   #board { width: 400px; margin: 0 auto; }
@@ -92,15 +92,15 @@
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0-beta.8/chess.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+<script src="/static/chess.min.js"></script>
+<script src="/static/chessboard.min.js"></script>
 <script>
 const GAME_ID = "{{ game.game_id }}";
 const WS_URL = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/api/games/${GAME_ID}/ws`;
 
 let chess = new Chess();
 let board = null;
-let gameState = {{ game | tojson }};
+let gameState = {{ game | tojson | safe }};
 let dragging = false;
 
 function initBoard() {
