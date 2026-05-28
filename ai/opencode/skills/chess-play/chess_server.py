@@ -318,11 +318,9 @@ def board_to_fics_style12(board, game, username):
     if board.ep_square is not None:
         ep = str(board.ep_square)
     castling = ""
-    for c in ['K', 'Q', 'k', 'q']:
-        if board.has_castling_rights(chess.CastlingRight.from_symbol(c) if c.isupper() else chess.CastlingRight.from_symbol(c)):
-            castling += c
-        else:
-            castling += "-"
+    for color, sym in [(chess.WHITE, 'K'), (chess.WHITE, 'Q'), (chess.BLACK, 'k'), (chess.BLACK, 'q')]:
+        has = board.has_kingside_castling_rights(color) if sym in 'Kk' else board.has_queenside_castling_rights(color)
+        castling += sym if has else "-"
     my_name = username
     opp_name = game.black_player if game.white_player == username else game.white_player
     my_rating = "1500"
