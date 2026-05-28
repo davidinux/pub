@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game {{ game.game_id }} — opencode Chess</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.css">
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  #board { width: 400px; margin: 0 auto; }
+  .game-layout { display: flex; gap: 2rem; align-items: flex-start; justify-content: center; flex-wrap: wrap; }
+  .sidebar { min-width: 280px; max-width: 350px; }
+  .clock { font-size: 1.8rem; font-family: monospace; padding: 0.5rem 1rem; border-radius: 6px; margin: 0.3rem 0; }
+  .clock.active { background: #2d5a27; border: 1px solid #4caf50; }
+  .clock.inactive { background: #1a1a2e; border: 1px solid #333; }
+  .clock-label { font-size: 0.8rem; color: #888; }
+  .move-list { background: #1a1a2e; border-radius: 6px; padding: 0.8rem; max-height: 300px; overflow-y: auto; font-family: monospace; font-size: 0.9rem; line-height: 1.6; }
+  .move-row { display: grid; grid-template-columns: 2rem 1fr 1fr; gap: 0.3rem; }
+  .move-num { color: #666; }
+  .move-white { color: #ddd; }
+  .move-black { color: #aaa; }
+  .status-badge { display: inline-block; padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: bold; }
+  .status-playing { background: #2d5a27; color: #4caf50; }
+  .status-over { background: #5a2727; color: #f44336; }
+  .status-waiting { background: #5a4a27; color: #ff9800; }
+  .btn-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+  .timer-paused { opacity: 0.5; }
+  .game-info { margin-bottom: 1rem; text-align: center; }
+  .game-info h2 { margin: 0; font-size: 1.1rem; }
+  .game-id { color: #666; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1><a href="/" style="text-decoration:none;color:inherit;">♚</a> Game {{ game.game_id[:8] }}</h1>
+  </header>
+
+  <div class="game-info">
+    <span class="status-badge status-{{ game.status }}">{{ game.status }}</span>
+    <span id="diff-badge" class="status-badge" style="background:#1a1a2e;border:1px solid #555;">
+      Difficulty: {{ game.difficulty }}/10
+    </span>
+    <span class="game-id">{{ game.game_id }}</span>
+  </div>
+
+  <div class="game-layout">
+    <div id="board-container">
+      <div id="board"></div>
+      <div class="btn-row" style="justify-content:center;">
+        <button onclick="undoMove()" class="btn small" id="btn-undo">⟲ Undo</button>
+        <button onclick="resignGame()" class="btn small" id="btn-resign">🏳 Resign</button>
+        <button onclick="togglePause()" class="btn small" id="btn-pause">⏸ Pause</button>
+        <button onclick="newGame()" class="btn small">+ New</button>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="clock {{ 'active' if game.turn == 'w' and game.status == 'playing' else 'inactive' }}" id="clock-white">
+        <div class="clock-label">{{ game.white_player }} (white)</div>
+        <span id="time-white">00:00</span>
+      </div>
+      <div class="clock {{ 'active' if game.turn == 'b' and game.status == 'playing' else 'inactive' }}" id="clock-black">
+        <div class="clock-label">{{ game.black_player }} (black)</div>
+        <span id="time-black">00:00</span>
+      </div>
+
+      <div id="status-msg" style="text-align:center;margin:0.5rem 0;font-weight:bold;">
+        {% if game.status == "waiting" %}Game ready — make your first move
+        {% elif game.status == "over" %}{{ game.result_reason }}
+        {% elif game.opencode_thinking %}⏳ opencode is thinking...
+        {% elif game.turn_name == "guest-human" %}Your turn
+        {% else %}Waiting...
+        {% endif %}
+      </div>
+
+      <div class="move-list" id="move-list">
+        <div style="color:#666;text-align:center;">Moves will appear here</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="result-dialog" class="dialog-overlay" style="display:none">
+  <div class="dialog">
+    <h3 id="result-title">Game Over</h3>
+    <p id="result-msg"></p>
+    <div class="dialog-actions">
+      <button onclick="newGame()" class="btn primary">New Game</button>
+      <button onclick="hideResult()" class="btn">Back to Games</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/1.0.0-beta.8/chess.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/chessboard-1.0.0.min.js"></script>
+<script>
+const GAME_ID = "{{ game.game_id }}";
+const WS_URL = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/api/games/${GAME_ID}/ws`;
+
+let chess = new Chess();
+let board = null;
+let gameState = {{ game | tojson }};
+let dragging = false;
+
+function initBoard() {
+  if (gameState.fen) {
+    chess.load(gameState.fen);
+  }
+  const cfg = {
+    draggable: true,
+    position: chess.fen(),
+    pieceTheme: 'https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/img/chesspieces/wikipedia/{piece}.png',
+    onDragStart: onDragStart,
+    onDrop: onDrop,
+    onMouseoverSquare: onMouseoverSquare,
+    onMouseoutSquare: onMouseoutSquare,
+    onSnapEnd: onSnapEnd,
+  };
+  board = Chessboard('board', cfg);
+  updateUI();
+  connectWS();
+}
+
+function onDragStart(source, piece) {
+  if (gameState.status === "over") return false;
+  if (gameState.opencode_thinking) return false;
+  if (piece.search(/^b/) !== -1) return false;
+  return true;
+}
+
+function onDrop(source, target) {
+  removeHighlights();
+  const move = { from: source, to: target, promotion: 'q' };
+  if (chess.move(move)) {
+    board.position(chess.fen());
+    sendMove(chess.history().pop());
+    return true;
+  }
+  board.position(chess.fen());
+  return false;
+}
+
+function onMouseoverSquare(sq) {
+  if (!dragging) return;
+  const moves = chess.moves({ square: sq, verbose: true });
+  if (moves.length === 0) return;
+  highlightSquares(moves.map(m => m.to));
+}
+
+function onMouseoutSquare() { removeHighlights(); }
+function onSnapEnd() { board.position(chess.fen()); }
+
+function highlightSquares(squares) {
+  removeHighlights();
+  squares.forEach(sq => {
+    board.$board.find(`.square-${sq}`).addClass('highlight-square');
+  });
+}
+
+function removeHighlights() {
+  board.$board.find('.square-55d63').removeClass('highlight-square');
+}
+
+function sendMove(san) {
+  fetch(`/api/games/${GAME_ID}/moves`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ move: san, player: 'guest-human' })
+  })
+  .then(r => r.json())
+  .then(state => {
+    gameState = state;
+    updateUI();
+    if (state.status === "over") showResult(state);
+  })
+  .catch(e => console.error('Move error:', e));
+}
+
+function refreshState() {
+  fetch(`/api/games/${GAME_ID}`)
+    .then(r => r.json())
+    .then(state => {
+      gameState = state;
+      if (state.fen) chess.load(state.fen);
+      if (board) board.position(chess.fen());
+      updateUI();
+    })
+    .catch(e => console.error('Refresh error:', e));
+}
+
+function connectWS() {
+  try {
+    const ws = new WebSocket(WS_URL);
+    ws.onmessage = (event) => {
+      const state = JSON.parse(event.data);
+      gameState = state;
+      if (state.fen) chess.load(state.fen);
+      if (board) board.position(chess.fen());
+      updateUI();
+      if (state.status === "over") showResult(state);
+    };
+    ws.onclose = () => setTimeout(connectWS, 2000);
+    ws.onerror = () => ws.close();
+  } catch(e) {
+    setTimeout(connectWS, 3000);
+  }
+}
+
+function formatTime(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = Math.floor(seconds % 60);
+  return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+function updateUI() {
+  if (!gameState) return;
+  document.getElementById('time-white').textContent = formatTime(gameState.timing?.white || 0);
+  document.getElementById('time-black').textContent = formatTime(gameState.timing?.black || 0);
+
+  const cw = document.getElementById('clock-white');
+  const cb = document.getElementById('clock-black');
+  cw.className = `clock ${gameState.turn === 'w' && gameState.status === 'playing' ? 'active' : 'inactive'}`;
+  cb.className = `clock ${gameState.turn === 'b' && gameState.status === 'playing' ? 'active' : 'inactive'}`;
+  if (gameState.paused) { cw.classList.add('timer-paused'); cb.classList.add('timer-paused'); }
+
+  const sm = document.getElementById('status-msg');
+  if (gameState.status === 'over') {
+    sm.textContent = gameState.result_reason;
+  } else if (gameState.opencode_thinking) {
+    sm.textContent = '⏳ opencode is thinking...';
+  } else if (gameState.turn_name === 'guest-human') {
+    sm.textContent = 'Your turn — drag a piece';
+  } else {
+    sm.textContent = 'Waiting...';
+  }
+
+  document.getElementById('btn-undo').style.display = gameState.moves?.length > 0 ? '' : 'none';
+  document.getElementById('btn-resign').style.display = gameState.status === 'playing' ? '' : 'none';
+
+  const ml = document.getElementById('move-list');
+  const moves = gameState.moves || [];
+  if (moves.length > 0) {
+    let html = '';
+    for (let i = 0; i < moves.length; i += 2) {
+      const n = Math.floor(i / 2) + 1;
+      html += `<div class="move-row"><span class="move-num">${n}.</span><span class="move-white">${moves[i] || ''}</span><span class="move-black">${moves[i+1] || ''}</span></div>`;
+    }
+    ml.innerHTML = html;
+    ml.scrollTop = ml.scrollHeight;
+  }
+
+  document.getElementById('diff-badge').textContent = `Difficulty: ${gameState.difficulty}/10`;
+}
+
+function showResult(state) {
+  document.getElementById('result-title').textContent = state.result;
+  document.getElementById('result-msg').textContent = state.result_reason;
+  document.getElementById('result-dialog').style.display = 'flex';
+}
+
+function hideResult() {
+  document.getElementById('result-dialog').style.display = 'none';
+  window.location.href = '/';
+}
+
+function undoMove() {
+  const moves = gameState.moves || [];
+  if (moves.length < 2) return;
+  fetch(`/api/games/${GAME_ID}/moves`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ move: moves[moves.length - 2], player: 'guest-human' })
+  }).then(r => r.json()).then(() => refreshState());
+}
+
+function resignGame() {
+  if (!confirm('Resign?')) return;
+  fetch(`/api/games/${GAME_ID}/resign`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ player: 'guest-human' })
+  }).then(r => r.json()).then(state => {
+    gameState = state;
+    updateUI();
+    if (state.status === 'over') showResult(state);
+  });
+}
+
+function togglePause() {
+  const paused = !gameState.paused;
+  fetch(`/api/games/${GAME_ID}/pause`, {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ paused })
+  }).then(r => r.json()).then(state => {
+    gameState = state;
+    updateUI();
+    document.getElementById('btn-pause').textContent = paused ? '▶ Resume' : '⏸ Pause';
+  });
+}
+
+function newGame() {
+  fetch('/api/games', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ difficulty: gameState.difficulty })
+  })
+  .then(r => r.json())
+  .then(g => { window.location.href = '/game/' + g.game_id; });
+}
+
+setInterval(() => {
+  if (gameState && gameState.status === 'playing' && !gameState.paused) {
+    updateUI();
+  }
+}, 1000);
+
+document.addEventListener('DOMContentLoaded', initBoard);
+</script>
+</body>
+</html>

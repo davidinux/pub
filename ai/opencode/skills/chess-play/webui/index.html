@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>opencode Chess</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>♚ opencode Chess</h1>
+    <p class="subtitle">Play against opencode. Learn. Improve.</p>
+  </header>
+
+  <div class="profile-bar">
+    <span>Difficulty: <strong id="diff-display">{{ profile.difficulty }}</strong>/10</span>
+    <span>Rating: <strong>{{ profile.rating }}</strong></span>
+    <span>Games: <strong>{{ profile.games_played }}</strong></span>
+    <span>W/L/D: <strong>{{ profile.wins }}/{{ profile.losses }}/{{ profile.draws }}</strong></span>
+    <span>Streak: <strong>{{ profile.streak_wins }}W {{ profile.streak_losses }}L</strong></span>
+  </div>
+
+  <div class="actions">
+    <button onclick="newGame()" class="btn primary">+ New Game</button>
+    <button onclick="showDiffDialog()" class="btn">Set Difficulty</button>
+  </div>
+
+  <section class="game-list">
+    <h2>Games</h2>
+    {% if games %}
+    <table>
+      <tr><th>ID</th><th>White</th><th>Black</th><th>Status</th><th>Result</th><th></th></tr>
+      {% for g in games %}
+      <tr>
+        <td><code>{{ g.game_id }}</code></td>
+        <td>{{ g.white_player }}</td>
+        <td>{{ g.black_player }}</td>
+        <td class="status-{{ g.status }}">{{ g.status }}</td>
+        <td>{{ g.result }}</td>
+        <td><a href="/game/{{ g.game_id }}" class="btn small">Open</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+    <p class="empty">No games yet. Start one!</p>
+    {% endif %}
+  </section>
+</div>
+
+<div id="diff-dialog" class="dialog-overlay" style="display:none">
+  <div class="dialog">
+    <h3>Set Difficulty</h3>
+    <p>1 = Beginner &nbsp;·&nbsp; 5 = Intermediate &nbsp;·&nbsp; 10 = Expert</p>
+    <input type="range" id="diff-slider" min="1" max="10" value="{{ profile.difficulty }}">
+    <span id="diff-value">{{ profile.difficulty }}</span>
+    <div class="dialog-actions">
+      <button onclick="setDifficulty()" class="btn primary">Apply</button>
+      <button onclick="hideDiffDialog()" class="btn">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const diffSlider = document.getElementById('diff-slider');
+const diffValue = document.getElementById('diff-value');
+if (diffSlider) {
+  diffSlider.addEventListener('input', () => {
+    diffValue.textContent = diffSlider.value;
+  });
+}
+
+async function newGame() {
+  const res = await fetch('/api/games', { method: 'POST' });
+  const game = await res.json();
+  window.location.href = '/game/' + game.game_id;
+}
+
+function showDiffDialog() {
+  document.getElementById('diff-dialog').style.display = 'flex';
+}
+
+function hideDiffDialog() {
+  document.getElementById('diff-dialog').style.display = 'none';
+}
+
+async function setDifficulty() {
+  const level = parseInt(diffSlider.value);
+  await fetch('/api/profile', {
+    method: 'PATCH',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ difficulty: level })
+  });
+  document.getElementById('diff-display').textContent = level;
+  hideDiffDialog();
+}
+</script>
+</body>
+</html>
