@@ -112,7 +112,7 @@ function initBoard() {
   const cfg = {
     draggable: true,
     position: chess.fen(),
-    pieceTheme: 'https://cdnjs.cloudflare.com/ajax/libs/chessboard-js/1.0.0/img/chesspieces/wikipedia/{piece}.png',
+    pieceTheme: '/static/pieces/{piece}.png',
     onDragStart: onDragStart,
     onDrop: onDrop,
     onMouseoverSquare: onMouseoverSquare,
