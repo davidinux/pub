@@ -314,26 +314,24 @@ def board_to_fics_style12(board, game, username):
         ranks.append(rank_str)
     placement = " ".join(ranks)
     side = "W" if board.turn == chess.WHITE else "B"
-    ep = "-1"
-    if board.ep_square is not None:
-        ep = str(board.ep_square)
-    castling = ""
-    for color, sym in [(chess.WHITE, 'K'), (chess.WHITE, 'Q'), (chess.BLACK, 'k'), (chess.BLACK, 'q')]:
-        has = board.has_kingside_castling_rights(color) if sym in 'Kk' else board.has_queenside_castling_rights(color)
-        castling += sym if has else "-"
-    my_name = username
-    opp_name = game.black_player if game.white_player == username else game.white_player
-    my_rating = "1500"
-    opp_rating = "1500"
-    clock = game.current_clock()
-    my_time = int(clock.get("white" if game.white_player == username else "black", 0))
-    opp_time = int(clock.get("black" if game.white_player == username else "white", 0))
-    move_num = (len(game.moves) // 2) + 1
+    ep = "-1" if board.ep_square is None else str(board.ep_square)
+    wk = "1" if board.has_kingside_castling_rights(chess.WHITE) else "0"
+    wq = "1" if board.has_queenside_castling_rights(chess.WHITE) else "0"
+    bk = "1" if board.has_kingside_castling_rights(chess.BLACK) else "0"
+    bq = "1" if board.has_queenside_castling_rights(chess.BLACK) else "0"
+    hmvc = str(board.halfmove_clock)
     game_num = int(game.game_id[-4:], 16) if len(game.game_id) >= 4 else 1
-    relation = "1"  # examining game
+    wname = game.white_player
+    bname = game.black_player
+    relation = "1"
     init_time = "600"
     inc = "0"
-    return f"<12> {placement} {side} {ep} {castling} {opp_name} {opp_rating} {my_name} {my_rating} {my_time} {opp_time} {move_num} {game_num} {relation} {init_time} {inc} 0 0 0 0 0 0 0 0 0"
+    clock = game.current_clock()
+    wtime_ms = str(int(clock["white"] * 1000))
+    btime_ms = str(int(clock["black"] * 1000))
+    move_num = str((len(game.moves) // 2) + 1)
+    lastmove = game.moves[-1] if game.moves else "none"
+    return f"<12> {placement} {side} {ep} {wk} {wq} {bk} {bq} {hmvc} {game_num} {wname} {bname} {relation} {init_time} {inc} 0 0 {wtime_ms} {btime_ms} {move_num} 0 0 {lastmove} 0"
 
 class FICSProtocol:
     def __init__(self, game_manager):
@@ -350,8 +348,10 @@ class FICSProtocol:
     async def handle_client(self, reader, writer):
         peername = writer.get_extra_info("peername")
         addr = f"{peername[0]}:{peername[1]}"
-        username = f"guest-{random.randint(1000, 9999)}"
-        self.clients[writer] = {"username": username, "game_id": None, "state": "login"}
+        print(f"[FICS] New connection from {addr}")
+        username = None
+        state = "login"
+        self.clients[writer] = {"username": "", "game_id": None, "state": state}
         writer.write(f"Welcome to opencode Chess Server (FICS-compatible)\r\n\r\n".encode())
         writer.write(f"Login as guest or type 'register <username>' (no password needed locally)\r\n".encode())
         writer.write(f"login: ".encode())
@@ -360,16 +360,51 @@ class FICSProtocol:
             while True:
                 raw = await reader.readline()
                 if not raw:
+                    print(f"[FICS] {username} disconnected")
                     break
                 line = raw.decode().strip()
                 if not line:
                     continue
-                response = await self.process_command(username, line, writer)
-                if response is not None:
-                    writer.write(response.encode())
+                if state == "login":
+                    parts = line.split()
+                    cmd = parts[0].lower() if parts else ""
+                    args = parts[1:]
+                    if cmd == "register" and args:
+                        username = args[0]
+                        writer.write(f"Registered as {args[0]}\r\n".encode())
+                    elif cmd == "login" and args:
+                        username = args[0]
+                        writer.write(f"Login accepted.\r\n".encode())
+                    else:
+                        import string
+                        username = "Guest" + "".join(random.choices(string.ascii_letters, k=6))
+                        writer.write(f"You are now logged in as \"{username}\"\r\n\r\n".encode())
+                    state = "session_start"
+                    self.clients[writer]["state"] = "session_start"
+                    self.clients[writer]["username"] = username
+                    writer.write(f"\r\nPress return to enter the server as \"{username}\":\r\n".encode())
+                    writer.write(f"\r\n**** Starting FICS session as {username} ****\r\n".encode())
+                    writer.write(b"Type 'help' for help.\r\n\r\n")
+                    writer.write(b"fics% ")
                     await writer.drain()
-                if line.lower() == "quit":
-                    break
+                    print(f"[FICS] {username} <- login ok session start / fics%")
+                elif state == "session_start":
+                    if not line:
+                        writer.write(b"fics% ")
+                        await writer.drain()
+                        continue
+                    print(f"[FICS] {username} -> {line[:80]}")
+                    response = await self.process_command(username, line, writer)
+                    if response is not None:
+                        writer.write(response.encode())
+                        print(f"[FICS] {username} <- {response.strip()[:80]}")
+                    writer.write(b"fics% ")
+                    await writer.drain()
+                    if line.lower() == "quit":
+                        break
+                else:
+                    writer.write(b"fics% ")
+                    await writer.drain()
         except (ConnectionResetError, asyncio.IncompleteReadError):
             pass
         finally:
@@ -418,8 +453,16 @@ class FICSProtocol:
             else:
                 self.clients[writer]["username"] = username
                 return f"Logged in as {username}\r\n"
+        elif cmd == "iset":
+            return ""
         elif cmd == "set":
-            return "ok.\r\n"
+            return ""
+        elif cmd == "showlist":
+            return ""
+        elif cmd == "date":
+            import datetime
+            now = datetime.datetime.utcnow()
+            return now.strftime("%A %B %d, %Y  %H:%M:%S UTC\r\n")
         elif cmd == "sought":
             return "No games being sought.\r\n"
         elif cmd == "tell":
@@ -427,6 +470,19 @@ class FICSProtocol:
         elif cmd in ("", "\n", "\r\n"):
             return ""
         elif cmd.startswith(("+", "-")) and len(cmd) >= 2:
+            return ""
+        elif cmd == "alias":
+            return ""
+        elif cmd.startswith("$"):
+            sub = cmd[1:] if len(cmd) > 1 else ""
+            if sub == "style" and args and args[0] == "12":
+                self.clients[writer]["state"] = "playing"
+                game = self.gm.get_game(self.clients[writer].get("game_id"))
+                if game:
+                    return board_to_fics_style12(game.board, game, self.clients[writer].get("username", "guest")) + "\r\n"
+                return "Style 12 is now in effect.\r\n"
+            if sub in ("set", "iset", "style"):
+                return ""
             return ""
         else:
             return f"Unknown command: {cmd}\r\n"
@@ -492,7 +548,7 @@ class FICSProtocol:
         success, result = game.make_move(move_str, player=username)
         if success:
             save_game(game)
-            return f"<12> {board_to_fics_style12(game.board, game, username)}\r\n"
+            return board_to_fics_style12(game.board, game, username) + "\r\n"
         else:
             return f"Illegal move: {result}\r\n"
 
