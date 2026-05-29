@@ -358,7 +358,10 @@ class FICSProtocol:
         await writer.drain()
         try:
             while True:
-                line = (await reader.readline()).decode().strip()
+                raw = await reader.readline()
+                if not raw:
+                    break
+                line = raw.decode().strip()
                 if not line:
                     continue
                 response = await self.process_command(username, line, writer)
@@ -392,7 +395,7 @@ class FICSProtocol:
         elif cmd in ("style",):
             if args and args[0] == "12":
                 self.clients[writer]["state"] = "playing"
-            return ""
+            return "Style 12 is now in effect.\r\n"
         elif cmd == "board":
             return self.cmd_board(writer)
         elif cmd == "move":
@@ -415,9 +418,15 @@ class FICSProtocol:
             else:
                 self.clients[writer]["username"] = username
                 return f"Logged in as {username}\r\n"
+        elif cmd == "set":
+            return "ok.\r\n"
+        elif cmd == "sought":
+            return "No games being sought.\r\n"
         elif cmd == "tell":
             return f"Tell not fully implemented\r\n"
         elif cmd in ("", "\n", "\r\n"):
+            return ""
+        elif cmd.startswith(("+", "-")) and len(cmd) >= 2:
             return ""
         else:
             return f"Unknown command: {cmd}\r\n"
