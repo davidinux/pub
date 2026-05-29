@@ -385,12 +385,12 @@ class FICSProtocol:
                     writer.write(f"\r\nPress return to enter the server as \"{username}\":\r\n".encode())
                     writer.write(f"\r\n**** Starting FICS session as {username} ****\r\n".encode())
                     writer.write(b"Type 'help' for help.\r\n\r\n")
-                    writer.write(b"fics% ")
+                    writer.write(b"\r\nfics% ")
                     await writer.drain()
                     print(f"[FICS] {username} <- login ok session start / fics%")
                 elif state == "session_start":
                     if not line:
-                        writer.write(b"fics% ")
+                        writer.write(b"\r\nfics% ")
                         await writer.drain()
                         continue
                     print(f"[FICS] {username} -> {line[:80]}")
@@ -398,7 +398,7 @@ class FICSProtocol:
                     if response is not None:
                         writer.write(response.encode())
                         print(f"[FICS] {username} <- {response.strip()[:80]}")
-                    writer.write(b"fics% ")
+                    writer.write(b"\r\nfics% ")
                     await writer.drain()
                     if line.lower() == "quit":
                         break
@@ -456,9 +456,14 @@ class FICSProtocol:
         elif cmd == "iset":
             return ""
         elif cmd == "set":
+            if args and args[0] == "style" and len(args) > 1 and args[1] == "12":
+                self.clients[writer]["state"] = "playing"
+                game = self.gm.get_game(self.clients[writer].get("game_id"))
+                if game:
+                    return board_to_fics_style12(game.board, game, self.clients[writer].get("username", "guest")) + "\r\n"
             return ""
         elif cmd == "showlist":
-            return ""
+            return "No lists available.\r\n"
         elif cmd == "date":
             import datetime
             now = datetime.datetime.utcnow()
