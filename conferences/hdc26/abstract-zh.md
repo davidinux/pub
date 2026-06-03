@@ -22,7 +22,7 @@ HDC 2026 - 深圳
 Flutter 的多平台集成历来将平台特定代码散布在各层中，而非隔离在专用的 Embedder
 层——Android、Linux、Tizen 等平台均存在这一模式。OpenHarmony 继承了同样的挑战。
 基于华为与 Linaro 的联合工程评审，我们评估了三个方向并聚焦于一条务实路径：
-将 Flutter Web 引擎编译为仓颉语言，通过原生 API 桥接设备能力。
+使用 Flutter 引擎 + OHOS Embedder，通过原生 API 桥接设备能力。
 该方法尊重 OpenHarmony 架构的同时最大化代码复用。
 
 我们将介绍评估过程、架构方案、第一阶段成果以及后续路线图——

@@ -16,7 +16,7 @@ Flutter's multi-platform integrations have historically scattered platform-speci
 all layers rather than isolating it in a dedicated Embedder — a pattern seen across Android, Linux,
 Tizen, and other platforms. OpenHarmony inherits this same challenge. Based on a joint
 Huawei-Linaro engineering review, we evaluated three directions and converged on a pragmatic path:
-leveraging the Flutter Web engine compiled to Cangjie, bridged to device capabilities via native APIs.
+leveraging the Flutter Engine with a dedicated OHOS Embedder, bridged to device capabilities via native APIs.
 This approach respects OpenHarmony's architecture while maximizing code reuse. We'll cover the
 evaluation, architecture, Phase 1 results, and the upcoming roadmap — including a Phase 2 kick-off
 in Q3 2026. We'll close by reflecting on Linaro's unique position as a bridge between open-source

@@ -96,7 +96,7 @@ th, td {
 |----------|-------------|--------|------|
 | **A** | Port all layers natively (Framework + Engine + Embedder) | Very High | High |
 | **B** | Fork Engine rendering (Impeller) for OHOS | High | Medium |
-| **C** | Flutter Web Engine + OHOS Embedder (recommended) | Medium | Low |
+| **C** | Flutter Engine + OHOS Embedder (recommended) | Medium | Low |
 
 ---
 
@@ -104,7 +104,6 @@ th, td {
 
 ## Approach Overview
 
-**Flutter Web Engine** → compiled to Cangjie  
 **OpenHarmony Flutter Embedder**  
 **Native API Bridge** → OHOS Capabilities  
 
@@ -118,8 +117,7 @@ layout: two-cols
 ::left::
 ## Direction C Approach
 
-Flutter Web Engine + OpenHarmony Embedder approach:
-- **→** Compile Flutter Web engine to Cangjie
+Flutter Engine + OpenHarmony Embedder approach:
 - **→** OpenHarmony Flutter Embedder handles platform integration
 - **→** Native API Bridge connects to OHOS capabilities
 
@@ -157,21 +155,9 @@ Flutter Web Engine + OpenHarmony Embedder approach:
 - **✓** Maximizes adoption speed — new Flutter releases land without rework
 - **✓** Leverages existing Flutter ecosystem (widgets, tooling, packages)
 - **✓** Production-ready path with manageable scope
-- **✓** Google actively developing web engine — long-term viability
 
 ---
 
-# Phase 1 Results (Completed April 2025)
-
-Feasibility validation: ✓ Confirmed
-
-Cangjie compilation target: ✓ Working
-
-Web engine performance: ✓ Acceptable for UX
-
-**Key findings: Technical approach is sound**
-
----
 
 # Roadmap
 

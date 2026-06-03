@@ -97,7 +97,7 @@ th, td {
 |------|------|--------|------|
 | **A** | 原生移植所有层（Framework + Engine + Embedder） | 非常高 | 高 |
 | **B** | Fork Engine 渲染层（Impeller）适配 OHOS | 高 | 中 |
-| **C** | Flutter Web 引擎 + OHOS Embedder（推荐） | 中 | 低 |
+| **C** | Flutter 引擎 + OHOS Embedder（推荐） | 中 | 低 |
 
 ---
 
@@ -105,7 +105,6 @@ th, td {
 
 ## 方案概述
 
-**Flutter Web 引擎** → 编译为仓颉语言  
 **OpenHarmony Flutter Embedder**  
 **原生 API 桥接** → OHOS 能力  
 
@@ -119,8 +118,7 @@ layout: two-cols
 ::left::
 ## 方向 C 方案
 
-Flutter Web 引擎 + OpenHarmony Embedder：
-- **→** 将 Flutter Web 引擎编译为仓颉
+Flutter 引擎 + OpenHarmony Embedder：
 - **→** OpenHarmony Embedder 处理平台集成
 - **→** 原生 API 桥接连接 OHOS 能力
 
@@ -158,21 +156,9 @@ Flutter Web 引擎 + OpenHarmony Embedder：
 - **✓** 最大化采用速度——新 Flutter 版本无需返工即可落地
 - **✓** 利用现有 Flutter 生态（组件、工具链、包）
 - **✓** 范围可控的可量产路径
-- **✓** Google 持续开发 Web 引擎——长期可行性
 
 ---
 
-# 第一阶段成果（2025年4月完成）
-
-可行性验证: ✓ 确认通过
-
-仓颉编译目标: ✓ 功能正常
-
-Web 引擎性能: ✓ 用户体验可接受
-
-**关键结论: 技术方案可行**
-
----
 
 # 路线图
 
