@@ -13,7 +13,7 @@
     "export:abstract": "slidev export abstract.md",
     "export:abstract-zh": "slidev export abstract-zh.md",
     "build:all": "npm run export:abstract && npm run export:abstract-zh && npm run export && npm run export:oh && npm run export:zh && npm run export:oh-zh",
-    "build:diagrams": "node build-diagrams.js"
+    "build:diagrams": "node build-diagrams.cjs"
   },
   "devDependencies": {
     "@slidev/cli": "^52.15.2",
