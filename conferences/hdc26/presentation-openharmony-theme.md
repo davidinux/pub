@@ -95,8 +95,8 @@ th, td {
 | Approach | Description | Effort | Risk |
 |----------|-------------|--------|------|
 | **A** | Port all layers natively (Framework + Engine + Embedder) | Very High | High |
-| **B** | Fork Engine rendering (Impeller) for OHOS | High | Medium |
-| **C** | Flutter Engine + OHOS Embedder (recommended) | Medium | Low |
+| **B** | Fork Engine rendering (Impeller) for OpenHarmony | High | Medium |
+| **C** | Flutter Engine + OpenHarmony Embedder (recommended) | Medium | Low |
 
 ---
 
@@ -105,7 +105,7 @@ th, td {
 ## Approach Overview
 
 **OpenHarmony Flutter Embedder**  
-**Native API Bridge** → OHOS Capabilities  
+**Native API Bridge** → OpenHarmony Capabilities  
 
 ---
 layout: two-cols
@@ -119,7 +119,7 @@ layout: two-cols
 
 Flutter Engine + OpenHarmony Embedder approach:
 - **→** OpenHarmony Flutter Embedder handles platform integration
-- **→** Native API Bridge connects to OHOS capabilities
+- **→** Native API Bridge connects to OpenHarmony capabilities
 
 ::right::
 ## Key Benefits
@@ -211,7 +211,7 @@ layout: two-cols
 
 - **→** Active contributors across multiple open source communities
 - **→** Bridging open-source communities to device makers
-- **→** Technical expertise in Flutter, OHOS, and broader ecosystems
+- **→** Technical expertise in Flutter, OpenHarmony, and broader ecosystems
 - **→** Influencing direction for production readiness
 
 ::right::

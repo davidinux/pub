@@ -104,8 +104,8 @@ th, td {
 | 方案 | 描述 | 工作量 | 风险 |
 |------|------|--------|------|
 | **A** | 原生移植所有层（Framework + Engine + Embedder） | 非常高 | 高 |
-| **B** | Fork Engine 渲染层（Impeller）适配 OHOS | 高 | 中 |
-| **C** | Flutter 引擎 + OHOS Embedder（推荐） | 中 | 低 |
+| **B** | Fork Engine 渲染层（Impeller）适配 OpenHarmony | 高 | 中 |
+| **C** | Flutter 引擎 + OpenHarmony Embedder（推荐） | 中 | 低 |
 
 ---
 
@@ -114,7 +114,7 @@ th, td {
 ## 方案概述
 
 **OpenHarmony Flutter Embedder**  
-**原生 API 桥接** → OHOS 能力  
+**原生 API 桥接** → OpenHarmony 能力  
 
 ---
 layout: two-cols
@@ -128,7 +128,7 @@ layout: two-cols
 
 Flutter 引擎 + OpenHarmony Embedder：
 - **→** OpenHarmony Embedder 处理平台集成
-- **→** 原生 API 桥接连接 OHOS 能力
+- **→** 原生 API 桥接连接 OpenHarmony 能力
 
 ::right::
 ## 主要优势
@@ -220,7 +220,7 @@ layout: two-cols
 
 - **→** 活跃贡献于多个开源社区
 - **→** 连接开源社区与设备制造商
-- **→** Flutter、OHOS 及更广泛生态的技术专长
+- **→** Flutter、OpenHarmony 及更广泛生态的技术专长
 - **→** 影响技术方向，推动方案达到产品化要求
 
 ::right::
