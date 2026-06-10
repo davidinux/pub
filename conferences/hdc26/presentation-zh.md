@@ -311,7 +311,13 @@ layout: two-cols
 
 # 谢谢 + 问答环节
 
-**幻灯片：** github.com/davidinux/pub/conferences/hdc26  
-**OH Slidev 主题：** github.com/davidinux/pub/templates/slidev/openharmony  
-
+<div style="display: flex; align-items: center; gap: 2em; margin: 1.5em 0;">
+<img src="./images/Davide_Ricci_headshot.jpeg" style="width: 140px; border-radius: 50%;" />
+<img src="./images/qr-slides.png" style="width: 140px;" />
+<div>
+**幻灯片：** github.com/davidinux/pub/conferences/hdc26<br/>
+**OH Slidev 主题：** github.com/davidinux/pub/templates/slidev/openharmony<br/>
+<br/>
 欢迎提问
+</div>
+</div>

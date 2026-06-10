@@ -302,7 +302,13 @@ layout: two-cols
 
 # Thank You + Q&A
 
-**Slides:** github.com/davidinux/pub/conferences/hdc26  
-**OH Slidev Theme:** github.com/davidinux/pub/templates/slidev/openharmony  
-
+<div style="display: flex; align-items: center; gap: 2em; margin: 1.5em 0;">
+<img src="./images/Davide_Ricci_headshot.jpeg" style="width: 140px; border-radius: 50%;" />
+<img src="./images/qr-slides.png" style="width: 140px;" />
+<div>
+**Slides:** github.com/davidinux/pub/conferences/hdc26<br/>
+**OH Slidev Theme:** github.com/davidinux/pub/templates/slidev/openharmony<br/>
+<br/>
 Questions welcome
+</div>
+</div>
