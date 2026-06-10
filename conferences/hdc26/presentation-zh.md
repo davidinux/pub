@@ -51,7 +51,7 @@ Android、Linux、Tizen、iOS 均存在这一模式——OpenHarmony 是最新�
 - **→** 新特性的采用速度显著下降
 - **→** 维护负担随时间持续累积
 
-仓颉、ArkUI、APK 等兼容性差异只是表象，并非根因。
+ArkUI、APK 等兼容性差异只是表象，并非根因。
 
 ---
 layout: two-cols
@@ -133,10 +133,11 @@ Flutter 引擎 + OpenHarmony Embedder：
 ::right::
 ## 主要优势
 
+- **✓** 最小化移植成本——仅 Embedder 层需适配平台
+- **✓** 最大化采用速度——新 Flutter 版本无须返工
+- **✓** 利用现有 Flutter 生态（组件、工具链、包）
+- **✓** 范围可控的可量产路径
 - **✓** 尊重 OpenHarmony 架构
-- **✓** 最大化 Flutter 生态代码复用
-- **✓** 具备产品化落地路径
-- **✓** Google 持续开发 Web 引擎
 
 ---
 
@@ -155,17 +156,6 @@ Flutter 引擎 + OpenHarmony Embedder：
 
 **Samsung**: 基于 Tizen 的 Flutter 计划
 - **→** IoT 和可穿戴设备
-
----
-
-# 方向 C 的优势
-
-- **✓** 最小化移植成本——仅 Embedder 层需要平台适配
-- **✓** 最大化采用速度——新 Flutter 版本无需返工即可落地
-- **✓** 利用现有 Flutter 生态（组件、工具链、包）
-- **✓** 范围可控的可量产路径
-
----
 
 
 # 路线图

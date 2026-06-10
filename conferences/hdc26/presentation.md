@@ -42,7 +42,7 @@ Flutter's platform integrations have historically scattered platform code across
 - **→** Adoption of new Flutter features dramatically slowed
 - **→** Maintenance burden compounds over time
 
-Minor incompatibilities (Cangjie, ArkUI, APK) are secondary, not the root cause.
+Minor incompatibilities (ArkUI, APK) are secondary, not the root cause.
 
 ---
 layout: two-cols
@@ -124,10 +124,11 @@ Flutter Engine + OpenHarmony Embedder approach:
 ::right::
 ## Key Benefits
 
+- **✓** Minimizes porting costs — only the Embedder layer needs platform adaptation
+- **✓** Maximizes adoption speed — new Flutter releases land without rework
+- **✓** Leverages existing Flutter ecosystem (widgets, tooling, packages)
+- **✓** Production-ready path with manageable scope
 - **✓** Respects OpenHarmony architecture
-- **✓** Maximizes code reuse from Flutter ecosystem
-- **✓** Production-ready path
-- **✓** Google actively developing web engine
 
 ---
 
@@ -146,17 +147,6 @@ Flutter Engine + OpenHarmony Embedder approach:
 
 **Samsung**: Tizen-based Flutter initiatives
 - **→** IoT and wearable devices
-
----
-
-# Why Direction C Wins
-
-- **✓** Minimizes porting costs — only the Embedder layer needs platform adaptation
-- **✓** Maximizes adoption speed — new Flutter releases land without rework
-- **✓** Leverages existing Flutter ecosystem (widgets, tooling, packages)
-- **✓** Production-ready path with manageable scope
-
----
 
 
 # Roadmap
