@@ -108,13 +108,60 @@ th, td {
 | **C** | Flutter 引擎 + OpenHarmony Embedder（推荐） | 中 | 低 |
 
 ---
+layout: two-cols
+---
 
-# 推荐方案（方向 C）
+::title::
+# 推荐方案：架构
 
-## 方案概述
+::left::
+## Flutter Embedder API
 
-**OpenHarmony Flutter Embedder**  
-**原生 API 桥接** → OpenHarmony 能力  
+Embedder API 定义了 Flutter 引擎与平台代码之间稳定的 C 接口。各操作系统仅在 Embedder 层的实现上有所不同。
+
+| API | 用途 |
+|-----|------|
+| `FlutterEngineRun(sz, config, user_data)` | 初始化并运行引擎 |
+| `FlutterEngineSendMessage(engine, msg)` | 向 Dart 端发送平台消息 |
+| `FlutterEngineRegisterExternalTexture(engine, id)` | 绑定外部渲染表面 |
+| `FlutterEngineDispatchPointerDataPacket(engine, pkt)` | 转发触控/指针事件至引擎 |
+
+::right::
+![架构图](./images/architecture.png)
+
+<style>
+.col:last-child img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: scale-down;
+}
+</style>
+
+---
+
+<style>
+table {
+  text-align: left !important;
+  width: 100%;
+}
+
+th, td {
+  text-align: left !important;
+  padding: 8px;
+  vertical-align: top;
+}
+</style>
+
+# 各平台的 Embedder API
+
+| 平台 | Embedder | 渲染表面 | 输入 |
+|------|----------|---------|------|
+| **Android** | JNI Embedder | SurfaceTexture | MotionEvent |
+| **Linux** | flutter-embedded-linux | EGL / Wayland | libinput |
+| **iOS** | UIKit Embedder | Metal CAMetalLayer | UIEvent |
+| **OpenHarmony** | 原生 OHOS Embedder | ArkUI 渲染表面 | OHOS 输入处理器 |
+
+Embedder API 接口在所有平台上是一致的——仅具体实现有所不同。OpenHarmony 沿用了与 Android、iOS、Linux 相同的模式。
 
 ---
 layout: two-cols
@@ -158,6 +205,19 @@ Flutter 引擎 + OpenHarmony Embedder：
 - **→** IoT 和可穿戴设备
 
 ---
+
+<style>
+table {
+  text-align: left !important;
+  width: 100%;
+}
+
+th, td {
+  text-align: left !important;
+  padding: 8px;
+  vertical-align: top;
+}
+</style>
 
 # 路线图
 

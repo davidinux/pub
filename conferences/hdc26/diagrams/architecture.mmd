@@ -1,29 +1,39 @@
 flowchart TB
-    subgraph Flutter["Flutter Ecosystem"]
-        FE[Flutter Web Engine<br/>compiled to Cangjie]
+    subgraph Engine["Flutter Engine (C++)"]
+        R[Renderer<br/>Skia / Impeller]
+        D[Dart Runtime]
+        C[Platform Channels]
     end
-    
-    subgraph OHOS["OpenHarmony Platform"]
-        EMB[OpenHarmony Flutter Embedder]
-        BRIDGE[Native API Bridge<br/>OHOS Capabilities]
-        RENDER[Cangjie Renderer]
+
+    subgraph API["Embedder API Boundary"]
+        F1["FlutterEngineRun()"]
+        F2["FlutterEngineSendMessage()"]
+        F3["FlutterEngineRegisterExternalTexture()"]
+        F4["FlutterEngineDispatchPointerDataPacket()"]
+    end
+
+    subgraph EMB["OpenHarmony Embedder"]
+        NATIVE[Native API Bridge]
+        SURFACE[ArkUI Render Surface]
         INPUT[OHOS Input Handler]
     end
-    
-    FE --> EMB
-    EMB --> BRIDGE
-    EMB --> RENDER
-    EMB --> INPUT
-    
-    BRIDGE --> CAP[OHOS Native Capabilities]
-    INPUT --> TOUCH[Touch/Gesture Input]
-    RENDER --> DISPLAY[Display Output]
-    
-    style FE fill:#6715E8,color:#fff
-    style EMB fill:#6715E8,color:#fff
-    style BRIDGE fill:#FFCF00,color:#000
-    style CAP fill:#FFCF00,color:#000
-    style RENDER fill:#00B2FF,color:#fff
-    style INPUT fill:#00B2FF,color:#fff
-    style TOUCH fill:#FF0099,color:#fff
-    style DISPLAY fill:#FF0099,color:#fff
+
+    subgraph PLAT["OHOS Platform"]
+        SYS[OHOS System APIs]
+    end
+
+    R --> F3
+    D --> F1
+    C --> F2
+    F1 --> NATIVE
+    F2 --> NATIVE
+    F3 --> SURFACE
+    F4 --> INPUT
+    NATIVE --> SYS
+    SURFACE --> SYS
+    INPUT --> SYS
+
+    style Engine fill:#6715E8,color:#fff,stroke:#fff
+    style API fill:#FFCF00,color:#000,stroke:#000
+    style EMB fill:#00B2FF,color:#fff,stroke:#fff
+    style PLAT fill:#FF0099,color:#fff,stroke:#fff

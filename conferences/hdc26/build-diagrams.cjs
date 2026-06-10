@@ -51,7 +51,7 @@ for (const diagram of diagrams) {
     
     // Generate PNG using mmdc
     execSync(
-      `npx mmdc -i "${inputPath}" -o "${outputPath}" -b transparent -w 1200`,
+      `npx mmdc -i "${inputPath}" -o "${outputPath}" -b transparent -w 1200 -p puppeteer-config.json`,
       { stdio: 'inherit' }
     );
     

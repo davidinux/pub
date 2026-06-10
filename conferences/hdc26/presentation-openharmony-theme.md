@@ -99,13 +99,60 @@ th, td {
 | **C** | Flutter Engine + OpenHarmony Embedder (recommended) | Medium | Low |
 
 ---
+layout: two-cols
+---
 
-# Recommended Solution (Direction C)
+::title::
+# Recommended Solution: Architecture
 
-## Approach Overview
+::left::
+## Flutter Embedder API
 
-**OpenHarmony Flutter Embedder**  
-**Native API Bridge** → OpenHarmony Capabilities  
+The Embedder API defines a stable C interface between Flutter Engine and platform code. Only the Embedder layer varies per OS.
+
+| API | Purpose |
+|-----|---------|
+| `FlutterEngineRun(sz, config, user_data)` | Initialize and run the engine |
+| `FlutterEngineSendMessage(engine, msg)` | Send platform message to Dart |
+| `FlutterEngineRegisterExternalTexture(engine, id)` | Bind an external render surface |
+| `FlutterEngineDispatchPointerDataPacket(engine, pkt)` | Forward touch/pointer events to engine |
+
+::right::
+![Architecture Diagram](./images/architecture.png)
+
+<style>
+.col:last-child img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: scale-down;
+}
+</style>
+
+---
+
+<style>
+table {
+  text-align: left !important;
+  width: 100%;
+}
+
+th, td {
+  text-align: left !important;
+  padding: 8px;
+  vertical-align: top;
+}
+</style>
+
+# Embedder API Across Platforms
+
+| Platform | Embedder | Render Surface | Input |
+|----------|----------|---------------|-------|
+| **Android** | JNI Embedder | SurfaceTexture | MotionEvent |
+| **Linux** | flutter-embedded-linux | EGL / Wayland | libinput |
+| **iOS** | UIKit Embedder | Metal CAMetalLayer | UIEvent |
+| **OpenHarmony** | Native OHOS Embedder | ArkUI Surface | OHOS Input Handler |
+
+The Embedder API interface is identical across platforms — only the platform-specific implementation behind it differs. OpenHarmony follows the same pattern as Android, iOS, and Linux.
 
 ---
 layout: two-cols
@@ -149,6 +196,19 @@ Flutter Engine + OpenHarmony Embedder approach:
 - **→** IoT and wearable devices
 
 ---
+
+<style>
+table {
+  text-align: left !important;
+  width: 100%;
+}
+
+th, td {
+  text-align: left !important;
+  padding: 8px;
+  vertical-align: top;
+}
+</style>
 
 # Roadmap
 
@@ -195,7 +255,7 @@ layout: two-cols
 ---
 
 ::title::
-# Linaro's Role — Community Bridge
+# Linaroʼs Role — Community Bridge
 
 ::left::
 ## Across the Open Source Ecosystem
@@ -221,7 +281,7 @@ layout: two-cols
 ---
 
 ::title::
-# Linaro's Role — Industry Mediator
+# Linaroʼs Role — Industry Mediator
 
 ::left::
 
