@@ -148,6 +148,7 @@ Flutter Engine + OpenHarmony Embedder approach:
 **Samsung**: Tizen-based Flutter initiatives
 - **→** IoT and wearable devices
 
+---
 
 # Roadmap
 
