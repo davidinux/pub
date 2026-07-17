@@ -389,31 +389,38 @@ The reference tables in this SKILL.md (DCs, conditions, rest, cover, exhaustion,
 
 ### Book downloads (`reference/books/` — `--books` flag)
 
-Downloads freely available rulebook PDFs + AI-friendly markdown for offline reference:
+Downloads freely available rulebook PDFs + AI-friendly markdown for offline reference.
+
+**Important:** There are no separate free "Monster Manual" or "Player's Handbook" PDFs — those are paid products. The **SRD (System Reference Document)** is the official free PDF that contains the freely-licensed subset of ALL core books combined: rules, classes, spells, monsters, equipment, feats, and magic items in a single document. The markdown conversion splits it into topic files for easier AI access.
 
 ```
 reference/books/
-├── SRD_CC_v5.2.1.pdf            # Official 2024/2025 rules (CC-BY-4.0)
-├── SRD_CC_v5.1.pdf              # Official 2014 rules (CC-BY-4.0)
-├── srd-5.2.1-markdown/          # Community markdown conversion (grep-able)
+├── SRD_CC_v5.2.1.pdf            # 2024 ruleset: rules + 12 classes + 400+ monsters
+│                                #   + 500+ spells + equipment + feats + magic items
+├── SRD_CC_v5.2.pdf              # Previous 5.2 release (April 2025)
+├── SRD_CC_v5.1.pdf              # 2014 ruleset: rules + classes + 350+ monsters + spells
+├── SRD-OGL_V5.1.pdf             # Same as 5.1 CC, under OGL 1.0a license
+├── converting-to-srd-5.2.1.pdf  # Wizards' migration guide (5.1 → 5.2.1)
+├── srd-5.2.1-markdown/          # Community markdown (AI-grep-able by topic)
 │   ├── classes.md               # All 12 classes with subclass features
 │   ├── spells.md                # Complete spell list (A-Z, ~500 spells)
-│   ├── monsters.md              # Bestiary overview + A-Z (400+ monsters)
+│   ├── monsters.md              # Bestiary A-Z with full stat blocks (400+)
 │   ├── equipment.md             # Weapons, armor, gear, tools
 │   ├── feats.md                 # Character feats
 │   ├── magic-items.md           # Magic items and artifacts
 │   ├── playing-the-game.md      # Core gameplay rules
 │   ├── character-creation.md    # Character building
-│   └── ...                      # (10+ markdown files total)
-└── _manifest.json               # Metadata about downloaded books
+│   └── ...                      # (10+ markdown files)
+└── _manifest.json               # Metadata about all downloaded books
 ```
 
 **How to use books:**
 - **PDFs** are for human reading. Open them in your PDF viewer for browsing.
-- **Markdown** is AI-readable. The AI can grep specific files for rules lookups:
+- **Markdown** is AI-readable. I grep specific files for rules lookups:
   - "How does grappling work?" → read `srd-5.2.1-markdown/playing-the-game.md`
   - "What does the Fireball spell do?" → read `srd-5.2.1-markdown/spells.md`
   - "What are barbarian rage features at level 5?" → read `srd-5.2.1-markdown/classes.md`
+  - "What's the stat block for a Grick?" → read `srd-5.2.1-markdown/monsters.md`
 
 ### Directory structure
 

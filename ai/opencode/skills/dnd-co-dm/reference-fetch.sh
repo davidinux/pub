@@ -139,34 +139,78 @@ fetch_books() {
   echo ""
   echo "--- Free Rulebook Downloads ---"
 
-  # SRD 5.2.1 (2024/2025 rules) — official PDF
+  # SRD 5.2.1 (2024/2025 rules) — official CC-licensed PDF
+  # Contains: rules, 12 classes, 400+ monsters, 500+ spells, equipment, feats, magic items
   local srd521_url="https://media.dndbeyond.com/compendium-images/srd/5.2/SRD_CC_v5.2.1.pdf"
   local srd521_file="$BOOKS_DIR/SRD_CC_v5.2.1.pdf"
   if needs_update "$srd521_file"; then
-    echo "  [1/4] SRD 5.2.1 (2024 rules) PDF..."
+    echo "  [1/6] SRD 5.2.1 (2024 ruleset)"
+    echo "        Downloading PDF..."
     curl -sL "$srd521_url" -o "$srd521_file.tmp" && mv "$srd521_file.tmp" "$srd521_file"
     echo "        Saved: $(du -h "$srd521_file" | cut -f1)"
     books_fetched=$((books_fetched + 1))
   else
-    echo "  [1/4] SRD 5.2.1 PDF is current ($(du -h "$srd521_file" | cut -f1))"
+    echo "  [1/6] SRD 5.2.1 PDF is current ($(du -h "$srd521_file" | cut -f1))"
   fi
 
-  # SRD 5.1 (2014 rules) — official PDF
+  # SRD 5.2.0 (previous 2024 version) — official CC-licensed PDF
+  local srd520_url="https://media.dndbeyond.com/compendium-images/srd/5.2/SRD_CC_v5.2.pdf"
+  local srd520_file="$BOOKS_DIR/SRD_CC_v5.2.pdf"
+  if needs_update "$srd520_file"; then
+    echo "  [2/6] SRD 5.2.0 (2024 ruleset, v5.2 initial)"
+    echo "        Downloading PDF..."
+    curl -sL "$srd520_url" -o "$srd520_file.tmp" && mv "$srd520_file.tmp" "$srd520_file"
+    echo "        Saved: $(du -h "$srd520_file" | cut -f1)"
+    books_fetched=$((books_fetched + 1))
+  else
+    echo "  [2/6] SRD 5.2.0 PDF is current ($(du -h "$srd520_file" | cut -f1))"
+  fi
+
+  # SRD 5.1 (2014 rules) — official CC-licensed PDF
+  # Contains: rules, 12 classes, 350+ monsters, 350+ spells, equipment, magic items
   local srd51_url="https://media.dndbeyond.com/compendium-images/srd/5.1/SRD_CC_v5.1.pdf"
   local srd51_file="$BOOKS_DIR/SRD_CC_v5.1.pdf"
   if needs_update "$srd51_file"; then
-    echo "  [2/4] SRD 5.1 (2014 rules) PDF..."
+    echo "  [3/6] SRD 5.1 (2014 ruleset)"
+    echo "        Downloading PDF..."
     curl -sL "$srd51_url" -o "$srd51_file.tmp" && mv "$srd51_file.tmp" "$srd51_file"
     echo "        Saved: $(du -h "$srd51_file" | cut -f1)"
     books_fetched=$((books_fetched + 1))
   else
-    echo "  [2/4] SRD 5.1 PDF is current ($(du -h "$srd51_file" | cut -f1))"
+    echo "  [3/6] SRD 5.1 PDF is current ($(du -h "$srd51_file" | cut -f1))"
   fi
 
-  # SRD 5.2.1 Markdown (AI-friendly, searchable format)
+  # SRD 5.1 OGL version (same content as CC, under OGL 1.0a license)
+  local srd51_ogl_url="https://media.dndbeyond.com/compendium-images/srd/5.1/SRD-OGL_V5.1.pdf"
+  local srd51_ogl_file="$BOOKS_DIR/SRD-OGL_V5.1.pdf"
+  if needs_update "$srd51_ogl_file"; then
+    echo "  [4/6] SRD 5.1 OGL (2014 ruleset, OGL license)"
+    echo "        Downloading PDF..."
+    curl -sL "$srd51_ogl_url" -o "$srd51_ogl_file.tmp" && mv "$srd51_ogl_file.tmp" "$srd51_ogl_file"
+    echo "        Saved: $(du -h "$srd51_ogl_file" | cut -f1)"
+    books_fetched=$((books_fetched + 1))
+  else
+    echo "  [4/6] SRD 5.1 OGL PDF is current ($(du -h "$srd51_ogl_file" | cut -f1))"
+  fi
+
+  # Converting to SRD 5.2.1 guide (from Wizards)
+  local conv_url="https://media.dndbeyond.com/compendium-images/srd/guide/converting-to-srd-5.2.1.pdf"
+  local conv_file="$BOOKS_DIR/converting-to-srd-5.2.1.pdf"
+  if needs_update "$conv_file"; then
+    echo "  [5/6] Converting to SRD 5.2.1 (migration guide)"
+    echo "        Downloading PDF..."
+    curl -sL "$conv_url" -o "$conv_file.tmp" && mv "$conv_file.tmp" "$conv_file"
+    echo "        Saved: $(du -h "$conv_file" | cut -f1)"
+    books_fetched=$((books_fetched + 1))
+  else
+    echo "  [5/6] Conversion guide is current ($(du -h "$conv_file" | cut -f1))"
+  fi
+
+  # SRD 5.2.1 Markdown (AI-friendly, searchable format from GitHub community)
+  # Splits the PDF into topic files: classes.md, spells.md, monsters.md, etc.
   local md_dir="$BOOKS_DIR/srd-5.2.1-markdown"
   if [ ! -d "$md_dir" ] || [ "$FORCE" = true ]; then
-    echo "  [3/4] SRD 5.2.1 Markdown (from GitHub)..."
+    echo "  [6/6] SRD 5.2.1 Markdown (AI-readable format)"
     if command -v git &>/dev/null; then
       if [ -d "$md_dir" ]; then
         (cd "$md_dir" && git pull --ff-only 2>/dev/null) || \
@@ -178,7 +222,7 @@ fetch_books() {
       fi
       local md_files
       md_files=$(find "$md_dir" -name '*.md' 2>/dev/null | wc -l)
-      echo "        $md_files markdown files"
+      echo "        $md_files topic files (classes, spells, monsters, etc.)"
       books_fetched=$((books_fetched + 1))
     else
       echo "        Skipped (git not installed). URL for manual clone:"
@@ -187,7 +231,7 @@ fetch_books() {
   else
     local md_files
     md_files=$(find "$md_dir" -name '*.md' 2>/dev/null | wc -l)
-    echo "  [3/4] SRD 5.2.1 Markdown is current ($md_files files)"
+    echo "  [6/6] SRD 5.2.1 Markdown is current ($md_files files)"
   fi
 
   # Write manifest
@@ -196,28 +240,60 @@ fetch_books() {
 {
   "description": "Freely available D&D reference books for offline use.",
   "license": "Creative Commons Attribution 4.0 International (CC-BY-4.0)",
-  "srd_5.2.1_pdf": {
-    "url": "$srd521_url",
-    "file": "SRD_CC_v5.2.1.pdf",
-    "ruleset": "2024",
-    "note": "Official SRD for 2024/2025 ruleset"
-  },
-  "srd_5.1_pdf": {
-    "url": "$srd51_url",
-    "file": "SRD_CC_v5.1.pdf",
-    "ruleset": "2014",
-    "note": "Official SRD for 2014 ruleset"
-  },
-  "srd_5.2.1_markdown": {
-    "source": "https://github.com/downfallx/dnd-5e-srd-markdown",
-    "directory": "srd-5.2.1-markdown",
-    "ruleset": "2024",
-    "note": "Community-converted SRD in markdown — AI-friendly, grep-able"
+  "note": "The SRD is the free combined 'monsters book + characters book + rules + spells + items'. There are no separate free Monster Manual or Player's Handbook PDFs — the SRD contains the freely-licensed subset of all of them.",
+  "entries": {
+    "srd_5.2.1": {
+      "file": "SRD_CC_v5.2.1.pdf",
+      "url": "$srd521_url",
+      "ruleset": "2024",
+      "size": "$(du -h "$srd521_file" 2>/dev/null | cut -f1 || echo '?')",
+      "contents": "Rules + 12 classes + 400+ monsters + 500+ spells + equipment + feats + magic items"
+    },
+    "srd_5.2.0": {
+      "file": "SRD_CC_v5.2.pdf",
+      "url": "$srd520_url",
+      "ruleset": "2024",
+      "contents": "Previous 5.2 release (April 2025)"
+    },
+    "srd_5.1_cc": {
+      "file": "SRD_CC_v5.1.pdf",
+      "url": "$srd51_url",
+      "ruleset": "2014",
+      "contents": "Rules + 12 classes + 350+ monsters + 350+ spells + equipment + magic items"
+    },
+    "srd_5.1_ogl": {
+      "file": "SRD-OGL_V5.1.pdf",
+      "url": "$srd51_ogl_url",
+      "ruleset": "2014",
+      "license": "OGL 1.0a",
+      "contents": "Same content as SRD 5.1 CC, under OGL license"
+    },
+    "conversion_guide": {
+      "file": "converting-to-srd-5.2.1.pdf",
+      "url": "$conv_url",
+      "contents": "Guide for migrating content from SRD 5.1 to 5.2.1"
+    },
+    "srd_5.2.1_markdown": {
+      "source": "https://github.com/downfallx/dnd-5e-srd-markdown",
+      "directory": "srd-5.2.1-markdown",
+      "ruleset": "2024",
+      "contents": "Community markdown conversion — AI-friendly, grep-able by topic",
+      "topic_files": [
+        "classes.md (12 classes + subclass features)",
+        "spells.md (500+ spells A-Z)",
+        "monsters.md (400+ stat blocks)",
+        "equipment.md (weapons, armor, gear, tools)",
+        "feats.md (character feats)",
+        "magic-items.md (magic items)",
+        "playing-the-game.md (core rules)",
+        "character-creation.md",
+        "gameplay-toolbox.md (advanced rules)"
+      ]
+    }
   }
 }
 EOMANIFEST
-  echo "  [4/4] Manifest written to _manifest.json"
-  books_fetched=$((books_fetched + 1))
+  echo "        Manifest written to _manifest.json"
 
   echo ""
   echo "--- Summary ---"
