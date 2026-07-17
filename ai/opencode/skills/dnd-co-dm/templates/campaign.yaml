@@ -1,0 +1,36 @@
+# Campaign metadata file
+# Copy this template to ../campaigns/<campaign-name>/campaign.yaml
+
+name: my-campaign
+title: "My Campaign Title"
+edition: "2024"          # "2014" or "2024"
+setting: "Forgotten Realms"
+tone: "Heroic fantasy"   # gothic horror, grimdark, heroic fantasy, sword & sorcery, etc.
+starting_level: 3
+
+# Optional overrides
+rules_variants: []
+#  - "Heroic inspiration at start of each session"
+#  - "Flanking gives +2 instead of advantage"
+
+house_rules: []
+#  - "Nat 20 on skill checks auto-succeeds"
+#  - "Potions: bonus action to drink, action to feed"
+#  - "Critical hits: max damage + roll"
+
+# Setting reference (filled from PDF upload or chat)
+locations: []
+#  - name: "Town Square"
+#    description: "Cobblestone square with a fountain"
+#    notable: ["Market stalls", "Town crier"]
+
+factions: []
+#  - name: "Harpers"
+#    alignment: "Good"
+#    goals: "Maintain balance of power"
+
+key_npcs: []
+#  - name: "Elminster"
+#    role: "Archmage"
+#    location: "Shadowdale"
+#    notes: "Ancient, wise, cryptic"
