@@ -18,19 +18,11 @@ house_rules: []
 #  - "Potions: bonus action to drink, action to feed"
 #  - "Critical hits: max damage + roll"
 
-# Setting reference (filled from PDF upload or chat)
-locations: []
-#  - name: "Town Square"
-#    description: "Cobblestone square with a fountain"
-#    notable: ["Market stalls", "Town crier"]
-
-factions: []
-#  - name: "Harpers"
-#    alignment: "Good"
-#    goals: "Maintain balance of power"
-
-key_npcs: []
-#  - name: "Elminster"
-#    role: "Archmage"
-#    location: "Shadowdale"
-#    notes: "Ancient, wise, cryptic"
+# After uploading an adventure PDF, the AI extracts these files:
+#   source/       — original PDF (saved on import)
+#   locations.yaml  — every area/room/location
+#   npcs.yaml       — every NPC with personality, stats, secrets
+#   encounters.yaml — every encounter with creatures and tactics
+#   lore.yaml       — plot hooks, backstory, faction info
+#
+# See templates/extracted/ for the expected format.

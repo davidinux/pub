@@ -1,0 +1,44 @@
+# Locations extracted from the adventure PDF
+# One entry per area/room/location
+# The AI reads this file when the party enters a new area.
+
+locations:
+  - id: "death-house-area-a"
+    name: "The Front Gate"
+    area: "Death House — Grounds"
+    description: >
+      Iron gates, rusted and twisted, stand between two crumbling stone pillars.
+      Beyond them, a cobblestone path winds through an overgrown garden toward
+      a looming three-story manor. The air is cold and still.
+    features:
+      - "Iron gate, DC 13 Strength to force open, DC 15 Dexterity to climb"
+      - "Overgrown garden with thorny bushes (1 piercing damage if pushed through)"
+      - "Fog clings to the ground, reducing visibility to 60 ft"
+    light: "Dim (dusk)"
+    sound: "Silent — no birds, no wind, no insects"
+    smell: "Damp earth, decay, old stone"
+    exits:
+      - direction: "north"
+        leads_to: "death-house-area-b"  # Front door
+    secrets: []
+    loot: []
+    npcs_present: []
+    encounters: []
+
+  - id: "death-house-area-b"
+    name: "The Front Door"
+    area: "Death House — Entrance"
+    description: >
+      A massive oak door, banded with black iron. A brass knocker in the shape of
+      a screaming face. The door is slightly ajar. Inside, darkness.
+    features:
+      - "Knocker: when used, a muffled scream echoes from within"
+      - "Door: DC 10 Strength to open fully, creaks loudly"
+    light: "Darkness inside"
+    exits:
+      - direction: "inside"
+        leads_to: "death-house-area-1"  # Main foyer
+    secrets: []
+    loot: []
+    npcs_present: []
+    encounters: []

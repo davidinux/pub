@@ -36,8 +36,13 @@ This skill activates when you say:
 
 ## Files
 
-- `<skill_dir>/campaigns/<name>/campaign.yaml` — campaign metadata
-- `<skill_dir>/campaigns/<name>/notes.md` — DM notes
+- `<skill_dir>/campaigns/<name>/campaign.yaml` — campaign metadata (always read on load)
+- `<skill_dir>/campaigns/<name>/source/` — original PDFs saved on import
+- `<skill_dir>/campaigns/<name>/locations.yaml` — area/room descriptions (extracted from PDF)
+- `<skill_dir>/campaigns/<name>/npcs.yaml` — NPCs: personalities, stats, secrets
+- `<skill_dir>/campaigns/<name>/encounters.yaml` — encounters: creature lists, tactics, loot
+- `<skill_dir>/campaigns/<name>/lore.yaml` — plot hooks, backstory, factions, timelines
+- `<skill_dir>/campaigns/<name>/notes.md` — DM session notes (updated each session)
 - `<skill_dir>/campaigns/<name>/sessions/` — session state checkpoints
 - `<skill_dir>/reference-fetch.sh` — downloads/updates SRD reference data cache
 
@@ -57,8 +62,16 @@ ln -s ~/github/davidinux/pub/ai/opencode/skills/dnd-co-dm ~/.agents/skills/dnd-c
 
 1. I ask for: campaign name, setting, tone, starting level, rules variant (2014/2024)
 2. I create `<skill_dir>/campaigns/<name>/campaign.yaml`
-3. Upload an adventure PDF — I read it and extract NPCs, locations, plot hooks
-4. Introduce characters in chat — I record party composition
+3. **Import the adventure** — upload a PDF (adventure module, campaign book, etc.):
+   a. I save a copy to `<skill_dir>/campaigns/<name>/source/` for future reference
+   b. I read the PDF and extract all content into structured files:
+      - `locations.yaml` — every area/room/location with descriptions and features
+      - `npcs.yaml` — every NPC with personality, stat block refs, secrets, location
+      - `encounters.yaml` — every encounter with creature lists, tactics, loot, location
+      - `lore.yaml` — plot hooks, backstory, faction goals, timelines
+   c. I keep **only the active scene** in chat context. Everything else stays on disk.
+   d. As you explore, I read the relevant file entries on demand.
+4. Introduce characters in chat — I record party composition in the state checkpoint
 5. I write a session state file and we begin
 
 ### Loading an existing campaign
@@ -66,9 +79,10 @@ ln -s ~/github/davidinux/pub/ai/opencode/skills/dnd-co-dm ~/.agents/skills/dnd-c
 Say: "Load campaign Curse of Strahd"
 
 1. I read `<skill_dir>/campaigns/<name>/campaign.yaml`
-2. I check for the latest session checkpoint
-3. I present a summary: "You're in [location], last session you [summary]. Ready to continue?"
-4. On confirmation, I set the scene and we begin
+2. I verify the extracted data files exist (`locations.yaml`, `npcs.yaml`, etc.)
+3. I check for the latest session checkpoint
+4. I present: "You're in [current location], last session you [summary]. Ready to continue?"
+5. On confirmation, I read the current location from `locations.yaml` into context and we begin
 
 ### Running a session
 
@@ -136,6 +150,41 @@ When I receive a new message, I check: *Do I know where the party is, their HP, 
 3. Continue seamlessly
 
 You can also force a reload by asking: "What's my state?" or "Where are we?"
+
+## Knowledge management
+
+Adventure PDFs contain hundreds of pages. Keeping everything in context is wasteful and accelerates compaction. I use a **hot / warm / cold** strategy to keep only what's needed in chat.
+
+### Hot (always in context)
+- Current scene description and environment
+- Party stats (HP, resources, conditions, spell slots)
+- NPCs actively present and interacting
+- Active combat state (initiative, positions, conditions)
+- Rules reference tables (embedded in this SKILL.md)
+
+### Warm (read from file on scene transition)
+When you move to a new area or encounter a new NPC, I read the relevant data file and load that entry into context:
+- Location details → `locations.yaml`
+- NPC personality/secret/stat → `npcs.yaml`
+- Encounter setup → `encounters.yaml`
+
+### Cold (read from file or source PDF on demand)
+- Distant locations not yet visited
+- NPCs not yet met
+- Full stat blocks for uncommon monsters
+- Lore/backstory not immediately relevant
+
+### Triggered lookups
+
+| Trigger | Action |
+|---------|--------|
+| "We go to the inn" | Read `locations.yaml` for the inn entry → load into context |
+| An NPC speaks | Read `npcs.yaml` for their personality/secret |
+| Combat breaks out | Read `encounters.yaml` for the encounter setup |
+| "What do I remember about X?" | Read `lore.yaml` for the relevant plot hook |
+| Rules question about a spell | Check `reference/spells/` or web search |
+
+This way the PDF is imported once, extracted to structured files, and referenced on demand — no unused material clogs the context window.
 
 ## Your role as co-DM
 

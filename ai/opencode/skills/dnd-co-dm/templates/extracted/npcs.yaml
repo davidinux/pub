@@ -1,0 +1,45 @@
+# NPCs extracted from the adventure PDF
+# The AI reads this file when the party meets or interacts with an NPC.
+
+npcs:
+  - id: "rose"
+    name: "Rose"
+    role: "Ghost of a 10-year-old girl"
+    location: "death-house-area-6"  # Children's bedroom
+    description: >
+      A translucent young girl in a tattered nightgown. She floats a few inches
+      off the floor. Her eyes are sad but kind.
+    personality: "Protective of her younger brother, wants help, speaks formally"
+    voice: "Soft, echoing, childlike but grave"
+    knows:
+      - "Her brother Thorn is hiding under the bed"
+      - "The cult in the basement killed their parents"
+      - "The master bedroom has a hidden key"
+      - "The basement door is behind the tapestry in the study"
+    secrets:
+      - "She knows the password to the basement door but is afraid to say it"
+    stat_block: "Ghost (use Specter stats, reduced)"
+    attitude: "Friendly (wants help)"
+    quests:
+      - "Lay the children's souls to rest"
+      - "Find and bury their remains"
+
+  - id: "thorn"
+    name: "Thorn"
+    role: "Ghost of a 7-year-old boy"
+    location: "death-house-area-6"  # Children's bedroom (under bed)
+    description: >
+      A small boy clutching a stuffed wolf. He peeks out from under the bed,
+      trembling. He's translucent like his sister.
+    personality: "Timid, frightened, clings to his stuffed wolf"
+    voice: "Quiet, stammering, barely a whisper"
+    knows:
+      - "The monsters in the basement are awake"
+      - "They come up the stairs at night"
+      - "The cult leader wore a red mask"
+    secrets:
+      - "He dropped his favorite toy (the stuffed wolf) in the basement and wants it back"
+    stat_block: "Non-combatant"
+    attitude: "Frightened (warmed by kindness)"
+    quests:
+      - "Retrieve Thorn's stuffed wolf from the basement"

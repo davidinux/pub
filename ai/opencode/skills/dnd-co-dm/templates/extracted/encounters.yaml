@@ -1,0 +1,50 @@
+# Encounters extracted from the adventure PDF
+# The AI reads this file when combat breaks out or the party enters a mapped encounter area.
+
+encounters:
+  - id: "death-house-encounter-1"
+    name: "Cultists in the Basement Antechamber"
+    location: "death-house-area-9"  # Basement antechamber
+    type: "combat"
+    trigger: "Party enters the antechamber without stealth"
+    creatures:
+      - id: "cultist"
+        name: "Cult Fanatic"
+        count: 1
+        stat_block: "reference/monsters/cult-fanatic.json"
+        tactics: "Stays behind minions, casts bless, usesHold Person on the biggest threat"
+      - id: "cultist-minion"
+        name: "Cultist"
+        count: 3
+        stat_block: "reference/monsters/cultist.json"
+        tactics: "Rush the nearest target, fight to the death (fanatically loyal)"
+    description: >
+      Four robed figures in red masks stand around a brazier. One holds a
+      sacrificial dagger. They turn as the door opens.
+    terrain:
+      - "Brazier in the center: bright light 20 ft, dim light 20 ft beyond"
+      - "Stone pillars provide half cover"
+      - "Two torches on the walls (can be extinguished)"
+    loot:
+      - "Sacrificial dagger (silvered, worth 25 gp)"
+      - "30 gp in mixed coins on the cultists"
+      - "A人手led letter from the cult leader (plot hook to next area)"
+    xp: 450
+
+  - id: "death-house-encounter-2"
+    name: "The Grick in the Storage Room"
+    location: "death-house-area-11"  # Storage room
+    type: "combat"
+    trigger: "Party searches the storage room"
+    creatures:
+      - id: "grick"
+        name: "Grick"
+        count: 1
+        stat_block: "reference/monsters/grick.json"
+        tactics: "Hides among hanging meat hooks, ambushes the last person in line"
+    description: >
+      The storeroom is filled with hanging slabs of salted meat. Something
+      moves in the shadows near the ceiling.
+    loot:
+      - "A dead adventurer's pack: 50 ft rope, 2 days rations, a potion of healing"
+    xp: 200

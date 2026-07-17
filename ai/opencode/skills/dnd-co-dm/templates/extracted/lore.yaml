@@ -1,0 +1,48 @@
+# Lore, plot hooks, factions, and backstory extracted from the adventure PDF
+# The AI reads this file when the party asks about the story or setting.
+
+campaign_background: >
+  Centuries ago, a powerful vampire named Strahd von Zarovich conquered the
+  valley of Barovia, slaying his brother Sergei and claiming his brother's
+  beloved, Tatyana. Cursed by the Dark Powers, Strahd became a vampire and
+  the valley was swallowed into a demiplane of dread — the Domains of Dread.
+  Strahd rules Barovia still, eternal and imprisoned, forever pursuing
+  Tatyana's reincarnated soul.
+
+current_situation: >
+  The party has been drawn into Barovia through the mists. They arrive at the
+  village of Barovia, where they learn of the burgomaster's death and his
+  son Ismark's plea to protect his sister Ireena — who bears a striking
+  resemblance to Tatyana.
+
+plot_hooks:
+  - id: "hook-1"
+    name: "The Death House"
+    location: "village-of-barovia"
+    description: "The party hears rumors of a haunted house on the edge of town. Strange lights, children's cries."
+    leads_to: "Curse of Strahd: Chapter 2 — The Death House"
+    reward: "Level 3, first clues about Strahd"
+
+  - id: "hook-2"
+    name: "Ireena's Plea"
+    location: "burgomaster's house"
+    description: "Ismark Kolyanovich asks the party to escort his sister Ireena to Vallaki for safety."
+    leads_to: "Curse of Strahd: Chapter 3 — The Road to Vallaki"
+    reward: "50 gp each, Ismark's gratitude"
+
+factions:
+  - name: "The Keepers of the Feather"
+    alignment: "Good"
+    goals: "Protect Barovia's innocents from Strahd's influence"
+    allies_with: ["The party (eventually)"]
+    enemies: ["Strahd von Zarovich", "The Werewolves"]
+    known_locations: ["The Blue Water Inn (Vallaki)"]
+    leader: "Urwin Martikov"
+
+  - name: "Strahd's Spies"
+    alignment: "Evil"
+    goals: "Report the party's movements to Strahd, sow discord"
+    members:
+      - "Rahadin (Strahd's chamberlain)"
+      - "Various vampire spawn and charmed agents"
+    known_locations: ["Castle Ravenloft"]
