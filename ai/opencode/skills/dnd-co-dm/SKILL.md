@@ -52,8 +52,13 @@ This skill activates when you say:
 # Install the skill
 ln -s ~/github/davidinux/pub/ai/opencode/skills/dnd-co-dm ~/.agents/skills/dnd-co-dm
 
-# (Optional) Download SRD reference data
+# (Optional) Download SRD reference data (monsters, spells, classes)
 ~/.agents/skills/dnd-co-dm/reference-fetch.sh
+
+# (Optional) Download free rulebook PDFs + markdown for offline reference
+# The PDFs are the official SRD 5.1 (2014) and SRD 5.2.1 (2024) under CC license
+# The markdown is a community conversion for easy AI searching
+~/.agents/skills/dnd-co-dm/reference-fetch.sh --books
 ```
 
 ## Campaign workflow
@@ -369,14 +374,48 @@ The reference tables in this SKILL.md (DCs, conditions, rest, cover, exhaustion,
 `reference-fetch.sh` downloads the full D&D 5e SRD from the community API (dnd5eapi.co) to `<skill_dir>/reference/`:
 
 ```bash
-# Download or update all SRD reference data
+# Download or update all SRD reference data (monsters, spells, classes, etc.)
 ~/.agents/skills/dnd-co-dm/reference-fetch.sh
 
-# Force a full re-download
+# Download free rulebook PDFs + markdown for offline reference
+~/.agents/skills/dnd-co-dm/reference-fetch.sh --books
+
+# Do both
+~/.agents/skills/dnd-co-dm/reference-fetch.sh --all
+
+# Force a full re-download of everything
 ~/.agents/skills/dnd-co-dm/reference-fetch.sh --force
 ```
 
-This creates:
+### Book downloads (`reference/books/` — `--books` flag)
+
+Downloads freely available rulebook PDFs + AI-friendly markdown for offline reference:
+
+```
+reference/books/
+├── SRD_CC_v5.2.1.pdf            # Official 2024/2025 rules (CC-BY-4.0)
+├── SRD_CC_v5.1.pdf              # Official 2014 rules (CC-BY-4.0)
+├── srd-5.2.1-markdown/          # Community markdown conversion (grep-able)
+│   ├── classes.md               # All 12 classes with subclass features
+│   ├── spells.md                # Complete spell list (A-Z, ~500 spells)
+│   ├── monsters.md              # Bestiary overview + A-Z (400+ monsters)
+│   ├── equipment.md             # Weapons, armor, gear, tools
+│   ├── feats.md                 # Character feats
+│   ├── magic-items.md           # Magic items and artifacts
+│   ├── playing-the-game.md      # Core gameplay rules
+│   ├── character-creation.md    # Character building
+│   └── ...                      # (10+ markdown files total)
+└── _manifest.json               # Metadata about downloaded books
+```
+
+**How to use books:**
+- **PDFs** are for human reading. Open them in your PDF viewer for browsing.
+- **Markdown** is AI-readable. The AI can grep specific files for rules lookups:
+  - "How does grappling work?" → read `srd-5.2.1-markdown/playing-the-game.md`
+  - "What does the Fireball spell do?" → read `srd-5.2.1-markdown/spells.md`
+  - "What are barbarian rage features at level 5?" → read `srd-5.2.1-markdown/classes.md`
+
+### Directory structure
 
 ```
 reference/
@@ -422,8 +461,18 @@ reference/
 - "What features does a 3rd-level Barbarian get?" → read `reference/classes/barbarian.json`
 - "What are elven traits?" → read `reference/races/elf.json`
 
-### Layer 3: Web search (for non-SRD content)
-If something isn't in the SRD (e.g., a non-SRD monster or a specific optional rule), I use web search to find it. I explicitly cite the source so you can verify.
+### Layer 3: Offline rulebooks (PDF + markdown — `reference/books/`)
+Downloaded via `reference-fetch.sh --books`. Includes:
+- Official SRD PDFs for both 2014 and 2024 rulesets (human reading)
+- Full markdown conversion for AI access (classes, spells, monsters, equipment, feats, rules)
+
+When you ask a rules question:
+1. I first check the in-skill tables (always hot)
+2. If more detail is needed, I grep the markdown files in `books/srd-5.2.1-markdown/`
+3. For 2014-specific rules, I read the `books/SRD_CC_v5.1.pdf` (via the Read tool)
+
+### Layer 4: Web search (for non-SRD content)
+If something isn't in the SRD or rulebook cache (e.g., a non-SRD monster or specific optional rule), I use web search to find it. I explicitly cite the source so you can verify.
 
 ### Layer 4: Your campaign PDFs (adventure-specific)
 Uploaded adventure PDFs are saved to `<skill_dir>/campaigns/<name>/source/` and their content is extracted into the structured YAML files described in the **Files** section above. These are campaign-specific, not generic rules.
