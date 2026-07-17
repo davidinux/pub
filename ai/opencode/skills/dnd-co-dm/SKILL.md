@@ -358,22 +358,75 @@ When asked "Generate an NPC [race/role/location]":
 When asked "Describe room X in the dungeon":
 - Size, features, atmosphere, monsters/traps, treasure, secrets
 
-## Reference data
+## Reference data (the "rulebooks")
 
-The `reference-fetch.sh` script downloads SRD data from the D&D 5e API to `<skill_dir>/reference/`.
+Generic D&D rules come from three sources, layered:
+
+### Layer 1: In-skill tables (always hot in context)
+The reference tables in this SKILL.md (DCs, conditions, rest, cover, exhaustion, encounter difficulty) are **always available** without any file reads. They cover the most-frequently-needed rules.
+
+### Layer 2: Downloaded SRD data (on disk, looked up on demand)
+`reference-fetch.sh` downloads the full D&D 5e SRD from the community API (dnd5eapi.co) to `<skill_dir>/reference/`:
 
 ```bash
-# Download or update reference data
+# Download or update all SRD reference data
 ~/.agents/skills/dnd-co-dm/reference-fetch.sh
+
+# Force a full re-download
+~/.agents/skills/dnd-co-dm/reference-fetch.sh --force
 ```
 
-This fetches:
-- `monsters/` — SRD monster stat blocks (JSON, one per file)
-- `spells/` — SRD spell descriptions
-- `equipment/` — armor, weapons, adventuring gear
-- `conditions.json` — condition definitions
+This creates:
 
-Use these files to look up stat blocks, spells, and items during play. If a specific monster/spell isn't in the SRD cache, use web search or your training knowledge.
+```
+reference/
+├── conditions/       # Condition definitions (blinded, charmed, etc.)
+│   ├── _index.json
+│   ├── blinded.json
+│   └── ...
+├── damage-types/     # Damage type descriptions
+├── magic-schools/    # School of magic descriptions
+├── skills/           # Skill descriptions
+├── proficiencies/    # Weapon/armor/tool proficiencies
+├── languages/        # Language descriptions
+├── classes/          # Full class data with features per level
+│   ├── _index.json
+│   ├── barbarian.json
+│   ├── wizard.json   # Includes spellcasting, features, subclasses
+│   └── ...
+├── races/            # Racial traits and ability scores
+│   ├── _index.json
+│   ├── dwarf.json
+│   ├── elf.json
+│   └── ...
+├── monsters/         # Full stat blocks (one JSON per monster)
+│   ├── _index.json
+│   ├── goblin.json   # AC, HP, actions, skills, CR, etc.
+│   ├── ancient-red-dragon.json
+│   └── ...
+├── spells/           # Full spell descriptions
+│   ├── _index.json
+│   ├── fireball.json # Level, school, casting time, range, components, description
+│   ├── magic-missile.json
+│   └── ...
+└── equipment/        # Armor, weapons, adventuring gear
+    ├── _index.json
+    ├── leather-armor.json
+    ├── longsword.json
+    └── ...
+```
+
+**How to use:** When you need a specific stat block, spell, class feature, or racial trait, I read the relevant JSON file directly. For example:
+- "What does the goblin's stat block say?" → read `reference/monsters/goblin.json`
+- "How does the Fireball spell work?" → read `reference/spells/fireball.json`
+- "What features does a 3rd-level Barbarian get?" → read `reference/classes/barbarian.json`
+- "What are elven traits?" → read `reference/races/elf.json`
+
+### Layer 3: Web search (for non-SRD content)
+If something isn't in the SRD (e.g., a non-SRD monster or a specific optional rule), I use web search to find it. I explicitly cite the source so you can verify.
+
+### Layer 4: Your campaign PDFs (adventure-specific)
+Uploaded adventure PDFs are saved to `<skill_dir>/campaigns/<name>/source/` and their content is extracted into the structured YAML files described in the **Files** section above. These are campaign-specific, not generic rules.
 
 ## Edge cases
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Fetches D&D 5e SRD reference data from the community API (dnd5eapi.co)
-# Caches results in <skill_dir>/reference/ for offline use.
+# Caches full details in <skill_dir>/reference/ for offline use.
 # Run without args to update; pass --force to re-download everything.
 set -euo pipefail
 
@@ -14,30 +14,49 @@ if [ "${1:-}" = "--force" ]; then
   FORCE=true
 fi
 
-mkdir -p "$REF_DIR"/{monsters,spells,equipment}
+# All categories to fetch with full details
+CATEGORIES=(
+  "conditions"
+  "damage-types"
+  "magic-schools"
+  "skills"
+  "proficiencies"
+  "languages"
+  "classes"
+  "races"
+  "monsters"
+  "spells"
+  "equipment"
+)
+
+mkdir -p "$REF_DIR"
 
 needs_update() {
   local file="$1"
-  if [ "$FORCE" = true ]; then
-    return 0
-  fi
-  if [ ! -f "$file" ]; then
-    return 0
-  fi
+  if [ "$FORCE" = true ]; then return 0; fi
+  if [ ! -f "$file" ]; then return 0; fi
   local age=$(( ($(date +%s) - $(stat -c %Y "$file")) / 86400 ))
   [ "$age" -gt "$MAX_AGE_DAYS" ]
 }
 
-fetch_list() {
+fetch_index() {
   local category="$1"
-  local outfile="$REF_DIR/${category}/_index.json"
+  local outdir="$REF_DIR/$category"
+  mkdir -p "$outdir"
+  local outfile="$outdir/_index.json"
   if needs_update "$outfile"; then
-    echo "  Fetching $category list..."
-    curl -sL "$BASE_URL/$category" | python3 -m json.tool > "$outfile" 2>/dev/null || \
-      curl -sL "$BASE_URL/$category" > "$outfile"
-    echo "    Saved $outfile"
+    echo "    Fetching $category index..."
+    curl -sL "$BASE_URL/$category" -o "$outfile"
+    local count
+    count=$(python3 -c "
+import json
+with open('$outfile') as f:
+    data = json.load(f)
+print(len(data.get('results', [])))
+" 2>/dev/null || echo "0")
+    echo "      $count entries indexed"
   else
-    echo "  $category list is current (last fetch: $(stat -c '%y' "$outfile" 2>/dev/null | cut -d. -f1))"
+    echo "    $category index is current"
   fi
 }
 
@@ -47,71 +66,94 @@ fetch_details() {
   local dest_dir="$REF_DIR/$category"
 
   if [ ! -f "$index_file" ]; then
-    echo "  No index for $category — skipping details"
+    echo "    No index for $category — skipping"
     return
   fi
 
-  local count=0
-  local total
-  total=$(python3 -c "
-import json
-with open('$index_file') as f:
-    data = json.load(f)
-print(len(data.get('results', [])))
-" 2>/dev/null || echo "0")
-
-  echo "  Fetching $total $category details..."
-
-  for index in $(python3 -c "
+  # Get total count and indices
+  local indices
+  indices=$(python3 -c "
 import json
 with open('$index_file') as f:
     data = json.load(f)
 for r in data.get('results', []):
     print(r['index'])
-" 2>/dev/null); do
+" 2>/dev/null) || true
+
+  if [ -z "$indices" ]; then
+    echo "    No details to fetch"
+    return
+  fi
+
+  local total=0
+  local updated=0
+  while IFS= read -r index; do
+    total=$((total + 1))
+  done <<< "$indices"
+
+  if [ "$total" -eq 0 ]; then
+    echo "    No entries found in index"
+    return
+  fi
+
+  local count=0
+  echo "    Fetching $total $category details..."
+
+  while IFS= read -r index; do
+    count=$((count + 1))
     local detail_file="$dest_dir/${index}.json"
     if needs_update "$detail_file"; then
-      curl -sL "$BASE_URL/$category/$index" > "$detail_file" 2>/dev/null
-      count=$((count + 1))
+      curl -sL "$BASE_URL/$category/$index" -o "$detail_file"
+      updated=$((updated + 1))
     fi
-  done
+    # Rate limiting: 5 requests per second
+    if [ $((count % 5)) -eq 0 ] && [ "$count" -lt "$total" ]; then
+      sleep 0.2
+    fi
+  done <<< "$indices"
 
-  if [ "$count" -gt 0 ]; then
-    echo "    Fetched/updated $count $category"
+  if [ "$updated" -gt 0 ]; then
+    echo "      Fetched/updated $updated of $total"
   else
-    echo "    All $category details are current"
+    echo "      All $total are current"
   fi
 }
 
-echo "D&D 5e SRD Reference Fetcher"
-echo "============================="
-echo "Skill dir: $SKILL_DIR"
-echo "Reference: $REF_DIR"
+echo "============================================"
+echo " D&D 5e SRD Reference Data Fetcher"
+echo "============================================"
+echo " Skill:  $SKILL_DIR"
+echo " Output: $REF_DIR"
+echo " Force:  $FORCE"
+echo " Max age: $MAX_AGE_DAYS days"
+echo "============================================"
 echo ""
 
-# Conditions (small, always fetch fully)
-echo "[1/5] Conditions..."
-fetch_list "conditions"
-# conditions don't have sub-details beyond the list entries
-
-# Equipment categories
-echo "[2/5] Equipment..."
-fetch_list "equipment"
-# Equipment list is enough for the AI to reference
-
-# Equipment categories (armor, weapons, adventuring gear)
-echo "[3/5] Equipment categories..."
-fetch_list "equipment-categories"
-
-# Spells (list only — full details fetched on demand)
-echo "[4/5] Spells..."
-fetch_list "spells"
-
-# Monsters (list only — full details fetched on demand)
-echo "[5/5] Monsters..."
-fetch_list "monsters"
+total_cats=${#CATEGORIES[@]}
+for i in "${!CATEGORIES[@]}"; do
+  cat="${CATEGORIES[$i]}"
+  echo "[$((i+1))/$total_cats] $cat..."
+  if [ "$cat" = "conditions" ] || [ "$cat" = "damage-types" ] || \
+     [ "$cat" = "magic-schools" ] || [ "$cat" = "skills" ]; then
+    # Small categories: index only (list data is enough)
+    fetch_index "$cat"
+  else
+    # Full categories: index + all details
+    fetch_index "$cat"
+    fetch_details "$cat"
+  fi
+done
 
 echo ""
-echo "Done. Reference data in: $REF_DIR"
+echo "============================================"
+echo " Done. Reference data in:"
+echo "   $REF_DIR"
+echo "============================================"
 echo ""
-echo "To force a full refresh: $0 --force"
+echo " What was downloaded:"
+for cat in "${CATEGORIES[@]}"; do
+  count=$(find "$REF_DIR/$cat" -name '*.json' ! -name '_index.json' 2>/dev/null | wc -l)
+  echo "   $cat/  ($count entries)"
+done
+echo ""
+echo " To force a full refresh: $0 --force"
