@@ -1,0 +1,42 @@
+name: "The Wild Beyond the Witchlight"
+system: "D&D 5e (2024)"
+starting_level: 1
+setting: "Witchlight Carnival → Prismeer (Feywild)"
+tone: "Whimsical fantasy with underlying dread"
+hook: "Lost Things"
+party:
+  - name: Helkek
+    class: Bard
+    level: 1
+    race: Dragonborn
+    stats: {str: 13, dex: 14, con: 10, int: 11, wis: 12, cha: 16}
+    hp: 8
+    ac: 13
+    lost_thing: 1 (Ability to keep secrets)
+    keeper: Bavlorna Blightstraw
+    minor_curse: Cannot light nonmagical fires
+    player: ""
+  - name: Razel
+    class: Warlock
+    level: 1
+    race: Aasimar
+    stats: {str: 8, dex: 14, con: 14, int: 12, wis: 13, cha: 15}
+    hp: 10
+    ac: 13
+    lost_thing: 3 (Artistic creativity)
+    keeper: Bavlorna Blightstraw
+    minor_curse: Cannot light nonmagical fires
+    player: ""
+  - name: Idy
+    class: Druid
+    level: 1
+    race: Fairy
+    stats: {str: 8, dex: 14, con: 16, int: 12, wis: 15, cha: 10}
+    hp: 11
+    ac: 15
+    lost_thing: 8 (Three inches of height)
+    keeper: Endelyn Moongrave
+    minor_curse: Cannot open a door without knocking first
+    player: ""
+session: 1
+status: in_progress

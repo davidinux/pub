@@ -1,0 +1,99 @@
+- name: Carnival Entrance / Ticket Booth
+  area: Witchlight Carnival
+  npcs: [Nikolas Midnight]
+  notes: "Free tickets (paid by Ellywick), butterfly wings, carnival map, 8 punches per ticket"
+
+- name: Feasting Orchard
+  area: Witchlight Carnival
+  npcs: [Ellywick Tumblestrum]
+  notes: "Cake eating contest, possible to meet Ellywick here first"
+
+- name: Hall of Illusions
+  area: Witchlight Carnival
+  npcs: [Candlefoot, Rubin Sugarwood]
+  notes: "Portal to Prismeer through mirrors. Candlefoot lost his voice to Kettlesteam. Tasha mannequin at entrance."
+
+- name: Big Top
+  area: Witchlight Carnival
+  npcs: [Mister Light, Mister Witch, Burly, Palasha, Candlefoot]
+  notes: "Midnight Extravaganza (Hour 4) and Dawn Crowning (Hour 8). Burly performs feats of strength."
+
+- name: Staff Area / Witch & Light's Wagon
+  area: Witchlight Carnival
+  npcs: [Mister Witch, Mister Light, Burly, Thaco]
+  notes: "Meeting Witch & Light. Watch heist. Thaco guards outside."
+
+- name: Carousel
+  area: Witchlight Carnival
+  npcs: [Diana Cloppington]
+  notes: "Riddle of the Carousel — 8 unicorns, proverb names. Reveals which hag has each lost thing + hag weaknesses."
+
+- name: Dragonfly Rides
+  area: Witchlight Carnival
+  npcs: [Northwind, Red]
+  notes: "Northwind spills secrets about W&L being not original owners."
+
+- name: Gondola Swans
+  area: Witchlight Carnival
+  npcs: [Feathereen]
+  notes: "Hour-long gondola ride. Feathereen's gossip about Candlefoot/Palasha, Burly's brother Hurly."
+
+- name: Silversong Lake
+  area: Witchlight Carnival
+  npcs: [Palasha]
+  notes: "Palasha the mermaid. Heckled by Kettlesteam (3 jeers -> flees). Romance with Candlefoot."
+
+- name: Lost Property
+  area: Witchlight Carnival
+  npcs: [Dirlagraun]
+  notes: "Displacer beast with missing cub Star. Viro the lost boy. Suggests spying on W&L."
+
+- name: Pixie Kingdom
+  area: Witchlight Carnival
+  npcs: [Jeremy Plum, Honeymint, Starbug, Biscuit]
+  notes: "Shrink potion, pixie dust, hide-and-seek, rumors."
+
+- name: Bubble-Pop Teapot
+  area: Witchlight Carnival
+  npcs: [Treaclewise]
+  notes: "Bubble ride, rhyming slang, Scatterleaf Tea."
+
+- name: Calliope
+  area: Witchlight Carnival
+  npcs: [Ernest]
+  notes: "Button collection, mood-linked music."
+
+- name: Mystery Mine
+  area: Witchlight Carnival
+  npcs: [Zephixo]
+  notes: "Fear illusion ride. Succeed all saves -> Cha advantage at carnival. Fail 3+ -> nightmares."
+
+- name: Snail Racing
+  area: Witchlight Carnival
+  npcs: []
+  notes: "8 snails, jockey contest."
+
+- name: Silversong Lake
+  area: Witchlight Carnival
+  npcs: [Palasha]
+  notes: "Mermaid performance, heckled by Kettlesteam."
+
+- name: Hither
+  area: Prismeer
+  rules: "Realm of the Present. Bavlorna's domain."
+  notes: "Swamp. Downfall village. Agdon Longscarf. Sir Talavar. Bavlorna's cottage on stilts."
+
+- name: Thither
+  area: Prismeer
+  rules: "Realm of the Past. Skabatha's domain."
+  notes: "Forest. Loomlurch (hollow tree). Fairy rings. Little Oak."
+
+- name: Yon
+  area: Prismeer
+  rules: "Realm of the Future. Endelyn's domain."
+  notes: "Mountain. Motherhorn theater. Brigganock Mine. Lockbury Henge."
+
+- name: Palace of Heart's Desire
+  area: Prismeer
+  rules: "Zybilna's palace."
+  notes: "Zybilna frozen in time. Needs alicorn + true name (Tasha/Iggwilv) to free."

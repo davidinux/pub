@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Witchlight Carnival — DM Map</title>
+<style>
+  :root {
+    --carnival-purple: #6a2e8a;
+    --carnival-gold: #d4a017;
+    --carnival-teal: #2e8a7a;
+    --carnival-pink: #c9457a;
+    --bg-light: #f5f0e8;
+    --card-bg: rgba(255,252,245,0.92);
+    --star: #e8b830;
+    --grid-color: rgba(106,46,138,0.07);
+    --border-color: #d4c9b5;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
+    color: #2d2a24;
+    padding: 20px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    color: var(--carnival-purple);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #7a6a5a;
+    margin-bottom: 18px;
+    font-style: italic;
+  }
+  .map-container {
+    position: relative;
+    max-width: 1100px;
+    margin: 0 auto;
+    aspect-ratio: 11 / 8;
+    background:
+      linear-gradient(var(--grid-color) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+    background-size: 40px 40px;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+  .map-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 50% 48%, rgba(255,215,0,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* ---- Location Cards ---- */
+  .loc {
+    position: absolute;
+    width: 140px;
+    padding: 6px 8px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.72rem;
+    line-height: 1.3;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    cursor: default;
+    transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+    z-index: 2;
+  }
+  .loc:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    border-color: var(--carnival-gold);
+    z-index: 10;
+  }
+  .loc .name {
+    font-weight: 700;
+    font-size: 0.78rem;
+    color: var(--carnival-purple);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .loc .name .star {
+    color: var(--star);
+    font-size: 0.9rem;
+    filter: drop-shadow(0 0 2px rgba(232,184,48,0.4));
+  }
+  .loc .npc-list {
+    color: #6a5a4a;
+    margin-top: 2px;
+  }
+  .loc .npc-list em {
+    color: var(--carnival-teal);
+    font-style: normal;
+    font-weight: 600;
+  }
+  .loc .notes {
+    display: none;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px dashed var(--border-color);
+    font-size: 0.68rem;
+    color: #5a4a3a;
+  }
+  .loc:hover .notes {
+    display: block;
+  }
+
+  /* ---- Highlight rings for starred NPCs ---- */
+  .loc.starred {
+    border-color: var(--star);
+    border-width: 2px;
+  }
+  .loc.starred .name {
+    color: #7a5800;
+  }
+
+  /* ---- Big Top special ---- */
+  .loc.big-top {
+    width: 170px;
+    border-color: var(--carnival-purple);
+    border-width: 2.5px;
+    background: rgba(255,252,245,0.96);
+    z-index: 3;
+  }
+  .loc.big-top .name {
+    font-size: 0.9rem;
+    justify-content: center;
+  }
+  .loc.big-top::after {
+    content: '★ CENTER STAGE ★';
+    display: block;
+    text-align: center;
+    font-size: 0.55rem;
+    letter-spacing: 0.15em;
+    color: var(--carnival-purple);
+    margin-top: 2px;
+    opacity: 0.6;
+  }
+
+  /* ---- Bottom bar ---- */
+  .bottom-bar {
+    max-width: 1100px;
+    margin: 10px auto 0;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .tracker {
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: 10px;
+    padding: 8px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+    font-size: 0.82rem;
+  }
+  .tracker label {
+    font-weight: 700;
+    color: var(--carnival-purple);
+    white-space: nowrap;
+  }
+  .hour-dots, .mood-dots {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .hour-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--border-color);
+    background: #f0ece4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #8a7a6a;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .hour-dot.active {
+    background: var(--carnival-purple);
+    border-color: var(--carnival-purple);
+    color: #fff;
+    box-shadow: 0 0 0 3px rgba(106,46,138,0.2);
+  }
+  .hour-dot:hover {
+    transform: scale(1.12);
+  }
+  .mood-dot {
+    padding: 3px 10px;
+    border-radius: 14px;
+    border: 1.5px solid var(--border-color);
+    background: #f0ece4;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: #6a5a4a;
+  }
+  .mood-dot.active {
+    border-color: var(--carnival-purple);
+    background: var(--carnival-purple);
+    color: #fff;
+  }
+  .mood-dot:hover {
+    transform: scale(1.05);
+  }
+
+  /* ---- Print ---- */
+  @media print {
+    body { padding: 0; }
+    .loc:hover .notes { display: block; }
+    .loc { break-inside: avoid; }
+    .hour-dot, .mood-dot { cursor: default; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🕯️ Witchlight Carnival</h1>
+<p class="subtitle">DM Overview Map — <span id="session-label">Session 1</span></p>
+
+<div class="map-container" id="map">
+
+  <!-- Ticket Booth -->
+  <div class="loc" style="left:43%; top:82%;" data-loc="ticket-booth">
+    <div class="name">🎟️ Ticket Booth</div>
+    <div class="npc-list"><em>Nikolas Midnight</em> (goblin)</div>
+    <div class="notes">Free tickets (paid by Ellywick). Butterfly wings. Carnival map. 8 punches/ticket. DC 13 Insight to detect his ruse.</div>
+  </div>
+
+  <!-- Feasting Orchard ★ -->
+  <div class="loc starred" style="left:8%; top:74%;" data-loc="feasting-orchard">
+    <div class="name"><span class="star">★</span> Feasting Orchard</div>
+    <div class="npc-list"><em>Ellywick Tumblestrum</em> (gnome bard)</div>
+    <div class="notes">★ Main plot. Cake eating contest. Pays for tickets. Planeswalker. Can't be harmed. Fallback guide to Prismeer. Knows the incantation.</div>
+  </div>
+
+  <!-- Hall of Illusions -->
+  <div class="loc" style="left:27%; top:66%;" data-loc="hall-of-illusions">
+    <div class="name">🪞 Hall of Illusions</div>
+    <div class="npc-list"><em>Candlefoot</em> (mime), <em>Rubin</em> (halfling)</div>
+    <div class="notes">Portal to Prismeer through mirrors. Candlefoot lost his voice to Kettlesteam. Rubin rescued, reunited with Ween → mood +1.</div>
+  </div>
+
+  <!-- Big Top -->
+  <div class="loc big-top" style="left:38%; top:38%;" data-loc="big-top">
+    <div class="name">🎪 Big Top</div>
+    <div class="npc-list"><em>Mister Light</em> · <em>Mister Witch</em> · <em>Burly</em> · <em>Palasha</em> · <em>Candlefoot</em></div>
+    <div class="notes">Midnight Extravaganza (Hour 4). Dawn Crowning (Hour 8). Burly performs feats of strength. Palasha sings.</div>
+  </div>
+
+  <!-- Staff Area / W&L Wagon ★ -->
+  <div class="loc starred" style="left:47%; top:18%;" data-loc="staff-area">
+    <div class="name"><span class="star">★</span> W&L Wagon</div>
+    <div class="npc-list"><em>Mister Witch</em> · <em>Mister Light</em> · <em>Burly</em> · <em>Thaco</em></div>
+    <div class="notes">★ Main plot. Meeting Witch &amp; Light. Watch heist planning. Thaco guards outside. Burly warns against Thaco.</div>
+  </div>
+
+  <!-- Carousel -->
+  <div class="loc" style="left:10%; top:43%;" data-loc="carousel">
+    <div class="name">🎠 Carousel</div>
+    <div class="npc-list"><em>Diana Cloppington</em> (human-centaur)</div>
+    <div class="notes">Riddle of the 8 unicorns. Reveals which hag has each lost thing + hag weaknesses. Diana cursed by Skabatha — can't speak of coven.</div>
+  </div>
+
+  <!-- Dragonfly Rides -->
+  <div class="loc" style="left:37%; top:5%;" data-loc="dragonfly-rides">
+    <div class="name">🪰 Dragonfly Rides</div>
+    <div class="npc-list"><em>Northwind</em> (treant), <em>Red</em> (squirrel)</div>
+    <div class="notes">Northwind spills secrets: W&amp;L are not original owners. Carnival can't run without Witch's watch. Welcome Gifts Hour 1.</div>
+  </div>
+
+  <!-- Gondola Swans -->
+  <div class="loc" style="left:72%; top:28%;" data-loc="gondola-swans">
+    <div class="name">🦢 Gondola Swans</div>
+    <div class="npc-list"><em>Feathereen</em> (giant swan)</div>
+    <div class="notes">Hour-long gondola ride. Feathereen gossips about Candlefoot/Palasha love story, Burly's brother Hurly.</div>
+  </div>
+
+  <!-- Silversong Lake -->
+  <div class="loc" style="left:80%; top:40%;" data-loc="silversong-lake">
+    <div class="name">🌊 Silversong Lake</div>
+    <div class="npc-list"><em>Palasha</em> (mermaid)</div>
+    <div class="notes">Mermaid performance. Heckled by Kettlesteam (3 jeers → flees). Romance with Candlefoot. Singing lessons useful Ch.3.</div>
+  </div>
+
+  <!-- Lost Property -->
+  <div class="loc" style="left:3%; top:18%;" data-loc="lost-property">
+    <div class="name">🔍 Lost Property</div>
+    <div class="npc-list"><em>Dirlagraun</em> (displacer beast)</div>
+    <div class="notes">Missing cub Star (followed Sowpig to Ch.3). Viro the lost boy. Suggests spying on W&amp;L. Carries toffee apple juice.</div>
+  </div>
+
+  <!-- Pixie Kingdom -->
+  <div class="loc" style="left:75%; top:8%;" data-loc="pixie-kingdom">
+    <div class="name">🧚 Pixie Kingdom</div>
+    <div class="npc-list"><em>Jeremy Plum</em>, Honeymint, Starbug, Biscuit</div>
+    <div class="notes">Shrink potion. Pixie dust. Hide-and-seek. Jeremy assigns pixie names. Rumors about the carnival.</div>
+  </div>
+
+  <!-- Bubble-Pop Teapot -->
+  <div class="loc" style="left:72%; top:70%;" data-loc="bubble-pop-teapot">
+    <div class="name">🫧 Bubble-Pop Teapot</div>
+    <div class="npc-list"><em>Treaclewise</em> (goblin)</div>
+    <div class="notes">Bubble ride. Rhyming slang. Gives Scatterleaf Tea to those who engage in rhyming.</div>
+  </div>
+
+  <!-- Calliope -->
+  <div class="loc" style="left:18%; top:56%;" data-loc="calliope">
+    <div class="name">🎼 Calliope</div>
+    <div class="npc-list"><em>Ernest</em> (monkey, Int 10)</div>
+    <div class="notes">Human mind in monkey body. Collects buttons. Button-givers hear music to safety in Prismeer (once). Mood-linked music.</div>
+  </div>
+
+  <!-- Mystery Mine -->
+  <div class="loc" style="left:3%; top:55%;" data-loc="mystery-mine">
+    <div class="name">⛏️ Mystery Mine</div>
+    <div class="npc-list"><em>Zephixo</em> (dwarf mage)</div>
+    <div class="notes">Fear illusion ride. All succeed → Cha advantage at carnival. 3+ fails → nightmares. All-Seeing Eye contraption.</div>
+  </div>
+
+  <!-- Snail Racing -->
+  <div class="loc" style="left:55%; top:75%;" data-loc="snail-racing">
+    <div class="name">🐌 Snail Racing</div>
+    <div class="npc-list">Jockey contest</div>
+    <div class="notes">8 snails. Jockey contest. Lighthearted gambling opportunity.</div>
+  </div>
+
+  <!-- Small Stalls -->
+  <div class="loc" style="left:15%; top:83%;" data-loc="small-stalls">
+    <div class="name">🎯 Small Stalls</div>
+    <div class="npc-list">Carnival games</div>
+    <div class="notes">Various games of skill and chance. Ring toss, ball toss, strength test.</div>
+  </div>
+
+  <!-- Sowpig (hidden tracker) -->
+  <div class="loc" style="left:55%; top:55%;" data-loc="sowpig">
+    <div class="name">🐷 Sowpig</div>
+    <div class="npc-list">Skabatha's thief — lurks between wagons</div>
+    <div class="notes">HP 17. No Ticket (DC 13 Wis). Sticky Fingers. Lured Dirlagraun's cub Star. Lurked Rubin toward mirror. Little girl in pig mask.</div>
+  </div>
+
+  <!-- Legend -->
+  <div style="position:absolute; left:2%; bottom:2%; font-size:0.6rem; color:#8a7a6a; background:rgba(255,252,245,0.85); padding:3px 8px; border-radius:6px; border:1px solid var(--border-color);">
+    <span style="color:var(--star);">★</span> = Main plot progression
+  </div>
+
+</div>
+
+<!-- Bottom Bar -->
+<div class="bottom-bar">
+  <div class="tracker">
+    <label>⏳ Hour:</label>
+    <div class="hour-dots" id="hourDots"></div>
+    <span id="hourLabel" style="font-weight:700; color:var(--carnival-purple); min-width:60px;">—</span>
+  </div>
+  <div class="tracker">
+    <label>🎭 Mood:</label>
+    <div class="mood-dots" id="moodDots"></div>
+    <span id="moodLabel" style="font-weight:700; min-width:60px;">—</span>
+  </div>
+  <div class="tracker" style="flex:0.6; min-width:140px;">
+    <label>🗺️ Key:</label>
+    <span style="font-size:0.72rem; color:#6a5a4a;">
+      <span style="color:var(--star);">★</span> Ellywick · Kettlesteam · Witch &amp; Light
+    </span>
+  </div>
+</div>
+
+<script>
+(function() {
+  // ---- Hour Tracker (d8) ----
+  const HOURS = [
+    { n: 1, label: 'Arrival & Welcome Gifts' },
+    { n: 2, label: 'Exploration & Rides' },
+    { n: 3, label: 'Deepening Mysteries' },
+    { n: 4, label: 'Midnight Extravaganza' },
+    { n: 5, label: 'After-Show · Watch Heist' },
+    { n: 6, label: 'Witching Hour' },
+    { n: 7, label: 'Dawn Approaches' },
+    { n: 8, label: 'Dawn Crowning' },
+  ];
+  const MOODS = [
+    { v: -2, label: 'Somber (-2)' },
+    { v: -1, label: 'Subdued (-1)' },
+    { v: 0,  label: 'Neutral  (0)' },
+    { v: 1,  label: 'Festive (+1)' },
+    { v: 2,  label: 'Euphoric (+2)' },
+  ];
+
+  let currentHour = 1;
+  let currentMood = 0;
+
+  function renderHourDots() {
+    const container = document.getElementById('hourDots');
+    container.innerHTML = '';
+    HOURS.forEach(h => {
+      const dot = document.createElement('div');
+      dot.className = 'hour-dot' + (h.n === currentHour ? ' active' : '');
+      dot.textContent = h.n;
+      dot.title = h.label;
+      dot.addEventListener('click', () => {
+        currentHour = h.n;
+        renderHourDots();
+        updateHourLabel();
+      });
+      container.appendChild(dot);
+    });
+    updateHourLabel();
+  }
+
+  function updateHourLabel() {
+    const h = HOURS.find(x => x.n === currentHour);
+    document.getElementById('hourLabel').textContent = h ? h.label : '—';
+  }
+
+  function renderMoodDots() {
+    const container = document.getElementById('moodDots');
+    container.innerHTML = '';
+    MOODS.forEach(m => {
+      const dot = document.createElement('div');
+      dot.className = 'mood-dot' + (m.v === currentMood ? ' active' : '');
+      dot.textContent = m.label;
+      dot.addEventListener('click', () => {
+        currentMood = m.v;
+        renderMoodDots();
+        updateMoodLabel();
+      });
+      container.appendChild(dot);
+    });
+    updateMoodLabel();
+  }
+
+  function updateMoodLabel() {
+    const m = MOODS.find(x => x.v === currentMood);
+    document.getElementById('moodLabel').textContent = m ? m.label : '—';
+  }
+
+  // ---- Load session state from session-1.json ----
+  function loadSessionState() {
+    const sessionData = {
+      "session": 1,
+      "carnival": {
+        "hour": 2,
+        "mood": "normal (+1 from Rubin/Ween reunion)"
+      }
+    };
+    if (sessionData.carnival.hour) {
+      currentHour = Math.min(Math.max(sessionData.carnival.hour, 1), 8);
+    }
+    // Parse mood string
+    const moodStr = sessionData.carnival.mood || '';
+    if (moodStr.includes('+2')) currentMood = 2;
+    else if (moodStr.includes('+1')) currentMood = 1;
+    else if (moodStr.includes('-1')) currentMood = -1;
+    else if (moodStr.includes('-2')) currentMood = -2;
+    else currentMood = 0;
+  }
+
+  loadSessionState();
+  renderHourDots();
+  renderMoodDots();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wild Beyond the Witchlight — Carnival DM Reference</title>
+<style>
+  :root {
+    --carnival-purple: #6a2e8a;
+    --carnival-gold: #d4a017;
+    --carnival-teal: #2e8a7a;
+    --carnival-pink: #c9457a;
+    --carnival-red: #b33a3a;
+    --bg-light: #f5f0e8;
+    --card-bg: rgba(255,252,245,0.92);
+    --star: #e8b830;
+    --border-color: #d4c9b5;
+    --statblock-bg: #fcf9f2;
+    --statblock-border: #d4c9b5;
+    --table-header-bg: var(--carnival-purple);
+    --table-alt: #f0ebe0;
+    --text-dark: #2d2a24;
+    --text-mid: #6a5a4a;
+    --text-light: #8a7a6a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    padding: 30px 40px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: var(--carnival-purple);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .subtitle {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    margin-bottom: 28px;
+    font-style: italic;
+  }
+
+  /* Section headers */
+  h2 {
+    font-size: 1.25rem;
+    color: var(--carnival-purple);
+    border-bottom: 3px solid var(--carnival-gold);
+    padding-bottom: 4px;
+    margin-top: 36px;
+    margin-bottom: 14px;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 1.05rem;
+    color: var(--carnival-teal);
+    margin-top: 20px;
+    margin-bottom: 8px;
+    page-break-after: avoid;
+  }
+  h4 {
+    font-size: 0.95rem;
+    color: var(--carnival-pink);
+    margin-top: 14px;
+    margin-bottom: 6px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0 18px;
+    font-size: 0.82rem;
+  }
+  th {
+    background: var(--table-header-bg);
+    color: #fff;
+    padding: 7px 10px;
+    text-align: left;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+  }
+  tr:nth-child(even) td {
+    background: var(--table-alt);
+  }
+  .stat-table td:first-child {
+    font-weight: 600;
+    color: var(--carnival-purple);
+    white-space: nowrap;
+    width: 110px;
+  }
+
+  /* Stat blocks */
+  .statblock {
+    background: var(--statblock-bg);
+    border: 2px solid var(--statblock-border);
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 10px 0 16px;
+    page-break-inside: avoid;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .statblock .sb-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 2px solid var(--carnival-purple);
+    padding-bottom: 4px;
+    margin-bottom: 8px;
+  }
+  .statblock .sb-header .sb-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--carnival-purple);
+  }
+  .statblock .sb-header .sb-cr {
+    font-size: 0.8rem;
+    color: var(--text-light);
+  }
+  .statblock .sb-row {
+    display: flex;
+    gap: 6px;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+  .statblock .sb-row .sb-label {
+    font-weight: 600;
+    color: var(--text-mid);
+    min-width: 70px;
+  }
+  .statblock .sb-abilities {
+    display: flex;
+    gap: 8px;
+    margin: 6px 0;
+    flex-wrap: wrap;
+  }
+  .statblock .sb-abilities span {
+    background: #ede8de;
+    padding: 2px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-mid);
+  }
+  .statblock .sb-traits {
+    margin-top: 6px;
+  }
+  .statblock .sb-traits p {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+  .statblock .sb-traits p strong {
+    color: var(--carnival-purple);
+  }
+  .statblock .sb-story {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-color);
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--text-mid);
+  }
+  .statblock .sb-story strong {
+    color: var(--carnival-teal);
+  }
+  .statblock .sb-spells {
+    font-size: 0.82rem;
+    line-height: 1.5;
+    margin-top: 4px;
+  }
+  .statblock .sb-spells strong {
+    color: var(--carnival-purple);
+  }
+
+  /* Location cards (compact) */
+  .loc-card {
+    background: var(--statblock-bg);
+    border: 1.5px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin: 6px 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+  .loc-card .loc-name {
+    font-weight: 700;
+    color: var(--carnival-purple);
+    font-size: 0.88rem;
+  }
+  .loc-card .loc-npcs {
+    color: var(--carnival-teal);
+    font-size: 0.78rem;
+  }
+  .loc-card .loc-desc {
+    margin-top: 4px;
+  }
+  .loc-card.starred {
+    border-color: var(--star);
+    border-width: 2px;
+  }
+
+  /* Flow arrow */
+  .flow-arrow {
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--carnival-gold);
+    line-height: 1;
+    margin: 2px 0;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    padding: 5px 0 5px 28px;
+    position: relative;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    border-bottom: 1px solid var(--border-color);
+  }
+  .checklist li::before {
+    content: '☐';
+    position: absolute;
+    left: 4px;
+    color: var(--carnival-purple);
+    font-size: 1rem;
+  }
+  .checklist li.done::before {
+    content: '☑';
+    color: var(--carnival-teal);
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+  .tag-purple { background: var(--carnival-purple); color: #fff; }
+  .tag-gold { background: var(--carnival-gold); color: #2d2a24; }
+  .tag-teal { background: var(--carnival-teal); color: #fff; }
+  .tag-pink { background: var(--carnival-pink); color: #fff; }
+  .tag-red { background: var(--carnival-red); color: #fff; }
+
+  .callout {
+    background: rgba(212,160,23,0.10);
+    border-left: 4px solid var(--carnival-gold);
+    padding: 8px 14px;
+    margin: 8px 0;
+    font-size: 0.82rem;
+    border-radius: 0 6px 6px 0;
+    line-height: 1.5;
+  }
+
+  .notes-section {
+    margin: 6px 0 6px 0;
+  }
+
+  /* Print */
+  @media print {
+    body { padding: 15px; font-size: 9pt; }
+    h2 { margin-top: 24px; }
+    .statblock { break-inside: avoid; }
+    table { font-size: 8pt; }
+    .statblock { font-size: 8pt; }
+    .statblock .sb-row { font-size: 8pt; }
+    .statblock .sb-traits p { font-size: 8pt; }
+    .statblock .sb-story { font-size: 8pt; }
+    .statblock .sb-spells { font-size: 8pt; }
+    .loc-card { font-size: 8pt; }
+    .checklist li { font-size: 8pt; }
+  }
+</style>
+</head>
+<body>
+
+<h1>The Wild Beyond the Witchlight</h1>
+<p class="subtitle">Witchlight Carnival — Complete DM Reference &middot; Session 1</p>
+
+<!-- ============================================================ -->
+<h2>1. Timetable — Hour by Hour</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:70px;">Hour</th><th style="width:200px;">Phase</th><th>What Happens</th><th style="width:200px;">Key DCs &amp; Mechanics</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>1</strong></td>
+      <td>Arrival &amp; Welcome Gifts</td>
+      <td>Northwind scatters golden sycamore seeds. Red hands out dandelions. Party enters through Ticket Booth (free tix paid by Ellywick). Butterfly wings + carnival map + 8-punch tickets.</td>
+      <td>
+        <strong>Catch seed</strong>: DC 10 Dex → d8 Welcome Gifts table.<br>
+        <strong>Dandelion wish</strong>: Write down — relevant in Ch.4.<br>
+        <strong>Nikolas Insight</strong>: DC 13 to see through ruse.
+      </td>
+    </tr>
+    <tr>
+      <td><strong>2–3</strong></td>
+      <td>Exploration &amp; Rides</td>
+      <td>Party explores carnival. Mystery Mine, Carousel, Hall of Illusions, Silversong Lake, etc. Mood shifts based on actions.</td>
+      <td>
+        <strong>Mystery Mine</strong>: Wis save vs fear. All pass → Cha advantage at carnival. 3+ fail → nightmares.<br>
+        <strong>Kettlesteam search</strong>: DC 13 Investigation (takes 1 hour).<br>
+        <strong>Candlefoot voice return</strong>: Untie corn husk doll → mood +2.
+      </td>
+    </tr>
+    <tr>
+      <td><strong>4</strong></td>
+      <td>Midnight Extravaganza (Big Top)</td>
+      <td>Mister Light ringmaster. Burly feats of strength, Palasha song, Candlefoot mime, audience participation. Best time for watch heist (W&amp;L separated).</td>
+      <td>
+        <strong>PC Performance</strong>: DC 14 → mood +1.<br>
+        <strong>Group check</strong>: All succeed → mood +3.<br>
+        <strong>Impressing Light</strong> → private meeting with W&amp;L.<br>
+        <strong>Watch heist</strong>: Sleight vs Witch's passive Perception (12).
+      </td>
+    </tr>
+    <tr>
+      <td><strong>5–7</strong></td>
+      <td>After-Show / Witching Hour</td>
+      <td>Watch heist resolution. Staff area infiltration. Spying on W&amp;L. Gondola rides. Final encounters before dawn.</td>
+      <td>
+        <strong>Staff Area</strong>: Thaco guards outside (DC 12 Persuasion/Deception or combat).<br>
+        <strong>Sowpig/Quickling/Shadow</strong>: No Ticket DC 13 Wis or stunned 1 min (no memory). Sticky Fingers steals item.
+      </td>
+    </tr>
+    <tr>
+      <td><strong>8</strong></td>
+      <td>Dawn Crowning</td>
+      <td>Vane selects Witchlight Monarch. Crown of golden butterflies. Knighted by Light. Parade with fireworks. Portal to Prismeer opens.</td>
+      <td>
+        <strong>Monarch</strong>: Gets Charm of the Monarch (fly speed 30 ft, +5 Cha, 3 uses). Fey in Prismeer treat with reverence.<br>
+        <strong>No portal access</strong>: Ellywick gives incantation.<br>
+        <strong>Incantation</strong>: "Hither, thither, here and there; wander yonder, show me where."
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>2. Main Quest Location Flow</h2>
+
+<div class="loc-card starred">
+  <div class="loc-name">🎟️ Ticket Booth</div>
+  <div class="loc-npcs">Nikolas Midnight (elderly goblin)</div>
+  <div class="loc-desc">
+    Free admission (paid by Ellywick). Each PC gets butterfly wings, a carnival map, and a ticket with 8 punches.<br>
+    <strong>Plot point</strong>: Nikolas ruses as half-blind — DC 13 Insight reveals he's sharp. Sends pixie messenger to Witch if PCs seem disruptive.
+  </div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="loc-card starred">
+  <div class="loc-name">★ Feasting Orchard</div>
+  <div class="loc-npcs">Ellywick Tumblestrum (gnome bard / Planeswalker)</div>
+  <div class="loc-desc">
+    Cake eating contest. <strong>Plot point</strong>: Ellywick is enigmatic — paid for tickets, can't be harmed, no magic reads her thoughts. Knows the incantation, the Hourglass Coven, and that the PCs are "agents of change." Fallback guide to Prismeer if they miss the incantation by Hour 8.
+  </div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="loc-card starred">
+  <div class="loc-name">🪞 Hall of Illusions</div>
+  <div class="loc-npcs">Candlefoot (mime), Rubin Sugarwood, Ween Sundapple</div>
+  <div class="loc-desc">
+    Mirror maze. Tasha's mannequin at entrance. <strong>Plot point</strong>: Portal to Prismeer through mirrors — needs incantation. Candlefoot lost his voice (corn husk doll → Kettlesteam). Rubin rescued from Sowpig → reunited with Ween → mood +1. Last PC to pass through hears "Rule of Three" + alicorn clue.
+  </div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="loc-card starred">
+  <div class="loc-name">🎪 Big Top</div>
+  <div class="loc-npcs">Mister Light, Mister Witch, Burly, Palasha, Candlefoot</div>
+  <div class="loc-desc">
+    <strong>Plot point</strong>: Midnight Extravaganza (Hour 4) and Dawn Crowning (Hour 8). Burly performs feats of strength. Palasha sings. Best opportunity for watch heist (W&amp;L separated during show). Impress Light → private meeting.
+  </div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="loc-card starred">
+  <div class="loc-name">★ Staff Area / Witch &amp; Light's Wagon</div>
+  <div class="loc-npcs">Mister Witch, Mister Light, Burly, Thaco</div>
+  <div class="loc-desc">
+    <strong>Plot point</strong>: Meeting W&amp;L reveals the carnival's pact with the Hourglass Coven, Zybilna frozen, and the mirror portal. Thaco guards outside (untrustworthy per Burly). Watch heist — Witch's watch keeps the carnival running; without it, the carnival can't move between worlds.
+  </div>
+</div>
+<div class="flow-arrow">↓</div>
+<div class="loc-card starred">
+  <div class="loc-name">🪞 Hall of Illusions (Return)</div>
+  <div class="loc-desc">
+    Recite incantation before the mirror → portal opens to Hither (Prismeer). Watch and Vane cannot pass through. Balloon crash on the other side → arrival in Hither.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>3. Useful but Skippable Locations</h2>
+
+<div class="loc-card">
+  <div class="loc-name">🦢 Gondola Swans</div>
+  <div class="loc-npcs">Feathereen (giant swan, speaks Common &amp; Auran)</div>
+  <div class="loc-desc">
+    Hour-long gondola ride. Feathereen is erudite and haughty — asks metaphysical questions (e.g., "Does a dreamer know they dream?").<br>
+    <strong>If impressed</strong>: Gossips about Candlefoot/Palasha romance, Burly's missing brother Hurly.
+  </div>
+</div>
+
+<div class="loc-card">
+  <div class="loc-name">🪰 Dragonfly Rides</div>
+  <div class="loc-npcs">Northwind (treant sapling, CR2), Red (awakened squirrel, weasel stats, Int 10)</div>
+  <div class="loc-desc">
+    <strong>Northwind is HORRIBLE at keeping secrets</strong>. Spills: W&amp;L are not original owners (swapped with Isolde). Carnival can't run without Witch's watch. Light loves smiling faces. Welcome Gifts happen here in Hour 1.
+  </div>
+</div>
+
+<div class="loc-card">
+  <div class="loc-name">🎠 Carousel</div>
+  <div class="loc-npcs">Diana Cloppington (human-centaur, cursed by Skabatha)</div>
+  <div class="loc-desc">
+    <strong>Riddle of the Carousel</strong>: Paint 8 unicorn names correctly from proverbs. Reveals which hag has each PC's lost thing + hag lair location + hag weakness.<br>
+    Diana is sad and bitter — can't speak about the coven (coughs sap if she tries).
+  </div>
+</div>
+
+<div class="loc-card">
+  <div class="loc-name">🧚 Pixie Kingdom</div>
+  <div class="loc-npcs">Jeremy Plum, Honeymint, Starbug, Biscuit</div>
+  <div class="loc-desc">
+    Shrink potion, pixie dust. Jeremy assigns pixie names (encourages adoption). Hide-and-seek game. Rumors about the carnival's secrets.
+  </div>
+</div>
+
+<div class="loc-card">
+  <div class="loc-name">🌊 Silversong Lake</div>
+  <div class="loc-npcs">Palasha (mermaid, CG)</div>
+  <div class="loc-desc">
+    Mermaid sings with <em>control water</em> effect. Summons quippers 1/day. In love with Candlefoot. Kettlesteam heckles her (3 jeers → Palasha flees). Offers singing lessons → useful in Ch.3 (Loomlurch).
+  </div>
+</div>
+
+<div class="loc-card">
+  <div class="loc-name">🔍 Lost Property</div>
+  <div class="loc-npcs">Dirlagraun (displacer beast, speaks Elvish &amp; Sylvan)</div>
+  <div class="loc-desc">
+    Old, gray-whiskered, carries toffee apple juice keg. Missing cub Star (followed Sowpig to Ch.3). Also Viro the lost boy. Suggests spying on W&amp;L. Knows things go missing and never come back.
+  </div>
+</div>
+
+<div class="loc-card">
+  <div class="loc-name">🐦 Kettlesteam Encounter</div>
+  <div class="loc-npcs">Kettlesteam (kenku warlock, CR1)</div>
+  <div class="loc-desc">
+    Grey-brown plumage, uses <em>disguise self</em>. Steals Candlefoot's voice → corn husk doll. Wanders carnival. Heckles Palasha at Silversong Lake. Knows Zybilna is frozen, overheard W&amp;L arguing about the Hourglass Coven. Can't enter Prismeer (fey pact restriction).
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>4. Lesser Interest Locations</h2>
+
+<table>
+  <thead>
+    <tr><th>Location</th><th>NPC</th><th>What's There</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>🫧 Bubble-Pop Teapot</td>
+      <td>Treaclewise (goblin, butterfly wings)</td>
+      <td>Bubble ride. Rhyming slang.</td>
+      <td>Engage in rhyming → Scatterleaf Tea (beneficial).</td>
+    </tr>
+    <tr>
+      <td>🎼 Calliope</td>
+      <td>Ernest (monkey, Int 10, Cha 10)</td>
+      <td>Human mind in monkey body. Collects buttons.</td>
+      <td>Give a button → hear music to safety if trapped in Prismeer (once). Music changes with carnival mood.</td>
+    </tr>
+    <tr>
+      <td>⛏️ Mystery Mine</td>
+      <td>Zephixo (dwarf mage)</td>
+      <td>Fear illusion ride. All-Seeing Eye contraption.</td>
+      <td>Wis saves vs fear. All pass → Cha advantage at carnival. 3+ failures → nightmares.</td>
+    </tr>
+    <tr>
+      <td>🐌 Snail Racing</td>
+      <td>—</td>
+      <td>8 snails. Jockey contest.</td>
+      <td>Lighthearted gambling. No plot relevance.</td>
+    </tr>
+    <tr>
+      <td>🎯 Small Stalls</td>
+      <td>—</td>
+      <td>Carnival games (ring toss, ball toss, strength test).</td>
+      <td>Simple skill checks. Minor prizes. Mood filler.</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>5. NPCs of Interest</h2>
+
+<!-- Mister Witch -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Mister Witch <span style="font-weight:400;font-size:0.85rem;">(Naeryx Krumple)</span></span>
+    <span class="sb-cr">CR 3</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Race</span> Shadar-kai, CG</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 10</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 82 (11d8 + 33)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 30 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 10 (+0)</span>
+    <span>DEX 10 (+0)</span>
+    <span>CON 16 (+3)</span>
+    <span>INT 18 (+4)</span>
+    <span>WIS 14 (+2)</span>
+    <span>CHA 16 (+3)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Saving Throws</strong> Int +6, Wis +4</p>
+    <p><strong>Skills</strong> Arcana +6, History +6, Insight +4, Perception +4</p>
+    <p><strong>Languages</strong> Common, Elvish, Sylvan, Goblin</p>
+    <p><strong>Damage Resistances</strong> necrotic</p>
+    <p><strong>Blessing of the Raven Queen</strong> Advantage on saving throws vs. charmed. When reduced to 0 HP, teleport 30 ft. to a space he can see.</p>
+    <p><strong>Witchlight Watch.</strong> Carries the Witchlight watch — a keyed magical item that anchors the carnival to the Material Plane. Without it, the carnival cannot travel between worlds. The watch can cast <em>slow</em> (DC 14) 1/day, <em>haste</em> 1/day, and <em>see invisibility</em> at will.</p>
+    <div class="sb-spells">
+      <strong>Spellcasting (DC 14, +6 hit)</strong><br>
+      Cantrips: <em>mage hand, prestidigitation, minor illusion, message</em><br>
+      1st (4 slots): <em>detect magic, disguise self, feather fall, sleep</em><br>
+      2nd (3 slots): <em>invisibility, misty step, suggestion</em><br>
+      3rd (2 slots): <em>clairvoyance, dispel magic</em><br>
+      <strong>Action — Multiattack</strong>: Two attacks with <strong>top hat blade</strong> (melee +6, 1d6+4 slashing) or two spell attacks.
+    </div>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> Calm, distinguished shadar-kai in a top hat. Former clock tower keeper. Swapped carnivals with Isolde the eladrin. Made a pact with the Hourglass Coven to keep the carnival in business. Carries the incantation to Prismeer. <strong>Secret:</strong> He and Light are failing — the coven is bleeding the carnival dry. <strong>Roleplay:</strong> Measured, polite, slightly weary. Drops hints about the "price of time." Won't mention the coven unless pressed.
+  </div>
+</div>
+
+<!-- Mister Light -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Mister Light <span style="font-weight:400;font-size:0.85rem;">(Urmius Umbrage)</span></span>
+    <span class="sb-cr">CR 3</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Race</span> Shadar-kai, CG</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 13 (leather armor)</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 77 (11d8 + 22)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 30 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 12 (+1)</span>
+    <span>DEX 14 (+2)</span>
+    <span>CON 14 (+2)</span>
+    <span>INT 12 (+1)</span>
+    <span>WIS 10 (+0)</span>
+    <span>CHA 18 (+4)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Saving Throws</strong> Dex +4, Cha +6</p>
+    <p><strong>Skills</strong> Acrobatics +4, Deception +8, Performance +8, Sleight of Hand +4</p>
+    <p><strong>Languages</strong> Common, Elvish, Sylvan</p>
+    <p><strong>Damage Resistances</strong> necrotic</p>
+    <p><strong>Blessing of the Raven Queen</strong> Advantage on saving throws vs. charmed. When reduced to 0 HP, teleport 30 ft.</p>
+    <p><strong>Witchlight Vane.</strong> A weather vane that selects the Witchlight Monarch. It can cast <em>guidance</em>, <em>thaumaturgy</em>, and <em>light</em> at will. Once per day, it can cast <em>zone of truth</em> (DC 15).</p>
+    <div class="sb-spells">
+      <strong>Spellcasting (DC 15, +7 hit)</strong><br>
+      Cantrips: <em>dancing lights, friends, light, thaumaturgy</em><br>
+      1st (4 slots): <em>charm person, color spray, disguise self, Tasha's hideous laughter</em><br>
+      2nd (3 slots): <em>mirror image, phantasmal force, suggestion</em><br>
+      3rd (2 slots): <em>fear, major image</em><br>
+      <strong>Action — Multiattack</strong>: Two attacks with <strong>show-stopper rapier</strong> (+6, 1d8+4 piercing) or two spell attacks.
+    </div>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> Flamboyant, theatrical shadar-kai with ever-changing costumes and makeup. Born Urmius Umbrage — rejected a rich family inheritance. <strong>Secret:</strong> Deep down, he's terrified of being forgotten. <strong>Roleplay:</strong> Affectionate, grandiose, speaks to the audience as if the whole world is watching. Loves smiling faces (Northwind confirms this). The Vane responds to joy — if the carnival mood is high, the monarch choice is more meaningful.
+  </div>
+</div>
+
+<!-- Witchlight Hand (shared) -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Witchlight Hand</span>
+    <span class="sb-cr">CR 1/8</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Shared For</span> Candlefoot · Burly · Thaco</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 12</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 9 (2d8)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 30 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 10 (+0)</span>
+    <span>DEX 12 (+1)</span>
+    <span>CON 10 (+0)</span>
+    <span>INT 10 (+0)</span>
+    <span>WIS 10 (+0)</span>
+    <span>CHA 12 (+1)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Skills</strong> varies by individual (see below)</p>
+    <p><strong>Languages</strong> Common</p>
+    <p><strong>Carnival Employee.</strong> Cannot be charmed or frightened while on carnival grounds (W&amp;L's enchantment).</p>
+    <p><strong>Action — Club or improvised weapon.</strong> Melee +2, 1d4 bludgeoning.</p>
+  </div>
+</div>
+
+<!-- Candlefoot -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Candlefoot</span>
+    <span class="sb-cr" style="color:var(--carnival-teal); font-weight:600;">Witchlight Hand</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Role</span> Mime / Hall of Illusions attendant</div>
+  <div class="sb-row"><span class="sb-label">Race</span> Human, NG</div>
+  <div class="sb-traits">
+    <p><strong>Mime.</strong> Communicates entirely through mime and writing. His voice was stolen by Kettlesteam and tied into a corn husk doll — untying it restores his voice.</p>
+    <p><strong>Mood boost.</strong> If his voice is restored, mood +2. He then proposes a plan to help the PCs get into the Staff Area.</p>
+    <p><strong>Skills.</strong> Performance +5, Sleight of Hand +3. Can teach acting lessons → advantage on Deception checks in Ch.4 (Motherhorn).</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> A monochrome mime in love with Palasha the mermaid. He watches her perform at Silversong Lake from the shadows. Too shy to confess. <strong>Roleplay:</strong> Expressive, earnest, communicates through elaborate pantomime. Writes notes when mime isn't enough. His love for Palasha is pure and obvious to anyone watching.
+  </div>
+</div>
+
+<!-- Burly -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Burly</span>
+    <span class="sb-cr" style="color:var(--carnival-teal); font-weight:600;">Witchlight Hand</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Role</span> Strongman / Big Top performer</div>
+  <div class="sb-row"><span class="sb-label">Race</span> Bugbear, NG</div>
+  <div class="sb-traits">
+    <p><strong>Jack-o'-lantern helmet, dungarees, fairy wings.</strong> Strong, loyal to W&amp;L.</p>
+    <p><strong>Skills.</strong> Athletics +5, Intimidation +3.</p>
+    <p><strong>Mastermind of the watch heist.</strong> If the PCs befriend him, he proposes stealing Witch's watch to free the carnival from the coven's influence. Warns the PCs that Thaco is untrustworthy.</p>
+    <p><strong>Missing brother.</strong> Hurly is trapped in Thither (Ch.4, area M5).</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> A bugbear with a gentle heart. The fairy wings are his pride. He misses his brother Hurly, who vanished into Prismeer. <strong>Roleplay:</strong> Speaks in a low, rumbling voice. Very direct. Cares deeply about the carnival and its workers. His loyalty to W&amp;L is real, but he's starting to doubt the arrangement.
+  </div>
+</div>
+
+<!-- Thaco -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Thaco</span>
+    <span class="sb-cr" style="color:var(--carnival-teal); font-weight:600;">Witchlight Hand</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Role</span> Clown / Staff Area guard</div>
+  <div class="sb-row"><span class="sb-label">Race</span> Human, CN</div>
+  <div class="sb-traits">
+    <p><strong>Over-the-hill clown.</strong> Painted-on grin, bubble pipe. Untrustworthy per Burly.</p>
+    <p><strong>Skills.</strong> Performance +4, Deception +3.</p>
+    <p><strong>Balloon animals.</strong> If carnival mood is positive, he makes balloon animals for the party (minor distractions, could be used as props).</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> A washed-up clown past his prime. He guards the Staff Area entrance when W&amp;L are away. <strong>Roleplay:</strong> Jovial on the surface, bitter underneath. Can be bribed with flattery, booze, or a good performance. May sell out the party if offered a better deal. Burly explicitly warns against trusting him.
+  </div>
+</div>
+
+<!-- Kettlesteam -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Kettlesteam</span>
+    <span class="sb-cr">CR 1</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Race</span> Kenku warlock (Zybilna's patron), CN</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 13</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 22 (5d8)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 30 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 8 (-1)</span>
+    <span>DEX 14 (+2)</span>
+    <span>CON 10 (+0)</span>
+    <span>INT 12 (+1)</span>
+    <span>WIS 12 (+1)</span>
+    <span>CHA 16 (+3)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Skills</strong> Deception +5, Perception +3, Stealth +4</p>
+    <p><strong>Languages</strong> Common, Auran (can't speak — mimicry only)</p>
+    <p><strong>Mimicry.</strong> Can mimic any voice or sound heard. DC 14 Insight to tell it's mimicry.</p>
+    <p><strong>Disguise Self.</strong> Casts at will (disguises as a gnome or halfling).</p>
+    <div class="sb-spells">
+      <strong>Spellcasting (DC 13, +5 hit)</strong><br>
+      Cantrips: <em>eldritch blast, minor illusion</em><br>
+      1st (2 slots): <em>hex, unseen servant</em><br>
+      2nd (1 slot): <em>invisibility</em><br>
+      <strong>Action — Dagger.</strong> Melee or ranged +4, 1d4+2 piercing.
+    </div>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> A kenku whose patron is Zybilna. When Zybilna froze, Kettlesteam lost contact and has been trying to get attention. Stole Candlefoot's voice as a "message in a bottle." Knows: Zybilna is frozen, the Hourglass Coven is responsible, and W&amp;L are trapped in a bad pact. Can't enter Prismeer due to fey pact restrictions. <strong>Roleplay:</strong> Speaks entirely in stolen voices — switches between Candlefoot's gentle tone, Palasha's singing voice, and Witch's measured cadence. Chaotic, nosy, genuinely worried about Zybilna.
+  </div>
+</div>
+
+<!-- Northwind -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Northwind</span>
+    <span class="sb-cr">CR 2</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Race</span> Treant sapling, CG</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 14 (natural armor)</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 45 (6d10 + 12)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 30 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 17 (+3)</span>
+    <span>DEX 8 (-1)</span>
+    <span>CON 14 (+2)</span>
+    <span>INT 10 (+0)</span>
+    <span>WIS 12 (+1)</span>
+    <span>CHA 10 (+0)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Skills</strong> Nature +2, Perception +3</p>
+    <p><strong>Languages</strong> Common, Elvish, Sylvan</p>
+    <p><strong>Damage Vulnerabilities</strong> fire</p>
+    <p><strong>Damage Resistances</strong> bludgeoning, piercing</p>
+    <p><strong>Animate Trees (1/day).</strong> Can animate two trees within 60 ft. (same stats, but Int/Cha 1, speed 20 ft., can't speak).</p>
+    <p><strong>Action — Slam.</strong> +5, 2d6+3 bludgeoning.</p>
+    <p><strong>Action — Rock.</strong> Ranged +5, 2d4+3 bludgeoning.</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> A carefree treant sapling who helps set up the carnival grounds using Animate Trees. Accompanied by Red, an awakened squirrel (weasel stats, Int 10, speaks Common). <strong>Key trait:</strong> HORRIBLE at keeping secrets. If asked any question about W&amp;L, he blurts out answers. Knows W&amp;L aren't original owners and the carnival can't run without Witch's watch. <strong>Roleplay:</strong> Breezy, forgetful, easily distracted. Loves compliments about his leaves. Red (the squirrel) follows behind facepalming.
+  </div>
+</div>
+
+<!-- Dirlagraun -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Dirlagraun</span>
+    <span class="sb-cr">CR 3 (unique)</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Race</span> Displacer beast (old, gray-whiskered)</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 13</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 85 (10d10 + 30)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 40 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 16 (+3)</span>
+    <span>DEX 15 (+2)</span>
+    <span>CON 16 (+3)</span>
+    <span>INT 8 (-1)</span>
+    <span>WIS 12 (+1)</span>
+    <span>CHA 10 (+0)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Skills</strong> Perception +5, Stealth +6</p>
+    <p><strong>Languages</strong> Elvish, Sylvan</p>
+    <p><strong>Displacement.</strong> Attack rolls against Dirlagraun have disadvantage unless it is incapacitated. If hit, this trait doesn't function until the start of its next turn.</p>
+    <p><strong>Avoidance.</strong> If Dirlagraun makes a saving throw against an effect that deals half damage on a success, it takes no damage on a success and half damage on a failure.</p>
+    <p><strong>Action — Multiattack.</strong> Two tentacle attacks.</p>
+    <p><strong>Action — Tentacle.</strong> Melee +6, 2d6+3 bludgeoning.</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> An old, gray-whiskered displacer beast who lives in Lost Property. Unlike most of his kind, he's gentle and philosophical. Carries a small keg of toffee apple juice. His cub Star is missing — Star followed Sowpig into a mirror and is now in Thither (Ch.3). Also watches over Viro, a lost boy. <strong>Roleplay:</strong> Speaks in a deep, rumbling voice. Tired, wise, concerned. Offers advice freely. If the party helps find Star, Dirlagraun becomes a loyal ally.
+  </div>
+</div>
+
+<!-- Ellywick Tumblestrum -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Ellywick Tumblestrum</span>
+    <span class="sb-cr" style="color:var(--carnival-gold); font-weight:600;">Planeswalker (no stat block)</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Race</span> Gnome bard</div>
+  <div class="sb-row"><span class="sb-label">Affiliation</span> Unaligned (beyond mortal concerns)</div>
+  <div class="sb-traits">
+    <p><strong>Can't be harmed.</strong> Any attack directed at her simply misses or passes through. No magic reads her thoughts.</p>
+    <p><strong>Pays for the PCs' tickets.</strong> Appears in the Feasting Orchard.</p>
+    <p><strong>Knows:</strong> The PCs are "agents of change." The Hourglass Coven is cruel. The incantation to Prismeer.</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> A mysterious gnome bard who walks between planes. She knows far more than she lets on — she may be a manifestation of the Plane's will itself. <strong>Roleplay:</strong> Enigmatic, amused, speaks in riddles and songs. Responds to questions with questions. Fallback guide: if the PCs haven't found the incantation by Hour 7, she appears and gives it to them. <strong>Tip:</strong> Don't over-explain her — mystery is the point.
+  </div>
+</div>
+
+<!-- Palasha -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Palasha</span>
+    <span class="sb-cr" style="color:var(--carnival-pink); font-weight:600;">Mermaid (non-combatant)</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Race</span> Mermaid, CG</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 12</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 22 (5d8)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 10 ft., swim 40 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 10 (+0)</span>
+    <span>DEX 12 (+1)</span>
+    <span>CON 10 (+0)</span>
+    <span>INT 12 (+1)</span>
+    <span>WIS 14 (+2)</span>
+    <span>CHA 16 (+3)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Skills</strong> Performance +7, Persuasion +5</p>
+    <p><strong>Languages</strong> Common, Aquan</p>
+    <p><strong>Control Water (song).</strong> As the <em>control water</em> spell (no concentration). Affects the lake while she sings.</p>
+    <p><strong>Summon Quippers (1/day).</strong> Summons 1d4 quippers (use quipper stats) to defend her.</p>
+    <p><strong>Singing lessons.</strong> PCs who take lessons gain advantage on Performance checks in Ch.3 (Loomlurch).</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> A beautiful mermaid who performs at Silversong Lake. In love with Candlefoot, though he's too shy to approach her. She senses him watching from the shadows and wishes he'd speak to her. Kettlesteam heckles her — after 3 jeers she flees in tears. <strong>Roleplay:</strong> Ethereal, melodic voice. Shy about her feelings. If Candlefoot's voice is restored and the two finally talk, it's a genuinely heartwarming moment.
+  </div>
+</div>
+
+<!-- Sowpig -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Sowpig</span>
+    <span class="sb-cr">CR 1/2</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Role</span> Skabatha Nightshade's thief</div>
+  <div class="sb-row"><span class="sb-label">Race</span> Ghoul (small, disguised as girl)</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 12</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 17 (5d6)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 30 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 10 (+0)</span>
+    <span>DEX 14 (+2)</span>
+    <span>CON 10 (+0)</span>
+    <span>INT 8 (-1)</span>
+    <span>WIS 8 (-1)</span>
+    <span>CHA 6 (-2)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Skills</strong> Stealth +4</p>
+    <p><strong>Languages</strong> Common, Goblin</p>
+    <p><strong>Appearance.</strong> Little girl wearing a pig mask, carrying an oversized lollipop.</p>
+    <p><strong>No Ticket.</strong> DC 13 Wisdom save or be stunned for 1 minute — no memory of the event. Stunned creatures are vulnerable to Sticky Fingers.</p>
+    <p><strong>Sticky Fingers.</strong> While a creature is stunned by No Ticket, Sowpig can steal a 10 lb or smaller item. The item appears in Skabatha's lair in Thither.</p>
+    <p><strong>Action — Bite.</strong> +4, 1d4+2 piercing + possible paralysis (DC 10 Con).</p>
+    <p><strong>Action — Claw.</strong> +4, 1d4+2 slashing.</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> Skabatha's thief, sent to steal "lost things" from ticketless carnival visitors. She lured Rubin Sugarwood toward the mirror in the Hall of Illusions and lured Dirlagraun's cub Star into Prismeer. Lurks between wagons. <strong>Roleplay:</strong> Speaks in a high, childlike voice. Plays innocent if caught. Creepy, but genuinely a child-like ghoul — there may be a tragic story underneath.
+  </div>
+</div>
+
+<!-- Quickling / Lornling -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Quickling / Lornling</span>
+    <span class="sb-cr">CR 1</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Role</span> Bavlorna Blightstraw's thief</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 14</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 21 (6d6)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 60 ft.</div>
+  <div class="sb-abilities">
+    <span>STR 6 (-2)</span>
+    <span>DEX 18 (+4)</span>
+    <span>CON 10 (+0)</span>
+    <span>INT 10 (+0)</span>
+    <span>WIS 12 (+1)</span>
+    <span>CHA 8 (-1)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Skills</strong> Acrobatics +6, Perception +3, Sleight of Hand +6, Stealth +8</p>
+    <p><strong>Languages</strong> Common, Sylvan (can't speak — only cackles)</p>
+    <p><strong>Damage Resistances</strong> bludgeoning (from Lornling stone skin)</p>
+    <p><strong>Blurred Motion.</strong> Attack rolls against a quickling have disadvantage unless it is incapacitated.</p>
+    <p><strong>No Ticket.</strong> Same as Sowpig — DC 13 Wis or stunned + stolen item.</p>
+    <p><strong>Action — Multiattack.</strong> Two dagger attacks.</p>
+    <p><strong>Action — Dagger.</strong> +6, 1d4+4 piercing.</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> A tiny, impossibly fast fey creature working for Bavlorna. Lornlings are the stone-skinned variant found in Bavlorna's cottage. <strong>Roleplay:</strong> Too fast to hold a conversation — cackles, zips around, steals things. More of a force of nature than a character. In Bavlorna's cottage, they serve as guardians.
+  </div>
+</div>
+
+<!-- Gleam's Shadow -->
+<div class="statblock">
+  <div class="sb-header">
+    <span class="sb-name">Gleam's Shadow</span>
+    <span class="sb-cr">CR 1/2</span>
+  </div>
+  <div class="sb-row"><span class="sb-label">Role</span> Endelyn Moongrave's thief</div>
+  <div class="sb-row"><span class="sb-label">Race</span> Shadow (undead)</div>
+  <div class="sb-row"><span class="sb-label">Armor Class</span> 12</div>
+  <div class="sb-row"><span class="sb-label">Hit Points</span> 16 (3d8 + 3)</div>
+  <div class="sb-row"><span class="sb-label">Speed</span> 40 ft. (fly)</div>
+  <div class="sb-abilities">
+    <span>STR 6 (-2)</span>
+    <span>DEX 14 (+2)</span>
+    <span>CON 13 (+1)</span>
+    <span>INT 6 (-2)</span>
+    <span>WIS 10 (+0)</span>
+    <span>CHA 8 (-1)</span>
+  </div>
+  <div class="sb-traits">
+    <p><strong>Skills</strong> Stealth +6</p>
+    <p><strong>Languages</strong> —</p>
+    <p><strong>Damage Vulnerabilities</strong> radiant</p>
+    <p><strong>Damage Resistances</strong> acid, cold, fire, lightning, thunder; bludgeoning/piercing/slashing from nonmagical attacks</p>
+    <p><strong>Damage Immunities</strong> necrotic, poison</p>
+    <p><strong>Condition Immunities</strong> exhaustion, frightened, grappled, paralyzed, petrified, poisoned, prone, restrained</p>
+    <p><strong>Amorphous.</strong> Can move through a space as narrow as 1 inch without squeezing.</p>
+    <p><strong>Shadow Stealth.</strong> While in dim light or darkness, hide as a bonus action.</p>
+    <p><strong>Sunlight Weakness.</strong> While in sunlight, disadvantage on attack rolls, ability checks, and saving throws.</p>
+    <p><strong>No Ticket.</strong> Same as Sowpig — DC 13 Wis or stunned + stolen item.</p>
+    <p><strong>Action — Strength Drain.</strong> +4, 2d6+2 necrotic. STR reduction per standard shadow.</p>
+  </div>
+  <div class="sb-story">
+    <strong>Story:</strong> The detached shadow of Gleam, an acrobat in Endelyn's troupe at Motherhorn (Ch.4). Endelyn uses it as a thief to steal "lost things." It has no will of its own — it's Endelyn's tool. <strong>Roleplay:</strong> Silent, creeping, terrifying in the right moment. Can't be reasoned with — it's a shadow. If the party defeats Endelyn, Gleam is reunited with her shadow.
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<h2>6. Lost Things &amp; Hag Assignments</h2>
+
+<table>
+  <thead>
+    <tr><th>PC</th><th>Lost Thing</th><th>Keeper</th><th>Domain</th><th>Hag Weakness</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Helkek</strong></td>
+      <td>Ability to keep secrets</td>
+      <td>Bavlorna Blightstraw</td>
+      <td>Hither (swamp, present)</td>
+      <td>Running widdershins disorients her</td>
+    </tr>
+    <tr>
+      <td><strong>Razel</strong></td>
+      <td>Artistic creativity</td>
+      <td>Bavlorna Blightstraw</td>
+      <td>Hither (swamp, present)</td>
+      <td>Running widdershins disorients her</td>
+    </tr>
+    <tr>
+      <td><strong>Idy</strong></td>
+      <td>3 inches of height</td>
+      <td>Endelyn Moongrave</td>
+      <td>Yon (mountain, future)</td>
+      <td>Foresaw her death during an eclipse</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <strong>Minor Curses:</strong> Helkek &amp; Razel cannot light nonmagical fires. Idy cannot open a door without knocking first.<br>
+  <strong>Skabatha Nightshade</strong> (Thither, past) holds no party lost things but is still active in Prismeer.
+</div>
+
+<h3>The Hourglass Coven — Quick Reference</h3>
+<table>
+  <thead>
+    <tr><th>Hag</th><th>Domain</th><th>Time</th><th>Thief</th><th>Weakness</th><th>Location</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Bavlorna Blightstraw</td>
+      <td>Hither</td>
+      <td>Present</td>
+      <td>Quickling / Lornling</td>
+      <td>Widdershins (counterclockwise) movement</td>
+      <td>Cottage on stilts, Downfall</td>
+    </tr>
+    <tr>
+      <td>Skabatha Nightshade</td>
+      <td>Thither</td>
+      <td>Past</td>
+      <td>Sowpig (ghoul)</td>
+      <td>Sleeps in dollhouse; doesn't remember first creature she sees upon waking</td>
+      <td>Loomlurch (hollow tree)</td>
+    </tr>
+    <tr>
+      <td>Endelyn Moongrave</td>
+      <td>Yon</td>
+      <td>Future</td>
+      <td>Gleam's Shadow</td>
+      <td>Foresaw her own death during an eclipse</td>
+      <td>Motherhorn (theater)</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- ============================================================ -->
+<h2>7. Feywild Rules (Prismeer)</h2>
+
+<table>
+  <thead>
+    <tr><th style="width:140px;">Rule</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Hospitality</strong></td>
+      <td>Once a guest accepts hospitality (food, drink, shelter), the host cannot harm them and the guest cannot harm the host. This is sacred in the Feywild — breaking it has dire consequences.</td>
+    </tr>
+    <tr>
+      <td><strong>Ownership</strong></td>
+      <td>What is freely given cannot be taken back by force. What is stolen must be bargained for. This is why the hags use thieves to steal — they want "lost things" without violating fey law.</td>
+    </tr>
+    <tr>
+      <td><strong>Reciprocity</strong></td>
+      <td>A gift demands a gift of equal or greater value in return. Be careful what the party accepts from fey creatures.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout">
+  <strong>Zybilna (secretly Iggwilv / Tasha).</strong> Baba Yaga's adopted daughter. Frozen in time at the Palace of Heart's Desire. To free her the party needs: (1) an <strong>alicorn</strong> (unicorn horn), and (2) to speak her <strong>true name</strong> (Iggwilv / Tasha).<br>
+  <em>Last PC through the mirror hears: "Rule of Three… the alicorn holds the key."</em>
+</div>
+
+<!-- ============================================================ -->
+<h2>8. DM Session Flow Checklist</h2>
+
+<ol class="checklist">
+  <li><strong>Hour 1 — Arrival</strong><br>
+    Describe the carnival bursting out of nowhere. Northwind scatters golden seeds (Dex DC 10 to catch). Red hands out dandelions (write down wishes). Ticket Booth → Nikolas Midnight (DC 13 Insight to detect ruse). Butterfly wings + map + 8-punch tickets.</li>
+  <li><strong>Hour 1 — Welcome Gifts</strong><br>
+    Roll d8 on Welcome Gifts table for each PC who caught a seed. Remind players of dandelion wishes.</li>
+  <li><strong>Hours 2-3 — Exploration</strong><br>
+    Party chooses where to go. Prompt for Mystery Mine, Carousel, Hall of Illusions, Silversong Lake, Dragonfly Rides. Let them pick 2-3 locations per hour. Track mood changes.</li>
+  <li><strong>Check: Hall of Illusions / Rubin</strong><br>
+    Sowpig encounter near the mirrors. Rubin rescue → mood +1 if reunited with Ween. Candlefoot's voice — did they get the corn husk doll from Kettlesteam?</li>
+  <li><strong>Check: Carousel Riddle</strong><br>
+    8 unicorns, proverb-based names. Success → reveal hag assignments + weaknesses. Diana Cloppington's curse (coughs sap if she tries to warn).</li>
+  <li><strong>Check: Kettlesteam</strong><br>
+    DC 13 Investigation to find (1 hour). Disguised. Mocking Palasha at Silversong Lake. Corn husk doll = Candlefoot's voice.</li>
+  <li><strong>Hour 4 — Midnight Extravaganza</strong><br>
+    Mister Light ringmaster. Burly strength, Palasha song, Candlefoot mime. Offer PC participation (DC 14 Performance → mood +1). Group check → mood +3. Impress Light → private W&amp;L meeting.</li>
+  <li><strong>Check: Watch Heist Opportunity</strong><br>
+    Best time is Hour 4 (W&amp;L separated). Burly proposes plan if befriended. Thaco guards Staff Area — Persuade/Deceive DC 12 or combat.</li>
+  <li><strong>Hours 5-7 — After-Show</strong><br>
+    Final exploration. Gondola Swans (Feathereen gossip), Pixie Kingdom (hide-and-seek), Lost Property (Dirlagraun). Hag thieves lurk between wagons.</li>
+  <li><strong>Check: Return Voice to Candlefoot</strong><br>
+    Untie corn husk doll → mood +2. Candlefoot proposes plan. Acting lessons → advantage in Ch.4.</li>
+  <li><strong>Check: Staff Area Infiltration</strong><br>
+    W&amp;L wagon. Confrontation or stealth. Learn about the pact, Zybilna frozen, and the incantation. Watch heist resolution.</li>
+  <li><strong>Hour 8 — Dawn Crowning</strong><br>
+    Vane selects Witchlight Monarch. Crown of golden butterflies. Knighted by Light. Parade + fireworks. Charm of the Monarch granted.</li>
+  <li><strong>Check: Portal to Prismeer</strong><br>
+    Recite incantation before mirror in Hall of Illusions. Watch and Vane cannot pass. Last PC hears "Rule of Three + alicorn." Balloon crash → Hither (Ch.2 begins).</li>
+  <li><strong>Fallback: Ellywick</strong><br>
+    If party hasn't found incantation by now, Ellywick appears and gives it to them. "You were always going to find it. I'm just saving time."</li>
+  <li><strong>End Session</strong><br>
+    Transition to Hither. Sir Talavar caged. Band of singing brigands. Clapperclaw or Agdon Longscarf as guide. Save point for next session.</li>
+</ol>
+
+<div class="callout" style="margin-top:24px; text-align:center;">
+  <strong>Remember the tone:</strong> Whimsical fantasy with underlying dread. The carnival is joyful on the surface, but everything has a price. Every laugh echoes a little too long. Every smiling face hides a secret.<br><br>
+  <strong>Party Status:</strong> Helkek (bard 1) · Razel (warlock 1) · Idy (druid 1) &nbsp;|&nbsp; Session 1 &nbsp;|&nbsp; Status: In Progress
+</div>
+
+</body>
+</html>

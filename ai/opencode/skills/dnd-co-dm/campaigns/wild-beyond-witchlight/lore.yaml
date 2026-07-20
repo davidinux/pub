@@ -1,0 +1,28 @@
+backstory: >
+  The Witchlight Carnival travels across worlds. Its owners, Mister Witch and Mister Light
+  (formerly Naeryx Krumple and Urmius Umbrage), are shadar-kai who swapped carnivals with
+  Isolde the eladrin years ago. The carnival is magically tied to Prismeer, a Feywild domain
+  ruled by the archfey Zybilna. Behind the scenes, the Hourglass Coven — three hags who
+  have split Prismeer between them — has frozen Zybilna in time and uses the carnival as
+  a hunting ground for "lost things."
+
+hags:
+  Bavlorna Blightstraw: "Hither. Swamp. Realm of the present. Took the ability to keep secrets and artistic creativity from the party."
+  Skabatha Nightshade: "Thither. Forest. Realm of the past."
+  Endelyn Moongrave: "Yon. Mountain. Realm of the future. Took three inches of height from Idy."
+
+zybilna: >
+  Zybilna is secretly Iggwilv the Witch Queen (also known as Tasha). She is Baba Yaga's
+  adopted daughter. Freeing her requires: (1) an alicorn (unicorn horn), and (2) speaking
+  her true name. She is frozen in time at the Palace of Heart's Desire in Prismeer.
+
+feywild_rules:
+  hospitality: "Once a guest accepts hospitality (food, drink, shelter), the host cannot harm them, and the guest cannot harm the host."
+  ownership: "What is freely given cannot be taken back by force. What is stolen must be bargained for."
+  reciprocity: "A gift demands a gift of equal or greater value in return."
+
+hourglass_coven:
+  - "Three hags who serve the concept of past, present, future"
+  - "Each has a thief that steals from ticketless carnival guests"
+  - "Each has a unique exploitable weakness"
+  - "Hag defeat is optional — negotiation and cleverness work"

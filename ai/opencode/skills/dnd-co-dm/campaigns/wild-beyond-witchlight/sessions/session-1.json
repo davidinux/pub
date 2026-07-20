@@ -1,0 +1,52 @@
+{
+  "session": 1,
+  "date": "2026-07-20",
+  "status": "in_progress",
+  "carnival": {
+    "hour": 2,
+    "mood": "normal (+1 from Rubin/Ween reunion)",
+    "monarch_chosen": false,
+    "watch_stolen": false,
+    "vane_stolen": false
+  },
+  "party_state": {
+    "helkek": {
+      "ticket_punches": 4,
+      "mystery_mine_fails": 1,
+      "carousel_secrets": true,
+      "kettlesteam_persuaded": true
+    },
+    "razel": {
+      "ticket_punches": 4,
+      "mystery_mine_fails": 0,
+      "mystery_mine_success": true,
+      "carousel_secrets": true,
+      "kettlesteam_persuaded": true,
+      "welcome_gift_trait": "easily amused"
+    },
+    "idy": {
+      "ticket_punches": 4,
+      "mystery_mine_fails": 0,
+      "mystery_mine_success": true,
+      "carousel_secrets": true,
+      "kettlesteam_persuaded": true
+    }
+  },
+  "completed_events": [
+    "hour_1_welcome_gifts",
+    "mystery_mine",
+    "hall_of_illusions_rubin_rescue",
+    "carousel_riddle",
+    "silversong_lake_kettlesteam",
+    "corn_husk_doll_acquired",
+    "hag_info_acquired"
+  ],
+  "pending_events": [
+    "return_candlefoot_voice",
+    "candlefoot_proposal",
+    "big_top_extravaganza",
+    "watch_heist_or_coronation",
+    "meet_witch_and_light",
+    "crowning"
+  ]
+}

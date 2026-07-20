@@ -1,0 +1,70 @@
+- name: Welcome Gifts
+  hour: 1
+  location: Main thoroughfare
+  description: "Northwind treant scatters golden sycamore seeds. Red hands out dandelions."
+  mechanics:
+    - "Catch seed (DC 10 Dex) -> d8 Welcome Gifts table"
+    - "Dandelion wish -> write down, relevant in Ch.4"
+
+- name: Big Top Extravaganza
+  hour: 4
+  location: Big Top
+  description: "Mister Light ringmaster. Performances, Burly feats of strength, Palasha song, Candlefoot mime games."
+  mechanics:
+    - "DC 14 Performance by PC -> mood +1"
+    - "Group check -> mood +3"
+    - "Impressing Light -> private meeting with W&L"
+    - "Best time for watch heist (W&L separated)"
+
+- name: Crowning the Witchlight Monarch
+  hour: 8
+  location: Big Top
+  description: "Vane selects monarch. Crown of golden butterflies. Knighted by Light. Parade with fireworks."
+  mechanics:
+    - "Monarch gets Charm of the Monarch (fly speed, +5 Cha, 3 uses)"
+    - "Fey in Prismeer treat monarch with reverence"
+    - "If no Prismeer access -> Ellywick gives incantation"
+
+- name: Hag Thieves
+  location: Between wagons
+  description: "Quickling (Bavlorna), Sowpig (Skabatha), Gleam's Shadow (Endelyn)."
+  mechanics:
+    - "No Ticket: DC 13 Wis or stunned 1 min, no memory"
+    - "Sticky Fingers: steal 10 lb item from stunned -> appears in hag's lair"
+
+- name: Kettlesteam Encounter
+  location: Wanders
+  description: "Kenku disguised, causing trouble. Heckling Palasha, etc."
+  mechanics:
+    - "DC 13 Investigation (1 hour) to find"
+    - "Contested Perception vs Deception to spot"
+
+- name: Riddle of the Carousel
+  location: Carousel
+  description: "Paint 8 unicorn names correctly from proverbs."
+  resolution: "Reveals which hag has each PC's lost thing + lair location + hag weakness."
+
+- name: Through the Looking Glass
+  location: Hall of Illusions
+  description: "Recite incantation before mirror -> portal to Hither."
+  notes: "Watch and Vane cannot pass through. Last PC hears Rule of Three + alicorn clue."
+
+- name: Arrival in Hither (Ch.2)
+  location: Queen's Way (broken bridge)
+  description: "Balloon crash. Band of singing brigands. Sir Talavar caged."
+  notes: "Guide: Clapperclaw the scarecrow or Agdon Longscarf."
+
+- name: Bavlorna's Cottage (Ch.2)
+  location: Downfall, Hither
+  weakness: "Running widdershins (counterclockwise) disorients her."
+  notes: "Bargain or combat. Lornlings. Will trade lost things."
+
+- name: Loomlurch (Ch.3)
+  location: Thither
+  weakness: "Skabatha sleeps in a dollhouse, doesn't remember first creature she sees upon waking."
+  notes: "Hollow tree. Lost children. Getaway Gang."
+
+- name: Motherhorn (Ch.4)
+  location: Yon
+  weakness: "Endelyn foresaw her own death during an eclipse."
+  notes: "Theater. Stagefright. Gleam (acrobat) found here."

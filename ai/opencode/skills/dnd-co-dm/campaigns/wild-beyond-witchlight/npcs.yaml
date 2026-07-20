@@ -1,0 +1,161 @@
+- name: Mister Witch
+  role: Carnival co-owner
+  area: Witchlight Carnival
+  alignment: CG
+  race: Shadar-kai
+  cr: 3
+  description: "Calm, distinguished. Former clock tower keeper. Wears top hat. Carries Witchlight watch."
+  knows:
+    - How to open the mirror portal to Prismeer
+    - The Hourglass Coven exists (won't mention unless pressed)
+    - Zybilna is the carnival's patron
+    - The incantation: "Hither, thither, here and there; wander yonder, show me where."
+  secret: "Swapped carnivals with Isolde. Made a pact with the Hourglass Coven to stay in business."
+
+- name: Mister Light
+  role: Carnival co-owner
+  area: Witchlight Carnival
+  alignment: CG
+  race: Shadar-kai
+  cr: 3
+  description: "Flamboyant, theatrical. Costumes and makeup. Carries Witchlight vane."
+  knows:
+    - Same as Mister Witch
+    - The Vane selects the Witchlight Monarch
+  secret: "Born Urmius Umbrage, rejected rich family inheritance."
+
+- name: Nikolas Midnight
+  role: Ticket seller
+  area: Ticket Booth
+  alignment: LN
+  race: Goblin
+  description: "Elderly goblin with spyglass and ear horn. Ruse — as sharp as a thorn."
+  notes: "DC 13 Insight advantage. Sends pixie messenger to Witch if PCs seem disruptive."
+
+- name: Candlefoot
+  role: Mime / Hall of Illusions ticket-puncher
+  area: Hall of Illusions
+  alignment: NG
+  race: Human
+  description: "Monochrome mime. Lost his voice to Kettlesteam. In love with Palasha."
+  notes: "Communicates via mime and writing. Voice restored by untying corn husk doll. Acting lessons useful in Ch.4."
+
+- name: Palasha
+  role: Mermaid performer
+  area: Silversong Lake
+  alignment: CG
+  description: "Sings with control water effect. Summons quippers 1/day."
+  notes: "In love with Candlefoot. Flees if heckled by Kettlesteam. Offers singing lessons (useful Ch.3)."
+
+- name: Kettlesteam
+  role: Kenku warlock (Zybilna's patron)
+  area: Wanders carnival
+  alignment: CN
+  cr: 1
+  description: "Grey-brown plumage. Uses disguise self. Stole Candlefoot's voice."
+  knows:
+    - Zybilna is frozen / unresponsive
+    - Overheard Witch & Light arguing about the Hourglass Coven
+    - Can't enter Prismeer (fey pact restriction)
+  notes: "DC 13 Investigation to find. Corn husk doll contains Candlefoot's voice."
+
+- name: Ellywick Tumblestrum
+  role: Gnome bard / Planeswalker
+  area: Feasting Orchard (appears)
+  alignment: CG
+  description: "Enigmatic. Paid for PCs' tickets. Can't be harmed. No magic reads her thoughts."
+  knows:
+    - PCs are agents of change
+    - The Hourglass Coven is cruel
+    - The incantation to Prismeer
+  notes: "Fallback guide to Prismeer if PCs don't find the incantation by Hour 8."
+
+- name: Northwind
+  role: Treant sapling
+  area: Dragonfly Rides
+  cr: 2
+  description: "Carefree. Sets up carnival with Animate Trees. HORRIBLE at secrets."
+  knows:
+    - W&L are not original owners
+    - Carnival can't run without Witch's watch
+    - Light loves smiling faces
+  notes: "Accompanied by Red (awakened squirrel, weasel stats, Int 10, Common). Welcome Gifts in Hour 1."
+
+- name: Dirlagraun
+  role: Displacer beast
+  area: Lost Property
+  description: "Old, gray-whiskered. Speaks Elvish & Sylvan. Carries toffee apple juice keg."
+  notes: "Missing cub Star (followed Sowpig to Ch.3). Suggests spying on W&L."
+  knows:
+    - Things go missing from carnival and never come back
+
+- name: Diana Cloppington
+  role: Carousel operator
+  area: Carousel
+  description: "Human-centaur fusion. Cursed by Skabatha. Sad and bitter."
+  notes: "Riddle of the Carousel reveals hag info. Can't speak about coven (coughs sap)."
+
+- name: Burly
+  role: Bugbear Witchlight hand
+  area: Big Top / Staff Area
+  alignment: NG
+  description: "Jack-o'-lantern helmet, dungarees, fairy wings. Strong. Loyal to W&L."
+  notes: "Masterminds watch heist plan. Missing brother Hurly (Ch.4 area M5). Warns against Thaco."
+
+- name: Thaco
+  role: Clown
+  area: Staff Area
+  alignment: CN
+  description: "Over-the-hill human clown. Painted grin, bubble pipe."
+  notes: "Untrustworthy per Burly. Makes balloon animals if mood is good."
+
+- name: Feathereen
+  role: Giant swan
+  area: Gondola Swans
+  description: "Speaks Common & Auran. Erudite, haughty. Asks metaphysical questions."
+  notes: "Gossips about Candlefoot/Palasha/Burly's brother Hurly if impressed."
+
+- name: Treaclewise
+  role: Goblin
+  area: Bubble-Pop Teapot
+  alignment: CG
+  description: "Wears butterfly wings. Speaks in rhyming slang."
+  notes: "Gives Scatterleaf Tea to those who engage in rhyming."
+
+- name: Ernest
+  role: Monkey (mind-swapped with human)
+  area: Calliope
+  alignment: NG
+  description: "Baboon stats, Int 10, Cha 10. Collects buttons."
+  notes: "Button-givers can hear music to safety if trapped in Prismeer (once)."
+
+- name: Zephixo
+  role: Dwarf mage
+  area: Mystery Mine
+  alignment: CG
+  description: "All-Seeing Eye contraption. Bushy eyebrows, pointy hat."
+  notes: "Fear illusion ride operator."
+
+- name: Sowpig
+  role: Skabatha's thief
+  area: Lurks between wagons
+  description: "Small ghoul, HP 17. Little girl in pig mask with oversized lollipop."
+  notes: "No Ticket (DC 13 Wis). Sticky Fingers. Lurked Rubin toward mirror. Lured Dirlagraun's cub Star."
+
+- name: Rubin Sugarwood
+  role: Halfling commoner
+  area: Hall of Illusions
+  alignment: LG
+  description: "Proposed to Ween. Sowpig tried to lure him through mirror."
+  notes: "Saved by PCs. Reunited with Ween -> mood +1."
+
+- name: Ween Sundapple
+  role: Halfling commoner
+  area: Hall of Illusions
+  alignment: LG
+  description: "Rubin's sweetheart. Fell victim to Tasha's mannequin."
+
+- name: Jeremy Plum
+  role: Pixie
+  area: Pixie Kingdom
+  description: "Assigns pixie names. Encourages adoption of pixie names."
