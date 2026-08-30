@@ -1,0 +1,30 @@
+{
+  "name": "opencode-free-models",
+  "version": "0.1.0",
+  "description": "OpenCode TUI sidebar plugin — free/paid model lists with task-aware per-tier recommendations (green best overall / yellow best free) and live cost per 1M",
+  "type": "module",
+  "exports": {
+    "./tui": "./tui.tsx"
+  },
+  "files": [
+    "tui.tsx",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "tui",
+    "sidebar"
+  ],
+  "author": "davidinux",
+  "license": "MIT",
+  "dependencies": {
+    "@opencode-ai/plugin": "^1.14.33",
+    "solid-js": "^1.9.12"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "private": false
+}
