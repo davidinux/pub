@@ -28,9 +28,7 @@ function isFree(model: any): boolean {
     const vals = [cost.input, cost.output, cost.cache_read, cost.cache_write].filter((v) => v !== undefined)
     if (vals.length > 0 && vals.every((v) => v === 0)) return true
   }
-  const id = String(model?.id || "")
-  const name = String(model?.name || "")
-  return /-free$/.test(id) || /\bfree\b/i.test(name)
+  return false
 }
 
 function scoreModel(model: any): { score: number; knowledge: string; ctx: number } {
@@ -52,7 +50,7 @@ function scoreModel(model: any): { score: number; knowledge: string; ctx: number
   }
 }
 
-type ModelEntry = { id: string; name: string; score: number; knowledge: string; ctx: number; reasoning: boolean; family: string; cost: any }
+type ModelEntry = { id: string; name: string; score: number; knowledge: string; ctx: number; reasoning: boolean; family: string; cost: any; provider: string }
 
 function getTask(text: string, ctxUsed: number): string {
   const t = text.toLowerCase()
@@ -108,19 +106,20 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
         const m: any = model
         const s = scoreModel(m)
         list.push({
-          id,
+          id: id.includes("/") ? id : `${(p as any).id}/${id}`,
           name: typeof m?.name === "string" ? m.name : id,
           reasoning: Boolean(m?.reasoning),
           family: String(m?.family || ""),
           cost: m?.cost,
+          provider: (p as any).id,
           ...s,
-        })
+        } as ModelEntry)
       }
     }
     return list
   })
 
-  const freeModels = createMemo(() => allModels().filter(isFree).sort((a, b) => b.score - a.score))
+  const freeModels = createMemo(() => allModels().filter((m) => (m as any).provider === "opencode" && isFree(m)).sort((a, b) => b.score - a.score))
   const paidModels = createMemo(() => allModels().filter((m) => !isFree(m)).sort((a, b) => b.score - a.score))
 
   const task = createMemo(() => {
