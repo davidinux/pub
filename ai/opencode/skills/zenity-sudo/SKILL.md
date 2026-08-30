@@ -12,7 +12,8 @@ never sees, stores, or logs the password.
 
 ## Files
 
-- `<skill_dir>/zenity-sudo.sh` — the helper script
+- `<skill_dir>/zenity-sudo.sh` — the helper script (stdin-based, `sudo -S`)
+- `<skill_dir>/ssh-askpass-zenity.sh` — SUDO_ASKPASS helper (for use via `export SUDO_ASKPASS=...; sudo -A`)
 
 ## How to use
 
@@ -51,6 +52,18 @@ The SSH system tool already prompts for the password locally via zenity/kdialog
 when `sudo: true` is set without `sudo_password`. The password is captured on
 your local machine and piped through the SSH connection to `sudo -S` on the
 remote host. No DISPLAY forwarding is needed.
+
+### Using SUDO_ASKPASS
+
+For tools that support `sudo -A` (askpass), set:
+```bash
+export SUDO_ASKPASS=<skill_dir>/ssh-askpass-zenity.sh
+sudo -A <command>
+```
+
+This is useful when you need the password prompt per-command rather than
+caching credentials. The script survives reboots since it's stored in the
+home directory (unlike `/tmp`).
 
 ### Pre-caching credentials (batch use)
 
