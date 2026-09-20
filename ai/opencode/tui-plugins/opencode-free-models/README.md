@@ -55,6 +55,39 @@ cd ~/.config/opencode && npm install --no-audit --no-fund
 
 For npm distribution instead, publish this package and use `"opencode-free-models"` in `tui.json: plugin` — the `exports["./tui"]` entry above is already set.
 
+## Dual access: keyed + anonymous free tier
+
+Zen free quotas are per-bucket: requests **with** your Zen API key count against your account; requests **without** a key count against the anonymous per-IP bucket. When one bucket hits `Rate limit exceeded`, the other may still work.
+
+Add an anonymous mirror provider (no credential stored → no `Authorization` header; requests ride opencode's own stack with the official client fingerprint). Covers the `chat/completions` free models (MiMo, Ling, Nemotron, Big Pickle):
+
+```json
+// ~/.config/opencode/opencode.json (or opencode.jsonc)
+{
+  "provider": {
+    "zen-free": {
+      "name": "Zen Free (anonymous)",
+      "npm": "@ai-sdk/openai-compatible",
+      "options": { "baseURL": "https://opencode.ai/zen/v1" },
+      "models": {
+        "mimo-v2.5-free": { "name": "MiMo V2.5 Free (anon)" },
+        "ling-3.0-flash-fin-free": { "name": "Ling 3.0 Flash Fin Free (anon)" },
+        "nemotron-3-ultra-free": { "name": "Nemotron 3 Ultra Free (anon)" },
+        "nemotron-3.5-lightning-free": { "name": "Nemotron 3.5 Lightning Free (anon)" },
+        "big-pickle": { "name": "Big Pickle (anon)" }
+      }
+    }
+  }
+}
+```
+
+Then `zen-free/<model>` appears in `/models` and in this plugin's **Free Models** list (keyed twins sort first on score ties; `(anon)` twins inherit the score/ctx/knowledge display). When the keyed variant rate-limits, switch to its `(anon)` twin and vice versa.
+
+Caveats:
+- Anonymous quota is **per public IP** — machines behind the same NAT share it. Heavy use on one host drains the spare bucket for all of them.
+- Only `chat/completions` models are covered (`responses`-based `muse-spark-*-free` and `systemone`-based `jev-*-free` need different `npm`/endpoint shapes).
+- Verified with `opencode run --dir /tmp/zen-test -m zen-free/mimo-v2.5-free "Reply with exactly: anon-ok"` → `anon-ok`.
+
 ## Companion
 
 - `opencode-stats-for-nerds` (public, by imluckii) — token/context/cost/speed panel. Not included here; install separately.

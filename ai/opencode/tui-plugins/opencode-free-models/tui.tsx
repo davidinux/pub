@@ -119,8 +119,28 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
     return list
   })
 
-  const freeModels = createMemo(() => allModels().filter((m) => (m as any).provider === "opencode" && isFree(m)).sort((a, b) => b.score - a.score))
-  const paidModels = createMemo(() => allModels().filter((m) => !isFree(m)).sort((a, b) => b.score - a.score))
+  const isFreeEntry = (m: ModelEntry) =>
+    ((m as any).provider === "opencode" && isFree(m)) || (m as any).provider === "zen-free"
+
+  const enrichAnonTwins = (list: ModelEntry[]): ModelEntry[] => {
+    const byId = new Map(list.map((m) => [m.id, m]))
+    return list.map((m) => {
+      if ((m as any).provider !== "zen-free") return m
+      const base = m.id.includes("/") ? m.id.split("/").slice(1).join("/") : m.id
+      const twin = byId.get(`opencode/${base}`) || byId.get(base)
+      if (!twin) return m
+      return { ...m, score: twin.score, knowledge: twin.knowledge, ctx: twin.ctx, reasoning: twin.reasoning, family: twin.family }
+    })
+  }
+
+  const freeModels = createMemo(() =>
+    enrichAnonTwins(allModels())
+      .filter(isFreeEntry)
+      .sort((a, b) => b.score - a.score || (((a as any).provider === "opencode" ? 0 : 1) - ((b as any).provider === "opencode" ? 0 : 1))),
+  )
+  const paidModels = createMemo(() =>
+    allModels().filter((m) => !isFreeEntry(m as ModelEntry)).sort((a, b) => b.score - a.score),
+  )
 
   const task = createMemo(() => {
     tick()
