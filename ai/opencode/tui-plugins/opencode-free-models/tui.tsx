@@ -52,6 +52,41 @@ function scoreModel(model: any): { score: number; knowledge: string; ctx: number
 
 type ModelEntry = { id: string; name: string; score: number; knowledge: string; ctx: number; reasoning: boolean; family: string; cost: any; provider: string }
 
+// Go subscription monthly $ caps per model (docs/opencode.ai/docs/go, steady-state;
+// DeepSeek 4x $60 promo ended Sep 20 2026 — values below are post-promo)
+const GO_LIMITS: Record<string, number> = {
+  "glm-5.3-flash": 60, "glm-5.2": 60, "glm-5.1": 60, "glm-5.3": 15,
+  "kimi-k3": 15, "kimi-k2.7-code": 60, "kimi-k2.6": 60,
+  "longcat-2.0": 60, "mimo-v2.5": 60, "mimo-v2.5-pro": 15,
+  "minimax-m3": 60, "minimax-m2.7": 60, "minimax-m2.5": 60,
+  "muse-spark-1.3-contributor": 60, "muse-spark-1.2-contributor": 60,
+  "qwen3.8-max": 15, "qwen3.8-flash": 30, "qwen3.7-max": 30,
+  "qwen3.7-plus": 60, "qwen3.6-plus": 60,
+  "deepseek-v4.1-flash": 15, "deepseek-v4-pro": 15, "deepseek-v4-flash": 30,
+  "deepseek-v4-flash-vision-exp": 15,
+  "hy4-preview": 30, hy3: 60,
+  "grok-4.6": 15, "gpt-5.6-luna": 15,
+}
+
+function goBaseId(id: string): string {
+  return (id.includes("/") ? id.split("/").slice(1).join("/") : id).toLowerCase()
+}
+
+function goLimit(m: ModelEntry): number | null {
+  return GO_LIMITS[goBaseId(m.id)] ?? null
+}
+
+function fmtGoLimit(m: ModelEntry): string {
+  const cap = goLimit(m)
+  return cap === null ? "Go" : `Go $${cap}/mo`
+}
+
+function tierOf(m: ModelEntry): "free" | "go" | "paid" {
+  if ((m as any).provider === "opencode-go") return "go"
+  if ((m as any).provider === "zen-free") return "free"
+  return isFree(m) ? "free" : "paid"
+}
+
 function getTask(text: string, ctxUsed: number): string {
   const t = text.toLowerCase()
   if (ctxUsed > 150_000 || /large|monorepo|many files|1m|context|entire repo|codebase/i.test(t)) return "long context"
@@ -82,6 +117,7 @@ function pickBest(task: string, list: ModelEntry[]): ModelEntry | null {
 function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: string }) {
   const theme = () => props.api.theme.current
   const [collapsedFree, setCollapsedFree] = createSignal(false)
+  const [collapsedGo, setCollapsedGo] = createSignal(false)
   const [collapsedPaid, setCollapsedPaid] = createSignal(false)
   const [tick, setTick] = createSignal(0)
 
@@ -138,8 +174,15 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
       .filter(isFreeEntry)
       .sort((a, b) => b.score - a.score || (((a as any).provider === "opencode" ? 0 : 1) - ((b as any).provider === "opencode" ? 0 : 1))),
   )
+  const goModels = createMemo(() =>
+    allModels()
+      .filter((m) => (m as any).provider === "opencode-go")
+      .sort((a, b) => b.score - a.score),
+  )
   const paidModels = createMemo(() =>
-    allModels().filter((m) => !isFreeEntry(m as ModelEntry)).sort((a, b) => b.score - a.score),
+    allModels()
+      .filter((m) => !isFreeEntry(m as ModelEntry) && (m as any).provider !== "opencode-go")
+      .sort((a, b) => b.score - a.score),
   )
 
   const task = createMemo(() => {
@@ -170,12 +213,15 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
 
   const bestFree = createMemo(() => pickBest(task(), freeModels()))
   const bestPaid = createMemo(() => pickBest(task(), paidModels()))
-  const bestOverall = createMemo(() => pickBest(task(), [...freeModels(), ...paidModels()].sort((a, b) => b.score - a.score)))
+  const bestGo = createMemo(() => pickBest(task(), goModels()))
+  const bestOverall = createMemo(() =>
+    pickBest(task(), [...freeModels(), ...goModels(), ...paidModels()].sort((a, b) => b.score - a.score)),
+  )
 
   const t = () => theme()
   const L = "  "
 
-  const renderList = (list: ModelEntry[], bestId: string | null, color: any, collapsed: () => boolean, showCost: boolean) => (
+  const renderList = (list: ModelEntry[], bestId: string | null, color: any, collapsed: () => boolean, showCost: boolean, showGoLimit = false) => (
     <Show when={!collapsed()}>
       <Show when={list.length > 0} fallback={<text style={{ fg: t().textMuted }}>{L + "loading..."}</text>}>
         <box flexDirection="column">
@@ -198,6 +244,9 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
                   <Show when={showCost}>
                     <text style={{ fg: isBest ? color : t().textMuted }}>{"  " + fmtCost(m.cost)}</text>
                   </Show>
+                  <Show when={showGoLimit}>
+                    <text style={{ fg: isBest ? color : t().textMuted }}>{"  " + fmtGoLimit(m)}</text>
+                  </Show>
                 </box>
               </box>
             )
@@ -209,11 +258,15 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
 
   return (
     <box flexDirection="column" paddingTop={1} paddingBottom={1} gap={1}>
-      {/* Recommendation banner — green = best overall, yellow = best free (when different) */}
+      {/* Recommendation banner — green = best overall, yellow = best free, blue = best Go (each when different) */}
       <Show when={bestOverall()}>
         {(best) => {
           const free = bestFree()
-          const isFreeBest = free?.id === best().id
+          const go = bestGo()
+          const bestTier = tierOf(best())
+          const showFree = free && free.id !== best().id
+          const showGo = go && go.id !== best().id && (!free || go.id !== free.id)
+          const tierLabel = bestTier === "free" ? "free ✓" : bestTier === "go" ? fmtGoLimit(best()) : fmtCost(best().cost)
           return (
             <box flexDirection="column" gap={0}>
               <box flexDirection="column" borderStyle="single" borderColor={t().success as any}>
@@ -223,9 +276,9 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
                   <text style={{ fg: t().textMuted }}>{"  best"}</text>
                 </box>
                 <text style={{ fg: t().textMuted }}>{L + "task: " + task() + " — ctx " + fmtCtx(best().ctx) + " kwn " + best().knowledge}</text>
-                <text style={{ fg: t().textMuted }}>{L + (isFree(best()) ? "free ✓" : fmtCost(best().cost))}</text>
+                <text style={{ fg: t().textMuted }}>{L + tierLabel}</text>
               </box>
-              <Show when={!isFreeBest && free}>
+              <Show when={showFree && free}>
                 {(f) => (
                   <box flexDirection="column" borderStyle="single" borderColor={t().warning as any}>
                     <box flexDirection="row">
@@ -234,6 +287,18 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
                       <text style={{ fg: t().textMuted }}>{"  best free"}</text>
                     </box>
                     <text style={{ fg: t().textMuted }}>{L + "ctx " + fmtCtx(f().ctx) + " kwn " + f().knowledge + "  free ✓"}</text>
+                  </box>
+                )}
+              </Show>
+              <Show when={showGo && go}>
+                {(g) => (
+                  <box flexDirection="column" borderStyle="single" borderColor={t().info as any}>
+                    <box flexDirection="row">
+                      <text style={{ fg: t().info }}>{"  ● "}</text>
+                      <text style={{ fg: t().info, fontWeight: "bold" }}>{g().id}</text>
+                      <text style={{ fg: t().textMuted }}>{"  best Go"}</text>
+                    </box>
+                    <text style={{ fg: t().textMuted }}>{L + "ctx " + fmtCtx(g().ctx) + " kwn " + g().knowledge + "  " + fmtGoLimit(g())}</text>
                   </box>
                 )}
               </Show>
@@ -265,6 +330,39 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
         })(),
         collapsedFree,
         false,
+      )}
+
+      {/* Go models ($10/mo subscription) */}
+      <box flexDirection="row" gap={1} onMouseDown={() => setCollapsedGo((c) => !c)}>
+        <text style={{ fg: t().textMuted }}>{collapsedGo() ? "\u25B6" : "\u25BC"}</text>
+        <text style={{ fg: t().text, fontWeight: "bold" }}>Go Models</text>
+        <text style={{ fg: t().textMuted }}>{goModels().length}</text>
+      </box>
+      <Show when={!collapsedGo()}>
+        <Show
+          when={goModels().length > 0}
+          fallback={<text style={{ fg: t().textMuted }}>{L + "/connect → OpenCode Go ($10/mo) to unlock"}</text>}
+        >
+          <text style={{ fg: t().textMuted }}>{L + "$10/mo sub, per-model monthly caps"}</text>
+        </Show>
+      </Show>
+      {renderList(
+        goModels(),
+        (() => {
+          const go = bestGo()
+          const overall = bestOverall()
+          if (!go) return null
+          return go.id
+        })(),
+        (() => {
+          const overall = bestOverall()
+          const go = bestGo()
+          if (overall && go && overall.id === go.id) return t().success
+          return t().info
+        })(),
+        collapsedGo,
+        false,
+        true,
       )}
 
       {/* Paid models */}

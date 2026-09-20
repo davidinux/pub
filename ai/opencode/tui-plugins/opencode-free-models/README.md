@@ -7,26 +7,31 @@ OpenCode TUI sidebar plugin that lists **free** and **paid** Zen models with liv
 ```
 ┌──────────────────────────────────┐
 │ ★ nemotron-3-ultra-free  best     │  green = best overall
-│ task: code — ctx 1M kwn 2026-02   │  (free ✓ or $x.xx/$y.yy)
-│ ◆ kimi-k2.5-free  best free      │  yellow = best free (when overall is paid)
+│ task: code — ctx 1M kwn 2026-02   │  (free ✓ / Go $cap/mo / $x.xx)
+│ ◆ kimi-k2.5-free  best free      │  yellow = best free (when overall isn't free)
+│ ● mimo-v2.5  best Go             │  blue = best Go (when Go connected & different)
 └──────────────────────────────────┘
 
-▼ Free Models  18
+▼ Free Models  7 (+ anon twins)
   1. nemotron-3-ultra-free ★ 87
      ctx 1M  kwn 2026-02
   ...
-▼ Paid Models  67
+▼ Go Models  27 ($10/mo sub)
+  1. mimo-v2.5 ● 84
+     ctx 262k  kwn 2024-12  Go $60/mo
+▼ Paid Models  60+
   1. deepseek-v4-flash ★ 89
      ctx 1M  kwn 2025-05  $0.14/$0.28/1M in/out
 ```
 
 - **Live free detection** — reads `api.state.provider` `cost` (zero-cost → free). If Zen makes `deepseek-v4-flash-free` paid, it moves to Paid automatically.
 - **Task-aware** — classifies your last prompt (`long context` / `speed` / `reasoning` / `code` / `general`) + current `ctxUsed` (>150k → long context) via `api.state.session.messages` / `api.state.part`. Updates on every `message.updated` / `session.idle`.
-- **Per-tier picks** — `pickBest(task, list)`:
+- **Per-tier picks** — `pickBest(task, list)` per tier (Free / Go / Paid):
   - `long context` → max `limit.context` in tier
   - `speed` → `*flash*` else top score
   - `reasoning` → `reasoning:true` then score
   - `code` → `*code*` else top score
+- **Go tier** (`provider === "opencode-go"`, `$10/mo` sub) — own section with per-model monthly caps (`GO_LIMITS`: $60/$30/$15, post DeepSeek 4x promo ending Sep 20 2026). Before subscribing the section shows `/connect → OpenCode Go ($10/mo) to unlock`. Go models are excluded from Paid.
 - **Ranking** — 60% knowledge cutoff (log) + 40% context window (log2), `scoreModel()`.
 
 ## Install (private, `file://` workaround)
