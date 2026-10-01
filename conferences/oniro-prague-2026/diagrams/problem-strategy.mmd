@@ -1,0 +1,18 @@
+flowchart LR
+    subgraph Before["Today — Monolithic Out-of-Tree Patchset"]
+        A1[OH Flutter Fork]
+        A2[Patches scattered across all layers]
+        A3[Upstream drift / tech debt]
+    end
+
+    subgraph After["Target — Upstream-Compatible C Embedder"]
+        B1[Upstream Flutter]
+        B2[Stable Embedder C API]
+        B3[OHOS C Embedder]
+    end
+
+    A1 --> A2 --> A3
+    B1 --> B2 --> B3
+
+    style Before fill:#FF0099,color:#fff,stroke:#fff
+    style After fill:#00B2FF,color:#fff,stroke:#fff

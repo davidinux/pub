@@ -1,0 +1,50 @@
+flowchart TB
+    subgraph App["Flutter App (Dart)"]
+        UI[Widgets / Framework]
+        PL[Plugins via Platform Channels]
+    end
+
+    subgraph Engine["Flutter Engine (C++)"]
+        DART[Dart Runtime]
+        RENDER[Impeller / Skia Renderer]
+        TEXT[Text & I/O]
+    end
+
+    subgraph API["Flutter Embedder C API (stable, platform-agnostic)"]
+        RUN[FlutterEngineRun]
+        MSG[FlutterEngineSendPlatformMessage]
+        VSYNC[FlutterEngineOnVsync]
+        INPUT[FlutterEngineSendPointerEvent]
+    end
+
+    subgraph OH["OpenHarmony C Embedder"]
+        LIFECYCLE[Engine Lifecycle & Task Runners]
+        NATIVE[NativeWindow / Graphics Context]
+        VSYNC_OH[OH_NativeVSync]
+        INPUT_OH[OH Input / Touch & Key Events]
+        CHAN[Platform Channels & Plugins]
+    end
+
+    subgraph OHOS["OpenHarmony OS"]
+        SYS[Native APIs / ArkUI / System Services]
+    end
+
+    UI --> DART
+    PL --> MSG
+    DART --> RUN
+    RENDER --> VSYNC
+    RUN --> LIFECYCLE
+    MSG --> CHAN
+    VSYNC --> VSYNC_OH
+    INPUT --> INPUT_OH
+    LIFECYCLE --> NATIVE
+    NATIVE --> SYS
+    VSYNC_OH --> SYS
+    INPUT_OH --> SYS
+    CHAN --> SYS
+
+    style App fill:#6715E8,color:#fff,stroke:#fff
+    style Engine fill:#6715E8,color:#fff,stroke:#fff
+    style API fill:#FFCF00,color:#000,stroke:#000
+    style OH fill:#00B2FF,color:#fff,stroke:#fff
+    style OHOS fill:#FF0099,color:#fff,stroke:#fff

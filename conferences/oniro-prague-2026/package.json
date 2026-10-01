@@ -1,0 +1,20 @@
+{
+  "name": "oniro-prague-2026",
+  "version": "1.0.0",
+  "description": "Oniro Global Ecosystem 2026 presentation: OpenHarmony Flutter Embedder - A 12-Months Roadmap",
+  "type": "module",
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build",
+    "export": "slidev export presentation.md",
+    "export:abstract": "slidev export abstract.md",
+    "build:all": "npm run export:abstract && npm run export",
+    "build:diagrams": "node build-diagrams.cjs"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.15.2",
+    "@mermaid-js/mermaid-cli": "^11.15.0",
+    "puppeteer": "^24.0.0",
+    "playwright-chromium": "^1.60.0"
+  }
+}
