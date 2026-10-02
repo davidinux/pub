@@ -6,8 +6,8 @@
   "scripts": {
     "dev": "slidev",
     "build": "slidev build",
-    "export": "slidev export presentation.md",
-    "export:abstract": "slidev export abstract.md",
+    "export": "slidev export presentation.md --output oniro-prague-2026-flutter-embedder-roadmap.pdf",
+    "export:abstract": "slidev export abstract.md --output oniro-prague-2026-abstract.pdf",
     "build:all": "npm run export:abstract && npm run export",
     "build:diagrams": "node build-diagrams.cjs"
   },
