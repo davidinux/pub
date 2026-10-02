@@ -15,8 +15,8 @@ th, td {
 
 # OpenHarmony Flutter Embedder: A 12-Months Roadmap
 
-Linaro Solutions & Services Group  
-VP & GM, Solutions & Services  
+Davide Ricci  
+VP & GM, Solutions & Services, Linaro  
 
 Oniro Global Ecosystem 2026 - Prague  
 October 3, 2026  
