@@ -79,6 +79,15 @@ layout: two-cols
 
 # The Architecture: Flutter Engine ↔ OHOS C Embedder
 
+<style>
+img[alt="Architecture"] {
+  max-height: 80%;
+  max-width: 80%;
+  display: block;
+  margin: 0 auto;
+}
+</style>
+
 ![Architecture](./images/architecture.png)
 
 ---
@@ -144,12 +153,6 @@ layout: two-cols
 | **M10** | Multi-display (foldables) & multi-window (PC) integration |
 | **M11** | Accessibility features & password autofill services |
 | **M12** | Validation, Beta release sign-off & documentation |
-
----
-
-# Milestones & Timeline
-
-![Milestones Timeline](./images/milestones-timeline.png)
 
 ---
 

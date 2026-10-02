@@ -16,10 +16,6 @@ const diagrams = [
     output: 'images/roadmap-overview.png'
   },
   {
-    input: 'diagrams/milestones-timeline.mmd',
-    output: 'images/milestones-timeline.png'
-  },
-  {
     input: 'diagrams/architecture.mmd',
     output: 'images/architecture.png'
   },
