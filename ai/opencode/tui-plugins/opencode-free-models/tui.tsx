@@ -17,7 +17,7 @@ function fmtCost(cost: any): string {
   if (inp === null && out === null) return ""
   if (inp === 0 && out === 0) return "free"
   const f = (n: number) => (n < 0.01 ? n.toFixed(3) : n.toFixed(2))
-  if (inp !== null && out !== null) return `$${f(inp)}/$${f(out)}/1M in/out`
+  if (inp !== null && out !== null) return `$${f(inp)}/$${f(out)}/1M`
   if (inp !== null) return `$${f(inp)}/1M in`
   return `$${f(out!)}/1M out`
 }
@@ -31,7 +31,7 @@ function isFree(model: any): boolean {
   return false
 }
 
-function scoreModel(model: any): { score: number; knowledge: string; ctx: number } {
+function scoreModel(model: any, provider: string): { score: number; costScore: number; combinedScore: number; knowledge: string; ctx: number } {
   const ctx = (model?.limit?.context as number) || 0
   let knowledgeMonths = 0
   const k = String(model?.knowledge || "")
@@ -43,17 +43,33 @@ function scoreModel(model: any): { score: number; knowledge: string; ctx: number
   }
   const knowledgeScore = knowledgeMonths > 0 ? Math.min(knowledgeMonths / 80, 1) : 0
   const ctxScore = Math.min(Math.log2(Math.max(ctx, 1)) / 21, 1)
+  const capabilityScore = knowledgeScore * 0.6 + ctxScore * 0.4
+
+  let costPer1M = 0
+  if (provider === "opencode-go") {
+    costPer1M = 0.2
+  } else {
+    const cost = model?.cost
+    if (cost && typeof cost === "object") {
+      const inp = typeof cost.input === "number" ? cost.input : 0
+      const out = typeof cost.output === "number" ? cost.output : 0
+      costPer1M = (inp + out) / 2
+    }
+  }
+  const costScore = 1 / (1 + costPer1M)
+  const combinedScore = capabilityScore * 0.4 + costScore * 0.6
+
   return {
-    score: knowledgeScore * 0.6 + ctxScore * 0.4,
+    score: capabilityScore,
+    costScore,
+    combinedScore,
     knowledge: knowledgeMonths > 0 ? k : "n/a",
     ctx,
   }
 }
 
-type ModelEntry = { id: string; name: string; score: number; knowledge: string; ctx: number; reasoning: boolean; family: string; cost: any; provider: string }
+type ModelEntry = { id: string; name: string; score: number; costScore: number; combinedScore: number; knowledge: string; ctx: number; reasoning: boolean; family: string; cost: any; provider: string }
 
-// Go subscription monthly $ caps per model (docs/opencode.ai/docs/go, steady-state;
-// DeepSeek 4x $60 promo ended Sep 20 2026 — values below are post-promo)
 const GO_LIMITS: Record<string, number> = {
   "glm-5.3-flash": 60, "glm-5.2": 60, "glm-5.1": 60, "glm-5.3": 15,
   "kimi-k3": 15, "kimi-k2.7-code": 60, "kimi-k2.6": 60,
@@ -66,6 +82,9 @@ const GO_LIMITS: Record<string, number> = {
   "deepseek-v4-flash-vision-exp": 15,
   "hy4-preview": 30, hy3: 60,
   "grok-4.6": 15, "gpt-5.6-luna": 15,
+  "claude-haiku-5-5": 30, "gemini-4-argon-contributor": 30, "gpt-6-luna": 15,
+  "mimo-v2.6-flash": 30, "mimo-v2.6-pro": 60, "minimax-m3.1-flash": 60,
+  "omen-alpha": 60, "step-5-preview": 60,
 }
 
 function goBaseId(id: string): string {
@@ -98,20 +117,40 @@ function getTask(text: string, ctxUsed: number): string {
 
 function pickBest(task: string, list: ModelEntry[]): ModelEntry | null {
   if (!list.length) return null
-  if (task === "long context") return [...list].sort((a, b) => b.ctx - a.ctx)[0]
+  const byCombined = (a: ModelEntry, b: ModelEntry) => b.combinedScore - a.combinedScore
+  if (task === "long context") {
+    const maxCtx = Math.max(...list.map((m) => m.ctx))
+    const candidates = list.filter((m) => m.ctx >= maxCtx * 0.8)
+    return (candidates.length ? candidates : list).sort(byCombined)[0]
+  }
   if (task === "speed") {
-    const flash = list.find((m) => /flash/i.test(m.id))
-    return flash || list[0]
+    const flash = list.filter((m) => /flash/i.test(m.id))
+    return (flash.length ? flash : list).sort(byCombined)[0]
   }
   if (task === "reasoning") {
     const cand = list.filter((m) => m.reasoning)
-    return (cand.length ? cand : list).sort((a, b) => b.score - a.score)[0]
+    return (cand.length ? cand : list).sort(byCombined)[0]
   }
   if (task === "code") {
-    const cand = list.find((m) => /code/i.test(m.id))
-    return cand || list[0]
+    const cand = list.filter((m) => /code/i.test(m.id))
+    return (cand.length ? cand : list).sort(byCombined)[0]
   }
-  return list[0]
+  return [...list].sort(byCombined)[0]
+}
+
+// Cheapest capable: among models with capability >= 70% of the best in the full list,
+// pick the one with the lowest per-1M cost (highest costScore). Returns null if
+// it's the same as bestOverall (no need to show a separate badge).
+function cheapestCapable(list: ModelEntry[], bestId: string | null): ModelEntry | null {
+  if (!list.length || !bestId) return null
+  const best = list.find((m) => m.id === bestId)
+  if (!best) return null
+  const threshold = best.score * 0.7
+  const capable = list.filter((m) => m.score >= threshold)
+  if (capable.length < 2) return null
+  const cheapest = [...capable].sort((a, b) => b.costScore - a.costScore)[0]
+  if (!cheapest || cheapest.id === bestId) return null
+  return cheapest
 }
 
 function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: string }) {
@@ -140,7 +179,7 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
       if (!models || typeof models !== "object") continue
       for (const [id, model] of Object.entries(models)) {
         const m: any = model
-        const s = scoreModel(m)
+        const s = scoreModel(m, (p as any).id)
         list.push({
           id: id.includes("/") ? id : `${(p as any).id}/${id}`,
           name: typeof m?.name === "string" ? m.name : id,
@@ -148,8 +187,12 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
           family: String(m?.family || ""),
           cost: m?.cost,
           provider: (p as any).id,
-          ...s,
-        } as ModelEntry)
+          score: s.score,
+          costScore: s.costScore,
+          combinedScore: s.combinedScore,
+          knowledge: s.knowledge,
+          ctx: s.ctx,
+        })
       }
     }
     return list
@@ -165,10 +208,11 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
       const base = m.id.includes("/") ? m.id.split("/").slice(1).join("/") : m.id
       const twin = byId.get(`opencode/${base}`) || byId.get(base)
       if (!twin) return m
-      return { ...m, score: twin.score, knowledge: twin.knowledge, ctx: twin.ctx, reasoning: twin.reasoning, family: twin.family }
+      return { ...m, score: twin.score, costScore: twin.costScore, combinedScore: twin.combinedScore, knowledge: twin.knowledge, ctx: twin.ctx, reasoning: twin.reasoning, family: twin.family }
     })
   }
 
+  // Free models ranked by capability (score) only — all free, so cost doesn't differentiate
   const freeModels = createMemo(() =>
     enrichAnonTwins(allModels())
       .filter(isFreeEntry)
@@ -177,12 +221,12 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
   const goModels = createMemo(() =>
     allModels()
       .filter((m) => (m as any).provider === "opencode-go")
-      .sort((a, b) => b.score - a.score),
+      .sort((a, b) => b.combinedScore - a.combinedScore),
   )
   const paidModels = createMemo(() =>
     allModels()
       .filter((m) => !isFreeEntry(m as ModelEntry) && (m as any).provider !== "opencode-go")
-      .sort((a, b) => b.score - a.score),
+      .sort((a, b) => b.combinedScore - a.combinedScore),
   )
 
   const task = createMemo(() => {
@@ -215,8 +259,21 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
   const bestPaid = createMemo(() => pickBest(task(), paidModels()))
   const bestGo = createMemo(() => pickBest(task(), goModels()))
   const bestOverall = createMemo(() =>
-    pickBest(task(), [...freeModels(), ...goModels(), ...paidModels()].sort((a, b) => b.score - a.score)),
+    pickBest(task(), [...freeModels(), ...goModels(), ...paidModels()].sort((a, b) => b.combinedScore - a.combinedScore)),
   )
+
+  // Cheapest capable: lowest-cost model among those with capability >= 70% of bestOverall
+  const cheapestCapableModel = createMemo(() => {
+    const best = bestOverall()
+    if (!best) return null
+    const all = [...freeModels(), ...goModels(), ...paidModels()]
+    const threshold = best.score * 0.7
+    const capable = all.filter((m) => m.score >= threshold)
+    if (capable.length < 2) return null
+    const cheapest = [...capable].sort((a, b) => b.costScore - a.costScore)[0]
+    if (!cheapest || cheapest.id === best.id) return null
+    return cheapest
+  })
 
   const t = () => theme()
   const L = "  "
@@ -234,7 +291,7 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
                   <text style={{ fg: isBest ? color : t().text, fontWeight: isBest ? "bold" : undefined }}>
                     {" " + m.id + (isBest ? " ★" : "")}
                   </text>
-                  <text style={{ fg: t().textMuted }}>{" " + Math.round(m.score * 100)}</text>
+                  <text style={{ fg: t().textMuted }}>{" " + Math.round(m.combinedScore * 100)}</text>
                 </box>
                 <Show when={m.name !== m.id}>
                   <text style={{ fg: t().textMuted }}>{L + "  " + m.name}</text>
@@ -248,6 +305,9 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
                     <text style={{ fg: isBest ? color : t().textMuted }}>{"  " + fmtGoLimit(m)}</text>
                   </Show>
                 </box>
+                <text style={{ fg: t().textMuted }}>
+                  {L + "  cap " + Math.round(m.score * 100) + "  eff " + Math.round(m.costScore * 100)}
+                </text>
               </box>
             )
           })}
@@ -258,14 +318,16 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
 
   return (
     <box flexDirection="column" paddingTop={1} paddingBottom={1} gap={1}>
-      {/* Recommendation banner — green = best overall, yellow = best free, blue = best Go (each when different) */}
+      {/* Recommendation banner — green = best overall, yellow = best free, blue = best Go, gray = cheapest capable (each when different) */}
       <Show when={bestOverall()}>
         {(best) => {
           const free = bestFree()
           const go = bestGo()
+          const cc = cheapestCapableModel()
           const bestTier = tierOf(best())
           const showFree = free && free.id !== best().id
           const showGo = go && go.id !== best().id && (!free || go.id !== free.id)
+          const showCc = cc && cc.id !== best().id && (!free || cc.id !== free.id) && (!go || cc.id !== go.id)
           const tierLabel = bestTier === "free" ? "free ✓" : bestTier === "go" ? fmtGoLimit(best()) : fmtCost(best().cost)
           return (
             <box flexDirection="column" gap={0}>
@@ -275,8 +337,8 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
                   <text style={{ fg: t().success, fontWeight: "bold" }}>{best().id}</text>
                   <text style={{ fg: t().textMuted }}>{"  best"}</text>
                 </box>
-                <text style={{ fg: t().textMuted }}>{L + "task: " + task() + " — ctx " + fmtCtx(best().ctx) + " kwn " + best().knowledge}</text>
-                <text style={{ fg: t().textMuted }}>{L + tierLabel}</text>
+                <text style={{ fg: t().textMuted }}>{L + "task: " + task() + " — ctx " + fmtCtx(best().ctx) + "  kwn " + best().knowledge}</text>
+                <text style={{ fg: t().textMuted }}>{L + tierLabel + "  (cap " + Math.round(best().score * 100) + " eff " + Math.round(best().costScore * 100) + ")"}</text>
               </box>
               <Show when={showFree && free}>
                 {(f) => (
@@ -286,7 +348,7 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
                       <text style={{ fg: t().warning, fontWeight: "bold" }}>{f().id}</text>
                       <text style={{ fg: t().textMuted }}>{"  best free"}</text>
                     </box>
-                    <text style={{ fg: t().textMuted }}>{L + "ctx " + fmtCtx(f().ctx) + " kwn " + f().knowledge + "  free ✓"}</text>
+                    <text style={{ fg: t().textMuted }}>{L + "ctx " + fmtCtx(f().ctx) + "  kwn " + f().knowledge + "  free ✓"}</text>
                   </box>
                 )}
               </Show>
@@ -298,7 +360,19 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
                       <text style={{ fg: t().info, fontWeight: "bold" }}>{g().id}</text>
                       <text style={{ fg: t().textMuted }}>{"  best Go"}</text>
                     </box>
-                    <text style={{ fg: t().textMuted }}>{L + "ctx " + fmtCtx(g().ctx) + " kwn " + g().knowledge + "  " + fmtGoLimit(g())}</text>
+                    <text style={{ fg: t().textMuted }}>{L + "ctx " + fmtCtx(g().ctx) + "  kwn " + g().knowledge + "  " + fmtGoLimit(g())}</text>
+                  </box>
+                )}
+              </Show>
+              <Show when={showCc && cc}>
+                {(c) => (
+                  <box flexDirection="column" borderStyle="single" borderColor={t().textMuted as any}>
+                    <box flexDirection="row">
+                      <text style={{ fg: t().textMuted }}>{"  ◇ "}</text>
+                      <text style={{ fg: t().textMuted, fontWeight: "bold" }}>{c().id}</text>
+                      <text style={{ fg: t().textMuted }}>{"  cheapest capable"}</text>
+                    </box>
+                    <text style={{ fg: t().textMuted }}>{L + "ctx " + fmtCtx(c().ctx) + "  kwn " + c().knowledge + "  " + (isFree(c()) ? "free ✓" : fmtCost(c().cost))}</text>
                   </box>
                 )}
               </Show>
@@ -307,7 +381,7 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
         }}
       </Show>
 
-      {/* Free models */}
+      {/* Free models — ranked by capability (all free, cost doesn't differentiate) */}
       <box flexDirection="row" gap={1} onMouseDown={() => setCollapsedFree((c) => !c)}>
         <text style={{ fg: t().textMuted }}>{collapsedFree() ? "\u25B6" : "\u25BC"}</text>
         <text style={{ fg: t().text, fontWeight: "bold" }}>Free Models</text>
@@ -375,7 +449,7 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
         paidModels(),
         (() => {
           const overall = bestOverall()
-          if (overall && !isFree(overall)) return overall.id
+          if (overall && !isFree(overall) && (overall as any).provider !== "opencode-go") return overall.id
           return null
         })(),
         t().success,
