@@ -278,7 +278,14 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
   const t = () => theme()
   const L = "  "
 
-  const renderList = (list: ModelEntry[], bestId: string | null, color: any, collapsed: () => boolean, showCost: boolean, showGoLimit = false) => (
+  const scoreColor = (m: ModelEntry): any => {
+    const s = m.combinedScore
+    if (s >= 0.6) return t().success
+    if (s >= 0.3) return t().warning
+    return t().textMuted
+  }
+
+  const renderList = (list: ModelEntry[], bestId: string | null, color: any, collapsed: () => boolean, showCost: boolean, showGoLimit = false, colorByScore = false) => (
     <Show when={!collapsed()}>
       <Show when={list.length > 0} fallback={<text style={{ fg: t().textMuted }}>{L + "loading..."}</text>}>
         <box flexDirection="column">
@@ -287,8 +294,8 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
             return (
               <box flexDirection="column">
                 <box flexDirection="row">
-                  <text style={{ fg: isBest ? color : t().textMuted }}>{L + (i + 1) + "."}</text>
-                  <text style={{ fg: isBest ? color : t().text, fontWeight: isBest ? "bold" : undefined }}>
+                  <text style={{ fg: isBest ? color : (colorByScore ? scoreColor(m) : t().textMuted) }}>{L + (i + 1) + "."}</text>
+                  <text style={{ fg: isBest ? color : (colorByScore ? scoreColor(m) : t().text), fontWeight: isBest ? "bold" : undefined }}>
                     {" " + m.id + (isBest ? " ★" : "")}
                   </text>
                   <text style={{ fg: t().textMuted }}>{" " + Math.round(m.combinedScore * 100)}</text>
@@ -454,6 +461,8 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
         })(),
         t().success,
         collapsedPaid,
+        true,
+        false,
         true,
       )}
     </box>
