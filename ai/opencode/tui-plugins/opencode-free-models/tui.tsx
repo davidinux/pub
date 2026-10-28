@@ -68,7 +68,7 @@ function scoreModel(model: any, provider: string): { score: number; costScore: n
   }
 }
 
-type ModelEntry = { id: string; name: string; score: number; costScore: number; combinedScore: number; knowledge: string; ctx: number; reasoning: boolean; family: string; cost: any; provider: string }
+type ModelEntry = { id: string; name: string; score: number; costScore: number; combinedScore: number; knowledge: string; ctx: number; reasoning: boolean; family: string; cost: any; provider: string; ctxTier: number }
 
 const GO_LIMITS: Record<string, number> = {
   "glm-5.3-flash": 60, "glm-5.2": 60, "glm-5.1": 60, "glm-5.3": 15,
@@ -117,25 +117,25 @@ function getTask(text: string, ctxUsed: number): string {
 
 function pickBest(task: string, list: ModelEntry[]): ModelEntry | null {
   if (!list.length) return null
-  const byCombined = (a: ModelEntry, b: ModelEntry) => b.combinedScore - a.combinedScore
+  const byTierThenCombined = (a: ModelEntry, b: ModelEntry) => a.ctxTier - b.ctxTier || b.combinedScore - a.combinedScore
   if (task === "long context") {
     const maxCtx = Math.max(...list.map((m) => m.ctx))
     const candidates = list.filter((m) => m.ctx >= maxCtx * 0.8)
-    return (candidates.length ? candidates : list).sort(byCombined)[0]
+    return (candidates.length ? candidates : list).sort(byTierThenCombined)[0]
   }
   if (task === "speed") {
     const flash = list.filter((m) => /flash/i.test(m.id))
-    return (flash.length ? flash : list).sort(byCombined)[0]
+    return (flash.length ? flash : list).sort(byTierThenCombined)[0]
   }
   if (task === "reasoning") {
     const cand = list.filter((m) => m.reasoning)
-    return (cand.length ? cand : list).sort(byCombined)[0]
+    return (cand.length ? cand : list).sort(byTierThenCombined)[0]
   }
   if (task === "code") {
     const cand = list.filter((m) => /code/i.test(m.id))
-    return (cand.length ? cand : list).sort(byCombined)[0]
+    return (cand.length ? cand : list).sort(byTierThenCombined)[0]
   }
-  return [...list].sort(byCombined)[0]
+  return [...list].sort(byTierThenCombined)[0]
 }
 
 // Cheapest capable: among models with capability >= 70% of the best in the full list,
@@ -192,6 +192,7 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
           combinedScore: s.combinedScore,
           knowledge: s.knowledge,
           ctx: s.ctx,
+          ctxTier: s.ctx >= 1_000_000 ? 0 : 1,
         })
       }
     }
@@ -208,7 +209,7 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
       const base = m.id.includes("/") ? m.id.split("/").slice(1).join("/") : m.id
       const twin = byId.get(`opencode/${base}`) || byId.get(base)
       if (!twin) return m
-      return { ...m, score: twin.score, costScore: twin.costScore, combinedScore: twin.combinedScore, knowledge: twin.knowledge, ctx: twin.ctx, reasoning: twin.reasoning, family: twin.family }
+      return { ...m, score: twin.score, costScore: twin.costScore, combinedScore: twin.combinedScore, knowledge: twin.knowledge, ctx: twin.ctx, ctxTier: twin.ctxTier, reasoning: twin.reasoning, family: twin.family }
     })
   }
 
@@ -221,12 +222,12 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
   const goModels = createMemo(() =>
     allModels()
       .filter((m) => (m as any).provider === "opencode-go")
-      .sort((a, b) => b.combinedScore - a.combinedScore),
+      .sort((a, b) => a.ctxTier - b.ctxTier || b.combinedScore - a.combinedScore),
   )
   const paidModels = createMemo(() =>
     allModels()
       .filter((m) => !isFreeEntry(m as ModelEntry) && (m as any).provider !== "opencode-go")
-      .sort((a, b) => b.combinedScore - a.combinedScore),
+      .sort((a, b) => a.ctxTier - b.ctxTier || b.combinedScore - a.combinedScore),
   )
 
   const task = createMemo(() => {
@@ -259,7 +260,7 @@ function FreeModelsView(props: { api: Parameters<TuiPlugin>[0]; sessionID: strin
   const bestPaid = createMemo(() => pickBest(task(), paidModels()))
   const bestGo = createMemo(() => pickBest(task(), goModels()))
   const bestOverall = createMemo(() =>
-    pickBest(task(), [...freeModels(), ...goModels(), ...paidModels()].sort((a, b) => b.combinedScore - a.combinedScore)),
+    pickBest(task(), [...freeModels(), ...goModels(), ...paidModels()].sort((a, b) => a.ctxTier - b.ctxTier || b.combinedScore - a.combinedScore)),
   )
 
   // Cheapest capable: lowest-cost model among those with capability >= 70% of bestOverall
