@@ -1,0 +1,29 @@
+graph TB
+    subgraph T1["Tier 1 — Open code"]
+        direction LR
+        T1A["Public cloud<br/>open-weight"]
+        T1B["Private cloud<br/>closed"]
+    end
+
+    GW["LiteLLM Gateway<br/>(billing, routing,<br/>access, config)"]
+
+    subgraph T2["Tier 2 — Confidential, high performance"]
+        direction LR
+        N1["Google<br/>North America"]
+        N2["OVHcloud<br/>Europe"]
+        N3["Huawei<br/>China & HK"]
+    end
+
+    subgraph T3["Tier 3 — Confidential, simple tasks"]
+        direction LR
+        T3A["Ollama<br/>laptop / desktop"]
+    end
+
+    GW --> T1
+    GW --> T2
+    T2 --> T3
+
+    style T1 fill:#e8f5e9,stroke:#2e7d32
+    style T2 fill:#e3f2fd,stroke:#1565c0
+    style T3 fill:#fff3e0,stroke:#e65100
+    style GW fill:#6715E8,color:#fff

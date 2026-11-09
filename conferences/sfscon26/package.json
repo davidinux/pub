@@ -1,0 +1,24 @@
+{
+  "name": "sfscon26-sovereign-ai",
+  "version": "1.0.0",
+  "description": "SFSCON 2026 presentation: Sovereign AI in Production",
+  "type": "module",
+  "scripts": {
+    "dev": "slidev",
+    "build": "slidev build",
+    "export": "slidev export presentation.md",
+    "export:it": "slidev export presentation-it.md",
+    "build:all": "npm run export && npm run export:it",
+    "build:diagrams": "node build-diagrams.cjs",
+    "clean": "rm -rf node_modules dist *.pdf package-lock.json"
+  },
+  "dependencies": {
+    "slidev-theme-linaro": "file:./theme"
+  },
+  "devDependencies": {
+    "@slidev/cli": "^52.15.2",
+    "@mermaid-js/mermaid-cli": "^11.15.0",
+    "puppeteer": "^24.0.0",
+    "playwright-chromium": "^1.60.0"
+  }
+}
