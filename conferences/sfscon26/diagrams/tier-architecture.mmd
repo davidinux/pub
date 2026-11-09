@@ -16,12 +16,12 @@ graph TB
 
     subgraph T3["Tier 3 — Confidential, simple tasks"]
         direction LR
-        T3A["Ollama<br/>laptop / desktop"]
+        T3A["Gateway config only<br/>Ollama local inference<br/>Nothing leaves device"]
     end
 
     GW --> T1
     GW --> T2
-    T2 --> T3
+    GW -. config only .-> T3
 
     style T1 fill:#e8f5e9,stroke:#2e7d32
     style T2 fill:#e3f2fd,stroke:#1565c0

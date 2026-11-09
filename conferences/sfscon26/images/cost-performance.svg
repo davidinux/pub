@@ -43,7 +43,7 @@
     <text x="435" y="405" fill="#333">Qwen3.8 27B</text>
 
     <circle cx="145" cy="430" r="9" fill="#2e7d32"/>
-    <text x="160" y="435" fill="#333">OLMo 2*</text>
+    <text x="160" y="435" fill="#333">OLMo 3*</text>
   </g>
 
   <g font-family="Arial, sans-serif" font-size="13">
@@ -55,5 +55,5 @@
     <text x="470" y="65" fill="#333">Truly open source</text>
   </g>
 
-  <text x="105" y="515" font-family="Arial, sans-serif" font-size="11" fill="#666">* OLMo 2: true-open reference; no directly comparable API cost/index point.</text>
+  <text x="105" y="515" font-family="Arial, sans-serif" font-size="11" fill="#666">* OLMo 3: true-open reference; no directly comparable API cost/index point.</text>
 </svg>

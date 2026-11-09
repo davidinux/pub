@@ -46,11 +46,38 @@ SFSCON 2026 - Bolzano
 
 ---
 
+layout: two-cols
+---
+
+::title::
+# Pressioni normative e sui costi
+
+::left::
+## Pressione normativa
+
+L'EU AI Act si applica progressivamente. La Commissione Europea lo definisce:
+
+> «Il primo quadro giuridico completo sull'IA al mondo.»
+
+[Commissione Europea — AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)
+
+::right::
+## Pressione su costi e controllo
+
+The Register riporta che Revolut ha spostato l'inference di default per il coding su modelli GLM self-hosted, riducendo i costi di inference di circa il **90%**.
+
+> «Open source is now a priority at Revolut, and our economics are favorable ... the frontier is the exception.»
+
+David Abitbol, responsabile AI operations di Revolut, citato da [The Register, 3 novembre 2026](https://www.theregister.com/ai-and-ml/2026/11/03/british-fintech-revolut-slashes-ai-coding-costs-10x-by-cutting-out-claude-and-going-self-hosted/)
+
+---
+
 # Prima, allineiamoci sui termini
 
 - **Modello chiuso**: accessibile solo attraverso il servizio del fornitore
 - **Modello open-weight**: i pesi sono disponibili per il download, l'esecuzione e l'adattamento — spesso con condizioni d'uso nella licenza
 - **Modello veramente open source**: rilascia anche dati e codice di addestramento (es. OLMo dell'Allen Institute for AI) — rari; la maggior parte dei modelli che chiamiamo "open" è in realtà open-weight
+- **MaaS (Model as a Service)**: usare modelli tramite API senza gestire hosting, scalabilità e aggiornamenti
 
 ---
 layout: two-cols
@@ -60,22 +87,23 @@ layout: two-cols
 # Il divario si sta chiudendo
 
 ::left::
-## Indice Artificial Analysis (ago 2026)
+## Indice Artificial Analysis v4.1 (ago 2026)
 
 - Migliori open-weight (Kimi K3, GLM-5.3): **60**
 - Migliore closed: **63**
-- Costo per task: open-weight è una frazione del closed
+- Confronto costi: i modelli open-weight sono circa **1,5–3,5 volte più economici** in questo snapshot
 
 ## Attenzione
 - La provenienza dei modelli open-weight è attualmente sbilanciata verso la Cina
-- L'Europa deve colmare il divario; il Nord America sembra poco interessato vista la presenza dei grandi player closed-model
+- Gli sforzi open-weight statunitensi (Llama, gpt-oss, Gemma, Nemotron, OLMo) sono indietro rispetto ai laboratori cinesi ai vertici
 - Alcune licenze pongono condizioni — è già un tema di sovranità
 
 ::right::
-## Costo per task
+## Fascia di costo
 
-- Open-weight: ~$0.68
-- Closed (flagship): ~$2.34
+- Esempi open-weight: **Kimi K3, GLM-5.3**
+- Esempi closed: **modelli frontier Claude/GPT**
+- Open-weight: circa **1,5–3,5 volte più economici**
 
 ---
 
@@ -84,6 +112,10 @@ layout: two-cols
 ![Privacy vs Capacity](./images/privacy-capacity.png)
 
 Criterio: chi può vedere i prompt e chi controlla i pesi.
+
+**Angolo in alto a destra vuoto:** massima riservatezza e massima capacità richiedono più capitale e complessità operativa.
+
+*Gli assi sono qualitativi; le posizioni sono relative, non una scala di benchmark.*
 
 <style>
 img {
@@ -102,15 +134,13 @@ img {
 - **→** Si scambia capacità con controllo
 - **→** Il divario con i modelli closed si è ridotto molto — open-weight è sufficiente per la quasi totalità dei casi d'uso
 
-**MaaS** (Model as a Service): consumare modelli tramite un endpoint API senza gestire l'infrastruttura — il provider gestisce hosting, scalabilità e aggiornamenti.
-
 ---
 
 # L'architettura di Linaro: tre tier
 
 ![Tier Overview](./images/tier-overview.png)
 
-- **Tier 1** — Codice aperto: public cloud con open-weight, massima capacità (LiteLLM per fatturazione e config unificate)
+- **Tier 1** — Codice aperto: public cloud con open-weight o private cloud con closed, massima capacità (LiteLLM per fatturazione e config unificate)
 - **Tier 2** — Codice e dati confidenziali: MaaS sovrano con gateway LiteLLM (fatturazione, routing, controllo accessi)
 - **Tier 3** — Task quotidiani assistiti dall'IA: Ollama in locale, nulla esce dalla macchina
 
@@ -126,11 +156,11 @@ Tutti i tier passano attraverso un unico **gateway LiteLLM** che fornisce:
 
 - **Elenco modelli autorizzati** — quali modelli ogni team può usare
 - **Controllo accessi** — permessi per utente e per progetto
-- **Fatturazione unificata** — una sola fattura per tutti i tier
+- **Monitoraggio unificato della spesa** — una vista su provider e tier
 - **Gestione configurazione** — un unico punto per aggiornare gli endpoint
 
 ## Perché è importante
-- **Previene perdite di dati** tra tier e verso account personali
+- **Riduce le perdite di dati** con controlli sull'egress di rete
 - **Linee guida + setup funzionante** per evitare improvvisazioni
 - **Niente vendor lock-in** — cambiare modello dietro il gateway senza modificare il codice client
 
@@ -161,7 +191,7 @@ layout: two-cols
 - **Eccezione**: le patch non ancora pubbliche e le correzioni di sicurezza sotto embargo sono trattate come confidenziali
 
 ::right::
-![Architettura Tier](./images/tier-architecture.png)
+![Architettura Tier](./images/tier-architecture-tier1.png)
 
 <style>
 .col:last-child img {
@@ -187,10 +217,10 @@ layout: two-cols
 
 "Sovrano" = la giurisdizione del nodo coincide con quella del cliente
 
-**Esempi OVHcloud:** Llama 3.3 70B, Mistral Small 3.2 24B, GPT-OSS 120B, Qwen3.8-27B e embedding BGE-M3. *Il catalogo è in evoluzione.*
+**Esempi provider:** OVHcloud: Llama 3.3 70B, Mistral Small 3.2 24B, `gpt-oss-120b`, Qwen3.8-27B; Google: famiglia Gemini; Huawei: famiglia Pangu. *Il catalogo è in evoluzione.*
 
 ::right::
-![Architettura Tier](./images/tier-architecture.png)
+![Architettura Tier](./images/tier-architecture-tier2.png)
 
 <style>
 .col:last-child img {
@@ -210,6 +240,8 @@ layout: two-cols
 ::left::
 ## Ollama in locale su laptop o desktop dedicati
 
+Configurato tramite il gateway; l'inference resta locale e fuori dal gateway.
+
 **Buon utilizzo:**
 - Autocompletamento del codice
 - Boilerplate e script helper
@@ -226,7 +258,7 @@ layout: two-cols
 - **→** Nessun costo infrastrutturale, nessuna dipendenza dalla rete
 
 ::right::
-![Architettura Tier](./images/tier-architecture.png)
+![Architettura Tier](./images/tier-architecture-tier3.png)
 
 <style>
 .col:last-child img {
@@ -244,12 +276,12 @@ layout: two-cols
 # Prestazioni: confronto tra tier
 
 ::left::
-| | Tier 3 | Tier 2 | Tier 1 |
+| | Tier 1 | Tier 2 | Tier 3 |
 |---|---|---|---|
-| Velocità | ~12 tok/s | 38-108 tok/s | ~60 tok/s |
-| Sovranità dati | On-device | Self-hosted | Cloud |
-| Ideale per | Completamento, task semplici | Generazione codice, lavoro NDA | Reasoning complesso |
-| Utenti concorrenti | 1 | 2-9 | Illimitati ($$) |
+| Velocità | ~60 tok/s | 38-108 tok/s | ~12 tok/s |
+| Sovranità dati | Cloud | MaaS sovrano | On-device |
+| Ideale per | Reasoning complesso | Generazione codice, lavoro confidenziale | Completamento, task semplici |
+| Utenti concorrenti | Scala con la spesa | 2-9* | 1 |
 
 <style>
 table {
@@ -276,16 +308,20 @@ th, td {
 }
 </style>
 
+*2–9 utenti Tier 2 in parallelo dipendono da modello, contesto e capacità del nodo.*
+
+*Misure: Claude Sonnet (Tier 1), Qwen3-Coder-Next/Kimi-Dev-72B (Tier 2) e una macchina sviluppatore locale (Tier 3); Tier 2 misurato su un nodo con due RTX 5090, 10–13 maggio 2026, usando OpenCode, vLLM e LiteLLM.*
+
 ::right::
 ## Conclusione chiave
 
 - Il Tier 3 è abbastanza veloce per **uso quotidiano** ma limitato in capacità
-- Il Tier 2 offre **prestazioni di livello frontier** su dati confidenziali
-- Il Tier 1 resta il migliore per **reasoning complesso e multi-step**
+- Il Tier 2 offre **prestazioni open-weight quasi frontier** su dati confidenziali
+- Il Tier 1 resta il migliore per il **reasoning multi-step più complesso**
 
 ---
 
-# Perché l'ibrido batte il centralizzato
+# Perché l'ibrido
 
 1. **I dati restano nella giurisdizione** — i dati di ciascun cliente rimangono nella sua area legale
 2. **Capacità e costo proporzionati alla sensibilità** — non sovra-dimensionare per task a basso rischio
@@ -311,31 +347,6 @@ Un data center in una regione ≠ fuori dalla portata di leggi extra-europee —
 - Instradamento imposto dal gateway (il codice di un cliente europeo non può raggiungere un endpoint extra-europeo)
 
 Verificate nei contratti e nelle certificazioni, non solo nella documentazione commerciale
-
----
-layout: two-cols
----
-
-::title::
-# Pressioni normative e sui costi
-
-::left::
-## Pressione normativa
-
-L'EU AI Act si applica progressivamente. La Commissione Europea lo definisce:
-
-> «Il primo quadro giuridico completo sull'IA al mondo.»
-
-[Commissione Europea — AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)
-
-::right::
-## Pressione su costi e controllo
-
-The Register riporta che Revolut ha spostato l'inference di default per il coding su modelli GLM self-hosted, riducendo i costi di inference di circa il **90%**.
-
-> «Open source is now a priority at Revolut, and our economics are favorable ... the frontier is the exception.»
-
-David Abitbol, responsabile AI operations di Revolut, citato da [The Register, 3 novembre 2026](https://www.theregister.com/ai-and-ml/2026/11/03/british-fintech-revolut-slashes-ai-coding-costs-10x-by-cutting-out-claude-and-going-self-hosted/)
 
 ---
 layout: two-cols

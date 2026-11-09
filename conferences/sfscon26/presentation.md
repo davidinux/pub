@@ -46,11 +46,38 @@ Can we develop an AI toolkit and infrastructure that delivers the right compromi
 
 ---
 
+layout: two-cols
+---
+
+::title::
+# Compliance and cost pressure
+
+::left::
+## Regulatory pressure
+
+The EU AI Act applies progressively. The European Commission says:
+
+> “The AI Act is the first-ever comprehensive legal framework on AI worldwide.”
+
+[European Commission — AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)
+
+::right::
+## Cost and control pressure
+
+The Register reports that Revolut moved default coding inference to self-hosted GLM models and cut inference costs by roughly **90%**.
+
+> “Open source is now a priority at Revolut, and our economics are favorable ... the frontier is the exception.”
+
+David Abitbol, Revolut AI operations lead, quoted by [The Register, 3 Nov 2026](https://www.theregister.com/ai-and-ml/2026/11/03/british-fintech-revolut-slashes-ai-coding-costs-10x-by-cutting-out-claude-and-going-self-hosted/)
+
+---
+
 # First, let's align on terms
 
 - **Closed model**: accessible only through the provider's service
 - **Open-weight model**: weights available to download, run, and adapt — often with usage conditions in the license
 - **Truly open source model**: also releases training data and code (e.g., OLMo by Allen Institute for AI) — rare; most "open" models are in fact open-weight
+- **MaaS (Model as a Service)**: consume models through an API without managing hosting, scaling, or updates
 
 ---
 layout: two-cols
@@ -60,22 +87,23 @@ layout: two-cols
 # The gap is closing
 
 ::left::
-## Artificial Analysis Index (Aug 2026)
+## Artificial Analysis Index v4.1 (Aug 2026)
 
 - Best open-weight (Kimi K3, GLM-5.3): **60**
 - Best closed: **63**
-- Cost per task: open-weight is a fraction of closed
+- Cost comparison: open-weight models are roughly **1.5–3.5x cheaper** in this snapshot
 
 ## Caveat
 - Open-weight model provenance is currently unbalanced toward China
-- Europe needs to bridge the gap; North America shows little interest given the dominance of big closed-model players
+- US open-weight efforts (Llama, gpt-oss, Gemma, Nemotron, OLMo) trail the Chinese labs at the top end
 - Some licenses impose conditions — itself a sovereignty issue
 
 ::right::
-## Cost per task
+## Cost range
 
-- Open-weight: ~$0.68
-- Closed (flagship): ~$2.34
+- Open-weight examples: **Kimi K3, GLM-5.3**
+- Closed examples: **frontier Claude/GPT models**
+- Open-weight: roughly **1.5–3.5x cheaper**
 
 ---
 
@@ -96,6 +124,10 @@ img {
 
 Criterion: who can see the prompts, who controls the weights.
 
+**Empty top-right:** maximum privacy and maximum capacity requires the most capital and operational complexity.
+
+*Axes are qualitative; positions are relative, not a benchmark scale.*
+
 ---
 
 # The tradeoff: capacity vs control
@@ -104,15 +136,13 @@ Criterion: who can see the prompts, who controls the weights.
 - **→** You exchange capacity for control
 - **→** The gap with closed models has shrunk dramatically — open-weight is sufficient for the vast majority of use cases
 
-**MaaS** (Model as a Service): consume models via an API endpoint without managing infrastructure — the provider handles hosting, scaling, and updates.
-
 ---
 
 # Linaro's architecture: three tiers
 
 ![Tier Overview](./images/tier-overview.png)
 
-- **Tier 1** — Open code: public cloud with open-weight, maximum capacity (LiteLLM for unified billing & config)
+- **Tier 1** — Open code: public cloud with open-weight or private cloud with closed models, maximum capacity (LiteLLM for unified billing & config)
 - **Tier 2** — Confidential code & data: sovereign MaaS with LiteLLM gateway (billing, routing, access control)
 - **Tier 3** — AI-assisted daily tasks: Ollama on local machine, nothing leaves
 
@@ -128,11 +158,11 @@ All tiers route through a single **LiteLLM gateway** that provides:
 
 - **Authorized model list** — which models each team can use
 - **Access control** — per-user, per-project permissions
-- **Unified billing** — single invoice across all tiers
+- **Unified spend tracking** — one view across providers and tiers
 - **Configuration management** — one place to update endpoints
 
 ## Why it matters
-- **Prevents data leaks** between tiers and to personal accounts
+- **Reduces data leaks** with network egress controls
 - **Guidelines + working setup** so engineers don't improvise
 - **No vendor lock-in** — swap models behind the gateway without changing client code
 
@@ -163,7 +193,7 @@ layout: two-cols
 - **Exception**: un-published patches and security fixes under embargo are treated as confidential
 
 ::right::
-![Tier Architecture](./images/tier-architecture.png)
+![Tier Architecture](./images/tier-architecture-tier1.png)
 
 <style>
 .col:last-child img {
@@ -189,10 +219,10 @@ layout: two-cols
 
 "Sovereign" = node jurisdiction matches client jurisdiction
 
-**OVHcloud examples:** Llama 3.3 70B, Mistral Small 3.2 24B, GPT-OSS 120B, Qwen3.8-27B, and BGE-M3 embeddings. *Catalog evolves.*
+**Provider examples:** OVHcloud: Llama 3.3 70B, Mistral Small 3.2 24B, `gpt-oss-120b`, Qwen3.8-27B; Google: Gemini family; Huawei: Pangu family. *Catalog evolves.*
 
 ::right::
-![Tier Architecture](./images/tier-architecture.png)
+![Tier Architecture](./images/tier-architecture-tier2.png)
 
 <style>
 .col:last-child img {
@@ -212,8 +242,10 @@ layout: two-cols
 ::left::
 ## Ollama locally on dedicated laptops/desktops
 
+Configured via the gateway; inference stays local and outside the gateway.
+
 **Good fit:**
-- Code completion and autocompletion
+- Code completion/autocompletion
 - Boilerplate and helper scripts
 - Command explanations and log analysis
 - Simple, self-contained tasks
@@ -225,10 +257,10 @@ layout: two-cols
 - Tasks requiring deep reasoning (use Tier 1/2)
 
 - **→** Nothing leaves the machine
-- **→** No infrastructure cost, no network dependency
+- **→** No per-token cost, no network dependency
 
 ::right::
-![Tier Architecture](./images/tier-architecture.png)
+![Tier Architecture](./images/tier-architecture-tier3.png)
 
 <style>
 .col:last-child img {
@@ -246,12 +278,12 @@ layout: two-cols
 # Performance: tiers compared
 
 ::left::
-| | Tier 3 | Tier 2 | Tier 1 |
+| | Tier 1 | Tier 2 | Tier 3 |
 |---|---|---|---|
-| Speed | ~12 tok/s | 38-108 tok/s | ~60 tok/s |
-| Data sovereignty | On-device | Self-hosted | Cloud |
-| Best for | Completion, simple tasks | Code gen, NDA work | Complex reasoning |
-| Concurrent users | 1 | 2-9 | Unlimited ($$) |
+| Speed | ~60 tok/s | 38-108 tok/s | ~12 tok/s |
+| Data sovereignty | Cloud | Sovereign MaaS | On-device |
+| Best for | Complex reasoning | Code gen, confidential work | Completion, simple tasks |
+| Concurrent users | Scales with spend | 2-9* | 1 |
 
 <style>
 table {
@@ -278,16 +310,20 @@ th, td {
 }
 </style>
 
+*2–9 concurrent Tier 2 users depends on model, context size, and node capacity.*
+
+*Measurements: Claude Sonnet (Tier 1), Qwen3-Coder-Next/Kimi-Dev-72B (Tier 2), and a local developer machine (Tier 3); Tier 2 measured on a two-RTX-5090 node, 10–13 May 2026, using OpenCode, vLLM, and LiteLLM.*
+
 ::right::
 ## Key takeaway
 
 - Tier 3 is fast enough for **daily utility** but limited in capability
-- Tier 2 gives **frontier-class performance** on confidential data
-- Tier 1 remains best for **complex, multi-step reasoning**
+- Tier 2 gives **near-frontier open-weight performance** on confidential data
+- Tier 1 remains best for the **highest-end, complex multi-step reasoning**
 
 ---
 
-# Why hybrid beats centralized
+# Why hybrid
 
 1. **Data stays in jurisdiction** — each client's data remains in their legal area
 2. **Capacity and cost proportional to sensitivity** — don't over-provision for low-risk tasks
@@ -313,31 +349,6 @@ A data center in a region ≠ outside extra-European laws — reason we use Euro
 - Gateway-enforced routing (European client code cannot reach non-European endpoints)
 
 Verified in contracts and certifications, not just commercial documentation
-
----
-layout: two-cols
----
-
-::title::
-# Compliance and cost pressure
-
-::left::
-## Regulatory pressure
-
-The EU AI Act applies progressively. The European Commission says:
-
-> “The AI Act is the first-ever comprehensive legal framework on AI worldwide.”
-
-[European Commission — AI Act](https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai)
-
-::right::
-## Cost and control pressure
-
-The Register reports that Revolut moved default coding inference to self-hosted GLM models and cut inference costs by roughly **90%**.
-
-> “Open source is now a priority at Revolut, and our economics are favorable ... the frontier is the exception.”
-
-David Abitbol, Revolut AI operations lead, quoted by [The Register, 3 Nov 2026](https://www.theregister.com/ai-and-ml/2026/11/03/british-fintech-revolut-slashes-ai-coding-costs-10x-by-cutting-out-claude-and-going-self-hosted/)
 
 ---
 layout: two-cols

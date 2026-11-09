@@ -14,6 +14,18 @@ const diagrams = [
     output: 'images/tier-architecture.png'
   },
   {
+    input: 'diagrams/tier-architecture-tier1.mmd',
+    output: 'images/tier-architecture-tier1.png'
+  },
+  {
+    input: 'diagrams/tier-architecture-tier2.mmd',
+    output: 'images/tier-architecture-tier2.png'
+  },
+  {
+    input: 'diagrams/tier-architecture-tier3.mmd',
+    output: 'images/tier-architecture-tier3.png'
+  },
+  {
     input: 'diagrams/privacy-capacity.mmd',
     output: 'images/privacy-capacity.png'
   },
