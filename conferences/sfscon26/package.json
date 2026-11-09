@@ -5,9 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "slidev",
-    "build": "slidev build",
+    "prebuild": "node check-dependencies.cjs",
+    "build": "slidev build presentation.md",
+    "prebuild:all": "node check-dependencies.cjs",
     "export": "slidev export presentation.md",
+    "preexport": "node check-dependencies.cjs",
     "export:it": "slidev export presentation-it.md",
+    "preexport:it": "node check-dependencies.cjs",
     "build:all": "npm run export && npm run export:it",
     "build:diagrams": "node build-diagrams.cjs",
     "clean": "rm -rf node_modules dist *.pdf package-lock.json"

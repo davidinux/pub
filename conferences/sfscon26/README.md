@@ -41,6 +41,8 @@ The Linaro Slidev theme is bundled locally in the `theme/` directory and referen
    ```
    (Use `/usr/bin/npm` — the default `npm` may be an older v6 that resolves incompatible versions.)
 
+The build and export commands check for installed dependencies before starting and stop with a clear message if `npm install` has not been run.
+
 > **Note:** Use `/usr/bin/npm` (v10+) instead of the default `npm` (v6) which may resolve incompatible dependency versions. If `npm --version` shows 6.x, use `/usr/bin/npm` instead.
 
 3. **Generate Mermaid diagrams**:
