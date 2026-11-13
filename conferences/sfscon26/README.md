@@ -61,6 +61,8 @@ The build and export commands check for installed dependencies before starting a
 
 ## Building and Viewing Presentations
 
+`npm run build` builds the English presentation for production. It first regenerates the Mermaid diagrams used by both decks.
+
 ### Quick View (Recommended)
 To view a presentation, run:
 ```bash
@@ -84,6 +86,8 @@ npm run export:it
 # Export both PDFs sequentially
 npm run build:all
 ```
+
+`npm run export`, `npm run export:it`, and `npm run build:all` regenerate the Mermaid diagrams before exporting, so a fresh checkout does not depend on previously generated tier diagram PNGs.
 
 ## Diagram Generation
 

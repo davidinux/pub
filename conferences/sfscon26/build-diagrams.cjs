@@ -6,7 +6,7 @@
  */
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 
 const diagrams = [
   {
@@ -37,6 +37,24 @@ const diagrams = [
 
 console.log('Generating Mermaid diagrams...');
 
+const browserEnv = { ...process.env };
+if (browserEnv.PUPPETEER_EXECUTABLE_PATH && !fs.existsSync(browserEnv.PUPPETEER_EXECUTABLE_PATH)) {
+  const fallbackBrowser = [
+    browserEnv.CHROME_BIN,
+    '/usr/bin/chromium',
+    '/usr/bin/chromium-browser',
+    '/usr/bin/google-chrome'
+  ].find((browserPath) => browserPath && fs.existsSync(browserPath));
+
+  if (fallbackBrowser) {
+    console.warn(`Configured Puppeteer browser not found; using ${fallbackBrowser}`);
+    browserEnv.PUPPETEER_EXECUTABLE_PATH = fallbackBrowser;
+  } else {
+    console.warn('Configured Puppeteer browser not found; allowing Puppeteer to use its installed browser.');
+    delete browserEnv.PUPPETEER_EXECUTABLE_PATH;
+  }
+}
+
 let successCount = 0;
 let errorCount = 0;
 
@@ -50,9 +68,10 @@ for (const diagram of diagrams) {
     }
 
     const bg = diagram.bg || 'transparent';
-    execSync(
-      `npx mmdc -i "${inputPath}" -o "${outputPath}" -b ${bg} -w 1200`,
-      { stdio: 'inherit' }
+    execFileSync(
+      'npx',
+      ['mmdc', '-i', inputPath, '-o', outputPath, '-b', bg, '-w', '1200'],
+      { stdio: 'inherit', env: browserEnv }
     );
 
     console.log(`✓ Generated: ${diagram.output}`);

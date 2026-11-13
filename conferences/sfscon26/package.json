@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "slidev",
     "prebuild": "node check-dependencies.cjs",
-    "build": "slidev build presentation.md",
+    "build": "npm run build:diagrams && slidev build presentation.md",
     "prebuild:all": "node check-dependencies.cjs",
-    "export": "slidev export presentation.md",
+    "export": "npm run build:diagrams && slidev export presentation.md",
     "preexport": "node check-dependencies.cjs",
-    "export:it": "slidev export presentation-it.md",
+    "export:it": "npm run build:diagrams && slidev export presentation-it.md",
     "preexport:it": "node check-dependencies.cjs",
-    "build:all": "npm run export && npm run export:it",
+    "build:all": "npm run build:diagrams && slidev export presentation.md && slidev export presentation-it.md",
     "build:diagrams": "node build-diagrams.cjs",
     "clean": "rm -rf node_modules dist *.pdf package-lock.json"
   },
